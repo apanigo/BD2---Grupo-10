@@ -11,6 +11,14 @@ public class DeliveryMan extends User{
     private boolean free;
 
 
+    
+    
+    public DeliveryMan(String name, String username, String password, String email, Date dateOfBirth) {
+    	super(name, username, password, email, dateOfBirth);
+    	this.setDateOfAdmission(new Date());
+    }
+
+    
     public int getNumberOfSuccessOrders() {
         return numberOfSuccessOrders;
     }

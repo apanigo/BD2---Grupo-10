@@ -11,6 +11,11 @@ public class Client extends User{
     private List<Address> addresses = new ArrayList<>();
 
     private List<Order> orders = new ArrayList<>();
+    
+    public Client(String name, String username, String password, String email, Date dateOfBirth) {
+    	super(name, username, password, email, dateOfBirth);
+    	this.setDateOfRegister(new Date());
+    }
 
 
     public Date getDateOfRegister() {
