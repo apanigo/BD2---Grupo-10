@@ -54,4 +54,9 @@ public class Client extends User{
         this.orders = orders;
     }
 
+	public int getId() {
+		// TODO Auto-generated method stub
+		return id;
+	}
+
 }
