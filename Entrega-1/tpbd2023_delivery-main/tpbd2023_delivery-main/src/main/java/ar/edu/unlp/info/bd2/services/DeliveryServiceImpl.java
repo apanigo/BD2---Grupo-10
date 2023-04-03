@@ -2,6 +2,8 @@ package ar.edu.unlp.info.bd2.services;
 
 import ar.edu.unlp.info.bd2.DeliveryException;
 import ar.edu.unlp.info.bd2.model.*;
+import ar.edu.unlp.info.bd2.repositories.DeliveryRepository;
+
 import org.springframework.stereotype.Service;
 
 
@@ -10,7 +12,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class DeliveryService_imp implements DeliveryService{
+public class DeliveryServiceImpl implements DeliveryService{
+	
+	
+    private DeliveryRepository delivery_repo;
+    public DeliveryServiceImpl(DeliveryRepository repo){
+        this.delivery_repo=repo;
+    }
 
 	/**
 	 * Crea y retorna un usuario de tipo Cliente
@@ -20,9 +28,10 @@ public class DeliveryService_imp implements DeliveryService{
 	 * @param email email del cliente
 	 * @param dateOfBirth fecha de nacimiento del cliente
 	 * @return el cliente creado
-	 */
+	*/
 	public Client createClient(String name, String username, String password, String email, Date dateOfBirth) throws DeliveryException{
-		return new Client(name, username, password, email, dateOfBirth);
+		Client newClient =  new Client(name, username, password, email, dateOfBirth);
+		return delivery_repo.saveClient(newClient);
 	}
 
 	/**
@@ -33,7 +42,7 @@ public class DeliveryService_imp implements DeliveryService{
 	 * @param email email del repartidor
 	 * @param dateOfBirth fecha de nacimiento del repartidor
 	 * @return el cliente creado
-	 */
+	 
 	
 	public DeliveryMan createDeliveryMan(String name, String username, String password, String email, Date dateOfBirth) throws DeliveryException{
 		return new DeliveryMan(name, username, password, email, dateOfBirth);
@@ -43,27 +52,27 @@ public class DeliveryService_imp implements DeliveryService{
 	 * Obtiene el usuario (de cualqueir tipo) por id
 	 * @param id
 	 * @return el usuario con el id provisto
-	 */
+	
 	public Optional<User> getUserById(Long id);
 
 	/**
 	 * Obtiene el usuario (de cualquier tipo) por el email
 	 * @param email
 	 * @return el usuario con el email provisto
-	 */
+	 
 	public Optional<User> getUserByEmail(String email);
 
 	/**
 	 * Obtiene un repartidor libre de manera aleatoria
 	 * @return el repartidor obtenido
-	 */
+	 
 	public Optional<DeliveryMan> getAFreeDeliveryMan();
 
 	/**
 	 * Actualiza los datos de un repartido
 	 * @param deliveryMan1 el repartidor a actualizar
 	 * @return el repartidor actualizo
-	 */
+	
 	DeliveryMan updateDeliveryMan(DeliveryMan deliveryMan1) throws DeliveryException;
 
 	/**
@@ -76,7 +85,7 @@ public class DeliveryService_imp implements DeliveryService{
 	 * @param description detalle que acompaña la direccion
 	 * @param client cliente dueño de la dirección
 	 * @return la nueva dirección de entrega
-	 */
+	 
 	public Address createAddress(String name, String address, String apartment, float coordX, float coordY, String description, Client client) throws DeliveryException;
 
 	/**
@@ -88,7 +97,7 @@ public class DeliveryService_imp implements DeliveryService{
 	 * @param description detalle que acompaña la direccion
 	 * @param client cliente dueño de la dirección
 	 * @return la nueva dirección de entrega
-	 */
+	 
 	public Address createAddress(String name, String address, float coordX, float coordY, String description, Client client) throws DeliveryException;
 
 
@@ -100,14 +109,14 @@ public class DeliveryService_imp implements DeliveryService{
 	 * @param client cliente que realizó el pedido
 	 * @param address dirección en la cual se debe entregar el pedido
 	 * @return el nuevo pedido
-	 */
+	 
 	public Order createOrder(int number, Date dateOfOrder, String comments, Client client,  Address address) throws DeliveryException;
 
 	/**
 	 * Obtiene el pedido por id
 	 * @param id
 	 * @return el pedido con el id provisto
-	 */
+	 
 	public Optional<Order> getOrderById(Long id);
 
 	/**
@@ -118,14 +127,14 @@ public class DeliveryService_imp implements DeliveryService{
 	 * @param coordX  coordenada X de la dirección del Proveedor
 	 * @param coordY coordeada Y de la dirección del Proveedor
 	 * @return el proveedor creado
-	 */
+	 
 	public Supplier createSupplier(String name, String cuil, String address, float coordX, float coordY) throws DeliveryException;
 
 	/**
 	 * Obtener y retornar los Suppliers con un nombre
 	 * @param name nombre a buscar
 	 * @return listado de Suppliers
-	 */
+	  *
 	public List<Supplier> getSupplierByName(String name);
 
 	/**
@@ -133,7 +142,7 @@ public class DeliveryService_imp implements DeliveryService{
 	 * @param name nombre del tipo de producto
 	 * @param description descripcion del tipo de producto
 	 * @return el nuevo tipo de producto
-	 */
+	  *
 	public ProductType createProductType(String name, String description) throws DeliveryException;
 
 	/**
@@ -145,7 +154,7 @@ public class DeliveryService_imp implements DeliveryService{
 	 * @param supplier el productor del producto
 	 * @param types listado de los tipos del producto
 	 * @return el producto creado
-	 */
+	  *
 	public Product createProduct(String name, float price, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException;
 
 	/**
@@ -158,28 +167,28 @@ public class DeliveryService_imp implements DeliveryService{
 	 * @param supplier el productor del producto
 	 * @param types listado de los tipos del producto
 	 * @return el producto creado
-	 */
+	  *
 	public Product createProduct(String name, float price, Date lastPriceUpdateDate, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException;
 
 	/**
 	 * Obtiene el producto por id
 	 * @param id
 	 * @return el producto con el id provisto
-	 */
+	  *
 	public Optional<Product> getProductById(Long id);
 
 	/**
 	 * Obtiene el listado de productos que su nombre contega el string dado
 	 * @param name string a buscar
 	 * @return Lista de productos
-	 */
+	  *
 	public List<Product> getProductByName(String name);
 
 	/**
 	 * Obtiene el listado de productos que el nombre de alguno de sus tipo coincide con el string dado
 	 * @param type nombre del tipo
 	 * @return Lista de productos
-	 */
+	  *
 	public List<Product> getProductsByType(String type) throws DeliveryException;
 
 	/**
@@ -188,7 +197,7 @@ public class DeliveryService_imp implements DeliveryService{
 	 * @param price nuevo precio del producto
 	 * @return el producto modificado
 	 * @throws DeliveryException en caso de que no exista el producto para el id dado
-	 */
+	  *
 	public Product updateProductPrice(Long id, float price) throws DeliveryException;
 
 	/**
@@ -198,7 +207,7 @@ public class DeliveryService_imp implements DeliveryService{
 	 * @param deliveryMan repartidor a asignar
 	 * @return retorna si se pudo hacer la asignación
 	 * @throws DeliveryException en caso de no existir el numero de orden
-	 */
+	  *
 	public boolean addDeliveryManToOrder(Long order, DeliveryMan deliveryMan) throws DeliveryException;
 
 	/**
@@ -206,7 +215,7 @@ public class DeliveryService_imp implements DeliveryService{
 	 * @param order id de la orden a actualizar
 	 * @return retorno si se pudo actualizar la orden
 	 * @throws DeliveryException en caso de no existir el numero de orden
-	 */
+	  *
 	public boolean setOrderAsDelivered(Long order) throws DeliveryException;
 
 	/**
@@ -215,7 +224,7 @@ public class DeliveryService_imp implements DeliveryService{
 	 * @param commentary comentario de la reseña
 	 * @return la nueva reseña
 	 * @throws DeliveryException en caso de no existir el numero de orden
-	 */
+	  *
 	public Qualification addQualificatioToOrder(Long order, String commentary) throws DeliveryException ;
 
 	/**
@@ -225,7 +234,8 @@ public class DeliveryService_imp implements DeliveryService{
 	 * @param product producto a agregar
 	 * @return el pedido con el nuevo producto
 	 * @throws DeliveryException en caso de no existir el pedido
-	 */
+	  *
 	public Item addItemToOrder( Long order, Product product,  int quantity, String description ) throws DeliveryException;
-
+*/
 }
+    

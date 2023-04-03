@@ -1,16 +1,28 @@
 package ar.edu.unlp.info.bd2.model;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Entity
 public class Client extends User{
-
+	
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    
     private Date dateOfRegister;
 
+    @ManyToMany
     private List<Address> addresses = new ArrayList<>();
 
+    @OneToMany
     private List<Order> orders = new ArrayList<>();
+    
+    public Client() {
+    	
+    }
     
     public Client(String name, String username, String password, String email, Date dateOfBirth) {
     	super(name, username, password, email, dateOfBirth);
