@@ -55,7 +55,6 @@ public class Client extends User{
     }
 
 	public int getId() {
-		// TODO Auto-generated method stub
 		return id;
 	}
 

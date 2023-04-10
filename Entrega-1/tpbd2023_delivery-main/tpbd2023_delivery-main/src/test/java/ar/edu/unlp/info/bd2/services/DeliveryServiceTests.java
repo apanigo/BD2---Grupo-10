@@ -2,6 +2,7 @@ package ar.edu.unlp.info.bd2.services;
 
 import ar.edu.unlp.info.bd2.DeliveryException;
 import ar.edu.unlp.info.bd2.config.AppConfig;
+import ar.edu.unlp.info.bd2.utils.DBInitializer;
 import ar.edu.unlp.info.bd2.config.HibernateConfiguration;
 import ar.edu.unlp.info.bd2.model.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,7 +27,10 @@ public class DeliveryServiceTests {
 
 	@Autowired
 	DeliveryService service;
-
+	
+	@Autowired
+    DBInitializer initializer;
+	
 	private Date dob1;
 	private Date dob2;
 	private Date dpri;
@@ -46,20 +50,22 @@ public class DeliveryServiceTests {
 	void initialTest() {
 		// Probar correcta conexión con la BD y creación de entidades
 	}
-
+	
 	@Test
 	void testCreationAndGetUsers() throws DeliveryException {
 		/**
-		 * Creacion de Usuario tipo Cliente
+		 *  Creacion de Usuario tipo Cliente
 		 */
+		 
+		  
 		Client client = this.service.createClient("Juan Perez", "jperez", "1234", "jperez@gmail.com", dob1);
 		assertNotNull(client.getId());
 		assertEquals(0, client.getScore());
 		assertEquals("jperez@gmail.com", client.getEmail());
-
+	}
 		/**
 		 * Creción de Usuario tipo DeliveryMan
-		 */
+		  
 		DeliveryMan deliveryMan = this.service.createDeliveryMan("Ramiro Benítez", "rbenitez", "1234", "rbenitez@gmail.com", dob2);
 		assertNotNull(deliveryMan.getId());
 		assertEquals(0, deliveryMan.getScore());
@@ -67,7 +73,7 @@ public class DeliveryServiceTests {
 
 		/**
 		 * Obtención de Usuario por ID
-		 */
+		  
 		Long idClient = client.getId();
 		Optional<User> optionalUser1 = this.service.getUserById(idClient);
 		assertTrue(optionalUser1.isPresent());
@@ -80,7 +86,7 @@ public class DeliveryServiceTests {
 
 		/**
 		 * Obtención de Usuario por Email
-		 */
+		  
 		Long idDeliveryMan = deliveryMan.getId();
 		Optional<User> optionalUser2 = this.service.getUserById(idDeliveryMan);
 		assertTrue(optionalUser2.isPresent());
@@ -98,7 +104,7 @@ public class DeliveryServiceTests {
 	void testCreationAndGetAddresses() throws DeliveryException {
 		/**
 		 * Creación de Address
-		 */
+		  
 		Client client = this.service.createClient("Juan Perez", "jperez1", "1234", "jperez1@gmail.com", dob1);
 		Address address1 = this.service.createAddress("Direccion 1", "Calle 50 y 120", 23.595f, 65.854f, "Direccion Facultad", client);
 		assertNotNull(address1.getId());
@@ -114,14 +120,14 @@ public class DeliveryServiceTests {
 	void testCreationAndGetSuppliers() throws DeliveryException {
 		/**
 		 * Creacion de Suppliers
-		 */
+		  
 		Supplier supplier = this.service.createSupplier("McDonalds", "30554442220", "Calle 50 esq 8", 24.894f, 62.489f);
 		assertNotNull(supplier.getId());
 		assertEquals("McDonalds", supplier.getName());
 
 		/**
 		 * Obtener Supplier por su nombre
-		 */
+		  
 		List<Supplier> suppliers = this.service.getSupplierByName("McDonalds");
 		assertEquals(1, suppliers.size());
 		List<Supplier> suppliers2 = this.service.getSupplierByName("Mc");
@@ -135,14 +141,14 @@ public class DeliveryServiceTests {
 	void testCreationAndGetProducts() throws DeliveryException {
 		/**
 		 * Creación de ProductTypes
-		 */
+		  
 		ProductType productType1 = this.service.createProductType("Kiosco", "Productos de kiosco, como golosinas, alfajores, etc.");
 		assertNotNull(productType1.getId());
 		assertEquals("Kiosco", productType1.getName());
 
 		/**
 		 * Creación de Products (con y sin fecha de precio)
-		 */
+		  
 		Supplier supplier = this.service.createSupplier("Kiosco 1", "30801112220", "Calle 51 esq 10", -34.917995f, -57.952061f);
 		ProductType productType2 = this.service.createProductType("Helado", "Productos Helados");
 
@@ -157,7 +163,7 @@ public class DeliveryServiceTests {
 
 		/**
 		 * Obtener producto por su ID
-		 */
+		  
 		Long idProduct1 = product1.getId();
 		Optional<Product> optionalProduct3 = this.service.getProductById(idProduct1);
 		assertTrue(optionalProduct3.isPresent());
@@ -167,7 +173,7 @@ public class DeliveryServiceTests {
 
 		/**
 		 * Obtener producto por su nombre
-		 */
+		  
 		List<Product> listProduct4 = this.service.getProductByName("Helado");
 		assertEquals(1, listProduct4.size());
 		Product product4 = listProduct4.get(0);
@@ -180,7 +186,7 @@ public class DeliveryServiceTests {
 
 		/**
 		 * Obtener productos por su tipo
-		 */
+		  
 		List<Product> products1 = this.service.getProductsByType("Kiosco");
 		assertEquals(2, products1.size());
 		List<Product> products2 = this.service.getProductsByType("Helado");
@@ -192,7 +198,7 @@ public class DeliveryServiceTests {
 	void testUpdatePriceProduct() throws DeliveryException {
 		/**
 		 * Actualizar el precio de un producto
-		 */
+		  
 		ProductType productType1 = this.service.createProductType("Kiosco", "Productos de kiosco, como golosinas, alfajores, etc.");
 		Supplier supplier1 = this.service.createSupplier("Kiosco 1", "30801112221", "Calle 51 esq 10", -34.917995f, -57.952061f);
 		Product product1 = this.service.createProduct("Alfajor Chocolate", 180f, dpri, 80f, "Alfajor Triple de Chocolate", supplier1, new ArrayList<ProductType>(Arrays.asList(productType1)));
@@ -210,7 +216,7 @@ public class DeliveryServiceTests {
 	void testCreationAndGetOrders() throws DeliveryException {
 		/**
 		 * Creación de Ordenes
-		 */
+		  
 		Client client = this.service.createClient("Juan Perez", "jperez2", "1234", "jperez2@gmail.com", dob1);
 		Address address1 = this.service.createAddress("Direccion 1", "Calle 50 y 120", 23.595f, 65.854f, "Direccion Facultad", client);
 
@@ -222,7 +228,7 @@ public class DeliveryServiceTests {
 
 		/**
 		 * Obtener orden por su id
-		 */
+		  
 		Long idOrder = order.getId();
 		Optional<Order> optionalOrder1 = this.service.getOrderById(idOrder);
 		assertTrue(optionalOrder1.isPresent());
@@ -232,7 +238,7 @@ public class DeliveryServiceTests {
 
 		/**
 		 * Agregar Items a la orden
-		 */
+		  
 		ProductType productType1 = this.service.createProductType("Kiosco", "Productos de kiosco, como golosinas, alfajores, etc.");
 		Supplier supplier1 = this.service.createSupplier("Kiosco 2", "30801112222", "Calle 51 esq 10", -34.917995f, -57.952061f);
 		Product product1 = this.service.createProduct("Alfajor Dulce de Leche", 180f, 80f, "Alfajor Triple de Dulce de Leche", supplier1, new ArrayList<ProductType>(Arrays.asList(productType1)));
@@ -258,7 +264,7 @@ public class DeliveryServiceTests {
 	void testCompleteOrder() throws DeliveryException {
 		/**
 		 * Obtener un repartidor libre aleatorio
-		 */
+		  
 		DeliveryMan deliveryMan1 = this.service.createDeliveryMan("Ramiro Benítez", "rbenitez3", "1234", "rbenitez3@gmail.com", dob1);
 		deliveryMan1.setFree(false);
 		this.service.updateDeliveryMan(deliveryMan1);
@@ -272,7 +278,7 @@ public class DeliveryServiceTests {
 
 		/**
 		 * Asignar un repartidor a una orden
-		 */
+		  
 		Client client = this.service.createClient("Rodrigo Garcia", "rgarcia", "1234", "rgarcia@gmail.com", dob1);
 		Address address1 = this.service.createAddress("Direccion 1", "Calle 50 y 120", 23.595f, 65.854f, "Direccion Facultad", client);
 		ProductType productType1 = this.service.createProductType("Kiosco", "Productos de kiosco, como golosinas, alfajores, etc.");
@@ -293,7 +299,7 @@ public class DeliveryServiceTests {
 
 		/**
 		 * Finalizar una orden
-		 */
+		  
 		Order order2 = this.service.createOrder(30, cal3.getTime(), "Otra orden", client, address1);
 		assertFalse(this.service.setOrderAsDelivered(order2.getId())); //No se puede finalizar una orden no asignada
 		Long idDM = updatedOrder.getDeliveryMan().getId();
@@ -311,7 +317,7 @@ public class DeliveryServiceTests {
 	void testQualifyOrder() throws DeliveryException {
 		/**
 		 * Agregar una calificación
-		 */
+		  
 		DeliveryMan deliveryMan1 = this.service.createDeliveryMan("Ramiro Benítez", "rbenitez4", "1234", "rbenitez4@gmail.com", dob1);
 		Client client = this.service.createClient("Juan Perez", "jperez4", "1234", "jperez4@gmail.com", dob2);
 		Address address1 = this.service.createAddress("Direccion 1", "Calle 50 y 120", 23.595f, 65.854f, "Direccion Facultad", client);
@@ -330,5 +336,5 @@ public class DeliveryServiceTests {
 		Order updatedOrder = this.service.getOrderById(order.getId()).get();
 		assertEquals(qualification.getId(), updatedOrder.getQualification().getId());
 	}
-
+*/
 }

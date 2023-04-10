@@ -42,10 +42,11 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @param email email del repartidor
 	 * @param dateOfBirth fecha de nacimiento del repartidor
 	 * @return el cliente creado
-	 
+	*/
 	
 	public DeliveryMan createDeliveryMan(String name, String username, String password, String email, Date dateOfBirth) throws DeliveryException{
-		return new DeliveryMan(name, username, password, email, dateOfBirth);
+		DeliveryMan newDeliveryMan = new DeliveryMan(name, username, password, email, dateOfBirth);
+		return delivery_repo.saveDeliveryMan(newDeliveryMan);
 	}
 
 	/**
