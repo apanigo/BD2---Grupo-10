@@ -8,10 +8,7 @@ import java.util.List;
 @Entity
 public class Client extends User{
 	
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    
+
     private Date dateOfRegister;
 
     @ManyToMany
@@ -54,8 +51,5 @@ public class Client extends User{
         this.orders = orders;
     }
 
-	public int getId() {
-		return id;
-	}
 
 }

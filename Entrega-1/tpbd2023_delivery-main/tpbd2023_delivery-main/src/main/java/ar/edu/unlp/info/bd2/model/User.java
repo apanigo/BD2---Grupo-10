@@ -1,9 +1,15 @@
 package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
+import javax.persistence.*;
 
+@MappedSuperclass
 public abstract class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    
     private String name;
 
     private String username;
@@ -74,6 +80,10 @@ public abstract class User {
 
     public void setScore(int score) {
         this.score = score;
+    }
+    
+    public int getId() {
+    	return id;
     }
 
 }

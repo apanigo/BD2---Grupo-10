@@ -10,9 +10,6 @@ import javax.persistence.Id;
 @Entity
 public class DeliveryMan extends User{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
     
     private int numberOfSuccessOrders;
 
