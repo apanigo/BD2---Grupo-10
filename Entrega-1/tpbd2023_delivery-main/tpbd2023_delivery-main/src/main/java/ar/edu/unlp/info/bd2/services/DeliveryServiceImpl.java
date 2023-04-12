@@ -72,15 +72,21 @@ public class DeliveryServiceImpl implements DeliveryService{
 	/**
 	 * Obtiene un repartidor libre de manera aleatoria
 	 * @return el repartidor obtenido
-	 
-	public Optional<DeliveryMan> getAFreeDeliveryMan();
+	*/
+	
+	public Optional<DeliveryMan> getAFreeDeliveryMan(){
+		return delivery_repo.getFreeDeliveryMan();
+	}
 
 	/**
 	 * Actualiza los datos de un repartido
 	 * @param deliveryMan1 el repartidor a actualizar
 	 * @return el repartidor actualizo
+	*/
 	
-	DeliveryMan updateDeliveryMan(DeliveryMan deliveryMan1) throws DeliveryException;
+	public DeliveryMan updateDeliveryMan(DeliveryMan deliveryMan1) throws DeliveryException{
+		return delivery_repo.updateDeliveryMan(deliveryMan1);
+	}
 
 	/**
 	 * Crea y retorna una direccion de entrega de un cliente especifico
@@ -92,8 +98,12 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @param description detalle que acompaña la direccion
 	 * @param client cliente dueño de la dirección
 	 * @return la nueva dirección de entrega
-	 
-	public Address createAddress(String name, String address, String apartment, float coordX, float coordY, String description, Client client) throws DeliveryException;
+	*/
+	
+	public Address createAddress(String name, String address, String apartment, float coordX, float coordY, String description, Client client) throws DeliveryException{
+		Address newAddress = new Address(name, address, apartment, coordX, coordY, description, client);
+		return delivery_repo.saveAddress(newAddress);
+	}
 
 	/**
 	 * Crea y retorna una direccion de entrega de un cliente especifico (sin numero de departamento)

@@ -1,7 +1,13 @@
 package ar.edu.unlp.info.bd2.model;
 
+import javax.persistence.*;
 
+@Entity
 public class Address {
+	
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     private String name;
 
@@ -15,9 +21,25 @@ public class Address {
 
     private String description;
 
+    @ManyToOne
     private Client client;
 
-    public String getName() {
+    public Address () {
+    	
+    }
+    
+    public Address(String name, String address, String apartment, float coordX, float coordY, String description, Client client) {
+
+		this.name = name;
+		this.address = address;
+		this.apartment = apartment;
+		this.coordX = coordX;
+		this.coordY = coordY;
+		this.description = description;
+		this.client = client;
+	}
+
+	public String getName() {
         return name;
     }
 

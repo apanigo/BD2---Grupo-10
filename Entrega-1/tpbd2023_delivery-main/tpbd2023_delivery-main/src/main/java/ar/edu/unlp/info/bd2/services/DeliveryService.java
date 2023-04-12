@@ -30,35 +30,35 @@ public interface DeliveryService {
 	 * @param email email del repartidor
 	 * @param dateOfBirth fecha de nacimiento del repartidor
 	 * @return el cliente creado
-	 
+	 */
 	public DeliveryMan createDeliveryMan(String name, String username, String password, String email, Date dateOfBirth) throws DeliveryException;
 
 	/**
 	 * Obtiene el usuario (de cualqueir tipo) por id
 	 * @param id
 	 * @return el usuario con el id provisto
-	 
+	 */
 	public Optional<User> getUserById(Long id);
 
 	/**
 	 * Obtiene el usuario (de cualquier tipo) por el email
 	 * @param email
 	 * @return el usuario con el email provisto
-	 
+	 */
 	public Optional<User> getUserByEmail(String email);
 
 	/**
 	 * Obtiene un repartidor libre de manera aleatoria
 	 * @return el repartidor obtenido
-	 
+	 */
 	public Optional<DeliveryMan> getAFreeDeliveryMan();
 
 	/**
 	 * Actualiza los datos de un repartido
 	 * @param deliveryMan1 el repartidor a actualizar
 	 * @return el repartidor actualizo
-	 
-	DeliveryMan updateDeliveryMan(DeliveryMan deliveryMan1) throws DeliveryException;
+	 */
+	public DeliveryMan updateDeliveryMan(DeliveryMan deliveryMan1) throws DeliveryException;
 
 	/**
 	 * Crea y retorna una direccion de entrega de un cliente especifico

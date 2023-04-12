@@ -14,7 +14,7 @@ public class Client extends User{
     
     private Date dateOfRegister;
 
-    @ManyToMany
+    @OneToMany
     private List<Address> addresses = new ArrayList<>();
 
     @OneToMany
