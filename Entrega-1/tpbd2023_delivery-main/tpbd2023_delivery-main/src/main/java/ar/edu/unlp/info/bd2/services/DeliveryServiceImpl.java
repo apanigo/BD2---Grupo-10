@@ -53,15 +53,21 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * Obtiene el usuario (de cualqueir tipo) por id
 	 * @param id
 	 * @return el usuario con el id provisto
+	*/
 	
-	public Optional<User> getUserById(Long id);
+	public Optional<User> getUserById(Long id){
+		return delivery_repo.getUserById(id);
+	}
 
 	/**
 	 * Obtiene el usuario (de cualquier tipo) por el email
 	 * @param email
 	 * @return el usuario con el email provisto
-	 
-	public Optional<User> getUserByEmail(String email);
+	 */
+	
+	public Optional<User> getUserByEmail(String email){
+		return delivery_repo.getUserByEmail(email);
+	}
 
 	/**
 	 * Obtiene un repartidor libre de manera aleatoria

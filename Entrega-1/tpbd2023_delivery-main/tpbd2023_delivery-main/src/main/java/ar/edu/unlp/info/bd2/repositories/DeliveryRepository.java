@@ -20,8 +20,8 @@ public class DeliveryRepository {
 	    }
 	 
     public Client getClientById(long id) {
-        String query = "FROM Client WHERE id = :idP";  //HQL
-        return (Client) sessionFactory.getCurrentSession().createQuery(query).setParameter("idP", id).uniqueResult();
+        String query = "FROM Client WHERE id = :idC";  //HQL
+        return (Client) sessionFactory.getCurrentSession().createQuery(query).setParameter("idC", id).uniqueResult();
     }
     
     public DeliveryMan saveDeliveryMan (DeliveryMan newDeliveryMan) {
@@ -30,8 +30,18 @@ public class DeliveryRepository {
     }
     
     public DeliveryMan getDeliveryManById(long id) {
-        String query = "FROM DeliveryMan WHERE id = :idP";  //HQL
-        return (DeliveryMan) sessionFactory.getCurrentSession().createQuery(query).setParameter("idP", id).uniqueResult();
+        String query = "FROM DeliveryMan WHERE id = :idD";  //HQL
+        return (DeliveryMan) sessionFactory.getCurrentSession().createQuery(query).setParameter("idD", id).uniqueResult();
+    }
+    
+    public Optional<User> getUserById (long id) {
+    	String query = "FROM User WHERE id = :idU";  //HQL
+    	return sessionFactory.getCurrentSession().createQuery(query).setParameter("idU", id).uniqueResultOptional();
+    }
+    
+    public Optional<User> getUserByEmail (String id) {
+    	String query = "FROM User WHERE email = :emailU";  //HQL
+    	return sessionFactory.getCurrentSession().createQuery(query).setParameter("emailU", id).uniqueResultOptional();
     }
 
 }
