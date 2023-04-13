@@ -1,8 +1,13 @@
 package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
+import javax.persistence.*;
 
 public abstract class User {
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String name;
 
@@ -74,6 +79,10 @@ public abstract class User {
 
     public void setScore(int score) {
         this.score = score;
+    }
+    
+    public Long getId() {
+    	return id;
     }
 
 }

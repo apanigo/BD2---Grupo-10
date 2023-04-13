@@ -30,35 +30,35 @@ public interface DeliveryService {
 	 * @param email email del repartidor
 	 * @param dateOfBirth fecha de nacimiento del repartidor
 	 * @return el cliente creado
-	 
+	 */
 	public DeliveryMan createDeliveryMan(String name, String username, String password, String email, Date dateOfBirth) throws DeliveryException;
 
 	/**
 	 * Obtiene el usuario (de cualqueir tipo) por id
 	 * @param id
 	 * @return el usuario con el id provisto
-	 
+	 */
 	public Optional<User> getUserById(Long id);
 
 	/**
 	 * Obtiene el usuario (de cualquier tipo) por el email
 	 * @param email
 	 * @return el usuario con el email provisto
-	 
+	 */
 	public Optional<User> getUserByEmail(String email);
 
 	/**
 	 * Obtiene un repartidor libre de manera aleatoria
 	 * @return el repartidor obtenido
-	 
+	 */
 	public Optional<DeliveryMan> getAFreeDeliveryMan();
 
 	/**
 	 * Actualiza los datos de un repartido
 	 * @param deliveryMan1 el repartidor a actualizar
 	 * @return el repartidor actualizo
-	 
-	DeliveryMan updateDeliveryMan(DeliveryMan deliveryMan1) throws DeliveryException;
+	 */
+	public DeliveryMan updateDeliveryMan(DeliveryMan deliveryMan1) throws DeliveryException;
 
 	/**
 	 * Crea y retorna una direccion de entrega de un cliente especifico
@@ -72,7 +72,6 @@ public interface DeliveryService {
 	 * @return la nueva dirección de entrega
 	 
 	public Address createAddress(String name, String address, String apartment, float coordX, float coordY, String description, Client client) throws DeliveryException;
-
 	/**
 	 * Crea y retorna una direccion de entrega de un cliente especifico (sin numero de departamento)
 	 * @param name titulo de la direccion
@@ -84,8 +83,6 @@ public interface DeliveryService {
 	 * @return la nueva dirección de entrega
 	 
 	public Address createAddress(String name, String address, float coordX, float coordY, String description, Client client) throws DeliveryException;
-
-
 	/**
 	 * Crea y retorna un nuevo pedido
 	 * @param number numero de orden
@@ -96,14 +93,12 @@ public interface DeliveryService {
 	 * @return el nuevo pedido
 	 
 	public Order createOrder(int number, Date dateOfOrder, String comments, Client client,  Address address) throws DeliveryException;
-
 	/**
 	 * Obtiene el pedido por id
 	 * @param id
 	 * @return el pedido con el id provisto
 	 
 	public Optional<Order> getOrderById(Long id);
-
 	/**
 	 * Crea y retorna un nuevo Proveedor
 	 * @param name nombre del Proveedor
@@ -114,14 +109,12 @@ public interface DeliveryService {
 	 * @return el proveedor creado
 	 
 	public Supplier createSupplier(String name, String cuil, String address, float coordX, float coordY) throws DeliveryException;
-
 	/**
 	 * Obtener y retornar los Suppliers con un nombre
 	 * @param name nombre a buscar
 	 * @return listado de Suppliers
 	 
 	public List<Supplier> getSupplierByName(String name);
-
 	/**
 	 * Crea y retorna un nuevo tipo de producto
 	 * @param name nombre del tipo de producto
@@ -129,7 +122,6 @@ public interface DeliveryService {
 	 * @return el nuevo tipo de producto
 	 
 	public ProductType createProductType(String name, String description) throws DeliveryException;
-
 	/**
 	 *  Crea y devuelve un nuevo Producto.
 	 * @param name nombre del producto a ser creado
@@ -141,7 +133,6 @@ public interface DeliveryService {
 	 * @return el producto creado
 	 
 	public Product createProduct(String name, float price, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException;
-
 	/**
 	 *  Crea y devuelve un nuevo Producto.
 	 * @param name nombre del producto a ser creado
@@ -154,28 +145,24 @@ public interface DeliveryService {
 	 * @return el producto creado
 	 
 	public Product createProduct(String name, float price, Date lastPriceUpdateDate, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException;
-
 	/**
 	 * Obtiene el producto por id
 	 * @param id
 	 * @return el producto con el id provisto
 	 
 	public Optional<Product> getProductById(Long id);
-
 	/**
 	 * Obtiene el listado de productos que su nombre contega el string dado
 	 * @param name string a buscar
 	 * @return Lista de productos
 	 
 	public List<Product> getProductByName(String name);
-
 	/**
 	 * Obtiene el listado de productos que el nombre de alguno de sus tipo coincide con el string dado
 	 * @param type nombre del tipo
 	 * @return Lista de productos
 	 
 	public List<Product> getProductsByType(String type) throws DeliveryException;
-
 	/**
 	 * Actualiza el precio del producto guardando la fecha de la actualización.
 	 * @param id id del producto
@@ -184,7 +171,6 @@ public interface DeliveryService {
 	 * @throws DeliveryException en caso de que no exista el producto para el id dado
 	 
 	public Product updateProductPrice(Long id, float price) throws DeliveryException;
-
 	/**
 	 * Asigna un repartidor a una orden
 	 * Se debe verificar si el repartidor esta libre y si la orden no fue entregada
@@ -194,7 +180,6 @@ public interface DeliveryService {
 	 * @throws DeliveryException en caso de no existir el numero de orden
 	 
 	public boolean addDeliveryManToOrder(Long order, DeliveryMan deliveryMan) throws DeliveryException;
-
 	/**
 	 * Registra que la orden fue entregada y libera al repartidor
 	 * @param order id de la orden a actualizar
@@ -202,7 +187,6 @@ public interface DeliveryService {
 	 * @throws DeliveryException en caso de no existir el numero de orden
 	 
 	public boolean setOrderAsDelivered(Long order) throws DeliveryException;
-
 	/**
 	 * Agrega una reseña a una orden
 	 * @param order id de orden sobre la que hace la reseña
@@ -211,7 +195,6 @@ public interface DeliveryService {
 	 * @throws DeliveryException en caso de no existir el numero de orden
 	 
 	public Qualification addQualificatioToOrder(Long order, String commentary) throws DeliveryException ;
-
 	/**
 	 * agrega un item al pedido, es decir, una cantidad de un producto
 	 * @param order pedido al cual se le agrega el producto
