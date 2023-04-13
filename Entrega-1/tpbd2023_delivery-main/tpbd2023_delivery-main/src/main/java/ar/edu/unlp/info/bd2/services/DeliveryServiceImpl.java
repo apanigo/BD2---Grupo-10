@@ -1,15 +1,12 @@
 package ar.edu.unlp.info.bd2.services;
 
-import ar.edu.unlp.info.bd2.DeliveryException;
-import ar.edu.unlp.info.bd2.model.*;
-import ar.edu.unlp.info.bd2.repositories.DeliveryRepository;
+import java.util.Date;
 
 import org.springframework.stereotype.Service;
 
-
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import ar.edu.unlp.info.bd2.DeliveryException;
+import ar.edu.unlp.info.bd2.model.Client;
+import ar.edu.unlp.info.bd2.repositories.DeliveryRepository;
 
 @Service
 public class DeliveryServiceImpl implements DeliveryService{

@@ -10,15 +10,16 @@ public class Client extends User{
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
     
     private Date dateOfRegister;
 
-    @ManyToMany
-    private List<Address> addresses = new ArrayList<>();
-
-    @OneToMany
-    private List<Order> orders = new ArrayList<>();
+//    @ManyToMany
+//    private List<Address> addresses = new ArrayList<>();
+//
+//    @OneToMany
+//    private List<Order> orders = new ArrayList<>();
     
     public Client() {
     	
@@ -38,21 +39,21 @@ public class Client extends User{
         this.dateOfRegister = dateOfRegister;
     }
 
-    public List<Address> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
+//    public List<Address> getAddresses() {
+//        return addresses;
+//    }
+//
+//    public void setAddresses(List<Address> addresses) {
+//        this.addresses = addresses;
+//    }
+//
+//    public List<Order> getOrders() {
+//        return orders;
+//    }
+//
+//    public void setOrders(List<Order> orders) {
+//        this.orders = orders;
+//    }
 
 	public int getId() {
 		// TODO Auto-generated method stub

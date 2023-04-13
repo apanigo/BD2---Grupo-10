@@ -2,16 +2,37 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
 public class ProductType {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
+	
+	@Column(name = "name")
     private String name;
 
+	@Column(name = "description")
     private String description;
 
-    private List<Product> products;
+//    private List<Product> products;
 
 
+    public Long getId() {
+    	return this.id;
+    }
+    
+    public void setId(Long id) {
+    	this.id = id;
+    }
+    
     public String getName() {
         return name;
     }
@@ -28,12 +49,12 @@ public class ProductType {
         this.description = description;
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
+//    public List<Product> getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(List<Product> products) {
+//        this.products = products;
+//    }
 
 }

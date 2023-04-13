@@ -2,20 +2,45 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
 
-public class DeliveryMan extends User{
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
+public class DeliveryMan extends User{
+	
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;	
+
+	@Column(name = "numberOfSuccessOrders")
     private int numberOfSuccessOrders;
 
+	@Column(name = "dateOfAdmission")
     private Date dateOfAdmission;
 
+	@Column(name = "free")
     private boolean free;
 
 
-    
+	public DeliveryMan() {
+		
+	}
     
     public DeliveryMan(String name, String username, String password, String email, Date dateOfBirth) {
     	super(name, username, password, email, dateOfBirth);
     	this.setDateOfAdmission(new Date());
+    }
+    
+    public Long getId() {
+    	return id;
+    }
+    
+    public void setId(Long id) {
+    	this.id = id;
     }
 
     
