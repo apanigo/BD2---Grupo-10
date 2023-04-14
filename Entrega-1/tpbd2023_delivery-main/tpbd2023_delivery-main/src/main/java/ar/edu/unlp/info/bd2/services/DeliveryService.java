@@ -70,8 +70,10 @@ public interface DeliveryService {
 	 * @param description detalle que acompaña la direccion
 	 * @param client cliente dueño de la dirección
 	 * @return la nueva dirección de entrega
+	 **/
 	 
 	public Address createAddress(String name, String address, String apartment, float coordX, float coordY, String description, Client client) throws DeliveryException;
+	
 	/**
 	 * Crea y retorna una direccion de entrega de un cliente especifico (sin numero de departamento)
 	 * @param name titulo de la direccion
@@ -81,7 +83,8 @@ public interface DeliveryService {
 	 * @param description detalle que acompaña la direccion
 	 * @param client cliente dueño de la dirección
 	 * @return la nueva dirección de entrega
-	 
+	 **/
+	
 	public Address createAddress(String name, String address, float coordX, float coordY, String description, Client client) throws DeliveryException;
 	/**
 	 * Crea y retorna un nuevo pedido
