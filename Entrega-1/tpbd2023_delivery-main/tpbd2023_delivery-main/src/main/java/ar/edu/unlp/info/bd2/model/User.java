@@ -3,6 +3,8 @@ package ar.edu.unlp.info.bd2.model;
 import java.util.Date;
 import javax.persistence.*;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User {
 	
 	@Id

@@ -33,7 +33,9 @@ public class Client extends User{
     	this.setDateOfRegister(new Date());
     }
 
-
+    public Long getId() {
+        return id;
+    }
     public Date getDateOfRegister() {
         return dateOfRegister;
     }

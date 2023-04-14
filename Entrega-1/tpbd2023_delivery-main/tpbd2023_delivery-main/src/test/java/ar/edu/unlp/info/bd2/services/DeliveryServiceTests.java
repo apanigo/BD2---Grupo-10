@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AppConfig.class, HibernateConfiguration.class}, loader = AnnotationConfigContextLoader.class)
 @Transactional
-@Rollback(true)
+@Rollback(false)
 public class DeliveryServiceTests {
 
 	@Autowired
@@ -73,6 +73,7 @@ public class DeliveryServiceTests {
 		 * Obtención de Usuario por ID
 		 */
 		Long idClient = client.getId();
+		System.out.print(idClient);
 		Optional<User> optionalUser1 = this.service.getUserById(idClient);
 		assertTrue(optionalUser1.isPresent());
 		User user1 = optionalUser1.get();
