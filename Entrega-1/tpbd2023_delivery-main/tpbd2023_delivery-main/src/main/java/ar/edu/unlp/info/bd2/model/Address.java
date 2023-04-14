@@ -7,7 +7,7 @@ public class Address {
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String name;
 
@@ -29,7 +29,6 @@ public class Address {
     }
     
     public Address(String name, String address, String apartment, float coordX, float coordY, String description, Client client) {
-
 		this.name = name;
 		this.address = address;
 		this.apartment = apartment;
@@ -37,7 +36,18 @@ public class Address {
 		this.coordY = coordY;
 		this.description = description;
 		this.client = client;
+		this.client.setNewAddress(this); //le paso el objeto o algún atributo identificador?
 	}
+    
+    public Address(String name, String address, float coordX, float coordY, String description, Client client) {
+    	this.name = name;
+		this.address = address;
+		this.coordX = coordX;
+		this.coordY = coordY;
+		this.description = description;
+		this.client = client;
+		this.client.setNewAddress(this);
+    }
 
 	public String getName() {
         return name;
@@ -94,4 +104,13 @@ public class Address {
     public void setCoordY(float coordY) {
         this.coordY = coordY;
     }
+    
+    public Long getId() {
+    	return this.id;
+    }
+    
+    public void setId(Long id) { 
+    	this.id = id;
+    }
+    
 }

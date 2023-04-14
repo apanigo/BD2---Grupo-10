@@ -3,21 +3,54 @@ package ar.edu.unlp.info.bd2.model;
 import java.util.Date;
 import java.util.List;
 
-public class Product {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
+
+@Entity
+public class Product {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@Column(name="name")
     private String name;
 
+	@Column(name="price")
     private float price;
 
+	@Column(name="lastPriceUpdateDate")
     private Date lastPriceUpdateDate;
 
+	@Column(name="weight")
     private float weight;
 
+	@Column(name="description")
     private String description;
 
-    private Supplier supplier;
+//	@Column(name="supplier")
+//    private Supplier supplier;
 
+	@ManyToMany
     private List<ProductType> types;
+	
+	
+	public Product() {
+		
+	}
+	
+	public Long getId() {
+		return this.id;
+	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
     
     public String getName() {
     	return this.name;
@@ -51,13 +84,13 @@ public class Product {
         this.description = description;
     }
 
-    public Supplier getSupplier() {
-        return supplier;
-    }
-
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
-    }
+//    public Supplier getSupplier() {
+//        return supplier;
+//    }
+//
+//    public void setSupplier(Supplier supplier) {
+//        this.supplier = supplier;
+//    }
 
     public List<ProductType> getTypes() {
         return types;

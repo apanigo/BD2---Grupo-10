@@ -10,14 +10,18 @@ public class Client extends User{
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "id")
+    private Long id;
     
+    @Column(name = "dateOfRegister")
     private Date dateOfRegister;
 
     @OneToMany
+    @Column(name = "addresses")
     private List<Address> addresses = new ArrayList<>();
 
     @OneToMany
+    @Column(name = "orders")
     private List<Order> orders = new ArrayList<>();
     
     public Client() {
@@ -29,7 +33,9 @@ public class Client extends User{
     	this.setDateOfRegister(new Date());
     }
 
-
+    public Long getId() {
+        return id;
+    }
     public Date getDateOfRegister() {
         return dateOfRegister;
     }
@@ -52,6 +58,10 @@ public class Client extends User{
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+    
+    public void setNewAddress(Address newAddress) {
+    	this.addresses.add(newAddress);
     }
 
 

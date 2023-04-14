@@ -6,10 +6,10 @@ import javax.persistence.*;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User {
-
-    @Id
+	
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     
     private String name;
 
@@ -83,7 +83,7 @@ public abstract class User {
         this.score = score;
     }
     
-    public int getId() {
+    public Long getId() {
     	return id;
     }
 
