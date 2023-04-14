@@ -7,7 +7,7 @@ public class Address {
 	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String name;
 
@@ -38,6 +38,15 @@ public class Address {
 		this.description = description;
 		this.client = client;
 	}
+    
+    public Address(String name, String address, float coordX, float coordY, String description, Client client) {
+    	this.name = name;
+		this.address = address;
+		this.coordX = coordX;
+		this.coordY = coordY;
+		this.description = description;
+		this.client = client;
+    }
 
 	public String getName() {
         return name;
@@ -94,4 +103,13 @@ public class Address {
     public void setCoordY(float coordY) {
         this.coordY = coordY;
     }
+    
+    public Long getId() {
+    	return this.id;
+    }
+    
+    public void setId(Long id) { 
+    	this.id = id;
+    }
+    
 }

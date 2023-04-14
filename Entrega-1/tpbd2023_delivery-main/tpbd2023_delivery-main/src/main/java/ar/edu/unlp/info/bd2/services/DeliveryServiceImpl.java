@@ -113,9 +113,13 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @param coordY longuitud de la dirección
 	 * @param description detalle que acompaña la direccion
 	 * @param client cliente dueño de la dirección
-	 * @return la nueva dirección de entrega
+	 * @return la nueva dirección de entrega**/
 	 
-	public Address createAddress(String name, String address, float coordX, float coordY, String description, Client client) throws DeliveryException;
+	public Address createAddress(String name, String address, float coordX, float coordY, String description, Client client) throws DeliveryException {
+		Address newAddress = new Address(name, address, coordX, coordY, description, client);
+		return delivery_repo.saveAddress(newAddress);
+	}
+	
 	/**
 	 * Crea y retorna un nuevo pedido
 	 * @param number numero de orden
