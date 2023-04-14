@@ -50,7 +50,7 @@ public class DeliveryServiceTests {
 	void initialTest() {
 		// Probar correcta conexión con la BD y creación de entidades
 	}
-	
+
 	@Test
 	void testCreationAndGetUsers() throws DeliveryException {
 		/**
@@ -73,7 +73,6 @@ public class DeliveryServiceTests {
 		 * Obtención de Usuario por ID
 		 */
 		Long idClient = client.getId();
-		System.out.print(idClient);
 		Optional<User> optionalUser1 = this.service.getUserById(idClient);
 		assertTrue(optionalUser1.isPresent());
 		User user1 = optionalUser1.get();
@@ -97,5 +96,21 @@ public class DeliveryServiceTests {
 		assertEquals("rbenitez@gmail.com", deliveryMan1.getEmail());
 
 		assertFalse(this.service.getUserByEmail("otromail@gmail.com").isPresent());
+	}
+
+	@Test
+	void testCreationAndGetAddresses() throws DeliveryException {
+		/**
+		 * Creación de Address
+		 */
+		Client client = this.service.createClient("Juan Perez", "jperez1", "1234", "jperez1@gmail.com", dob1);
+		Address address1 = this.service.createAddress("Direccion 1", "Calle 50 y 120", 23.595f, 65.854f, "Direccion Facultad", client);
+		assertNotNull(address1.getId());
+		assertEquals("Direccion 1", address1.getName());
+		Address address2 = this.service.createAddress("Direccion 2", "Calle 50 n5000", "12D", 24.845f, 65.084f, "Direccion Casa", client);
+		assertNotNull(address2.getId());
+		assertEquals("Calle 50 n5000", address2.getAddress());
+		assertTrue(client.getAddresses().contains(address1));
+		assertTrue(client.getAddresses().contains(address2));
 	}
 }
