@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,24 +15,21 @@ public abstract class GenericDeliveryRepository {
 	
 	
 	protected <T> Long saveClass(T model) {
-		Long classId = (Long) this.sessionFactory.getCurrentSession().save(model);
-	    return classId;
+	    return (Long) this.sessionFactory.getCurrentSession().save(model);
 	}
 	
-	protected <T> Optional<T> getOptionalByProperty(String propertyName, Object propertyValue, Class<T> entityClass) {
-		String queryString = "FROM " + entityClass.getName() + " WHERE " + propertyName + " = :propertyValue";
-	    Query<T> query = this.sessionFactory.getCurrentSession().createQuery(queryString, entityClass);
-	    query.setParameter("propertyValue", propertyValue);
-	    List<T> resultList = query.getResultList();
-	    return resultList.isEmpty() ? Optional.empty() : Optional.of(resultList.get(0));
+	protected <T> Optional<T> getOptionalByProperty(String property, Object value, Class<T> entityClass) {
+		String hql = "FROM " + entityClass.getName() + " WHERE " + property + " = :value";
+	    Query<T> query = this.sessionFactory.getCurrentSession().createQuery(hql, entityClass);
+	    query.setParameter("value", value);
+	    return Optional.ofNullable(query.uniqueResult());
     }
 
-	protected <T> T getClassByProperty(String propertyName, Object propertyValue, Class<T> entityClass) {
-		String queryString = "FROM " + entityClass.getName() + " WHERE " + propertyName + " = :propertyValue";
-	    Query<T> query = this.sessionFactory.getCurrentSession().createQuery(queryString, entityClass);
-	    query.setParameter("propertyValue", propertyValue);
-	    List<T> resultList = query.getResultList();
-	    return resultList.isEmpty() ? null : resultList.get(0);
+	protected <T> T getClassByProperty(String property, Object value, Class<T> entityClass) {
+		String hql = "FROM " + entityClass.getName() + " WHERE " + property + " = :value";
+	    Query<T> query = this.sessionFactory.getCurrentSession().createQuery(hql, entityClass);
+	    query.setParameter("value", value);
+	    return query.uniqueResult();
     }
 	
 	protected <T> Optional<T> getOptionalById(Serializable id, Class<T> entityClass) {
@@ -43,10 +37,10 @@ public abstract class GenericDeliveryRepository {
 	    return Optional.ofNullable(entity);
 	}
 	
-	protected <T> List<T> getClassListByProperty(String propertyName, Object propertyValue, Class<T> entityClass) {
-		String queryString = "FROM " + entityClass.getName() + " WHERE " + propertyName + " LIKE CONCAT('%',:propertyValue,'%')";
-	    Query<T> query = this.sessionFactory.getCurrentSession().createQuery(queryString, entityClass);
-	    query.setParameter("propertyValue", propertyValue);
+	protected <T> List<T> getClassListByProperty(String property, Object value, Class<T> entityClass) {
+		String hql = "FROM " + entityClass.getName() + " WHERE " + property + " LIKE CONCAT('%',:value,'%')";
+	    Query<T> query = this.sessionFactory.getCurrentSession().createQuery(hql, entityClass);
+	    query.setParameter("value", value);
 	    return query.getResultList();
     }
 }
