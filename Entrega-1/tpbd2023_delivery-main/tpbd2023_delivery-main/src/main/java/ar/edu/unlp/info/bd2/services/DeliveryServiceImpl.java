@@ -46,7 +46,11 @@ public class DeliveryServiceImpl implements DeliveryService{
 	
 	public DeliveryMan createDeliveryMan(String name, String username, String password, String email, Date dateOfBirth) throws DeliveryException{
 		DeliveryMan newDeliveryMan = new DeliveryMan(name, username, password, email, dateOfBirth);
-		return delivery_repo.saveDeliveryMan(newDeliveryMan);
+		try {
+			return delivery_repo.saveDeliveryMan(newDeliveryMan);
+		} catch (DeliveryException de) {
+			throw de;
+		}
 	}
 
 	/**
@@ -102,7 +106,11 @@ public class DeliveryServiceImpl implements DeliveryService{
 	
 	public Address createAddress(String name, String address, String apartment, float coordX, float coordY, String description, Client client) throws DeliveryException{
 		Address newAddress = new Address(name, address, apartment, coordX, coordY, description, client);
-		return delivery_repo.saveAddress(newAddress);
+		try {
+			return delivery_repo.saveAddress(newAddress);
+		} catch (DeliveryException de) {
+			throw de;
+		}
 	}
 
 	/**
@@ -117,7 +125,39 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 
 	public Address createAddress(String name, String address, float coordX, float coordY, String description, Client client) throws DeliveryException {
 		Address newAddress = new Address(name, address, coordX, coordY, description, client);
-		return delivery_repo.saveAddress(newAddress);
+		try {
+			return delivery_repo.saveAddress(newAddress);
+		} catch (DeliveryException de) {
+			throw de;
+		}
+	}
+	
+	/**
+	 * Crea y retorna un nuevo Proveedor
+	 * @param name nombre del Proveedor
+	 * @param cuil cuil del Proveedor
+	 * @param address dirección del Proveedor
+	 * @param coordX  coordenada X de la dirección del Proveedor
+	 * @param coordY coordeada Y de la dirección del Proveedor
+	 * @return el proveedor creado
+	 **/
+	public Supplier createSupplier(String name, String cuil, String address, float coordX, float coordY) throws DeliveryException {
+		Supplier newSupplier = new Supplier(name, cuil, address, coordX, coordY); 
+		try {
+			return delivery_repo.saveSupplier(newSupplier);
+		} catch (DeliveryException de) {
+			throw de;
+		}
+	}
+	
+	/**
+	 * Obtener y retornar los Suppliers con un nombre
+	 * @param name nombre a buscar
+	 * @return listado de Suppliers
+	  **/
+	
+	public List<Supplier> getSupplierByName(String name) {
+		return delivery_repo.getSupplierByName(name);
 	}
 	
 	/**
@@ -136,22 +176,6 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @return el pedido con el id provisto
 	 
 	public Optional<Order> getOrderById(Long id);
-	/**
-	 * Crea y retorna un nuevo Proveedor
-	 * @param name nombre del Proveedor
-	 * @param cuil cuil del Proveedor
-	 * @param address dirección del Proveedor
-	 * @param coordX  coordenada X de la dirección del Proveedor
-	 * @param coordY coordeada Y de la dirección del Proveedor
-	 * @return el proveedor creado
-	 
-	public Supplier createSupplier(String name, String cuil, String address, float coordX, float coordY) throws DeliveryException;
-	/**
-	 * Obtener y retornar los Suppliers con un nombre
-	 * @param name nombre a buscar
-	 * @return listado de Suppliers
-	  *
-	public List<Supplier> getSupplierByName(String name);
 	/**
 	 * Crea y retorna un nuevo tipo de producto
 	 * @param name nombre del tipo de producto

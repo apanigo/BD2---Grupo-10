@@ -109,4 +109,26 @@ public class DeliveryServiceTests {
 		assertTrue(client.getAddresses().contains(address1));
 		assertTrue(client.getAddresses().contains(address2));
 	}
+	
+	@Test
+	void testCreationAndGetSuppliers() throws DeliveryException {
+		/**
+		 * Creacion de Suppliers
+		 */
+		Supplier supplier = this.service.createSupplier("McDonalds", "30554442220", "Calle 50 esq 8", 24.894f, 62.489f);
+		assertNotNull(supplier.getId());
+		assertEquals("McDonalds", supplier.getName());
+
+		/**
+		 * Obtener Supplier por su nombre
+		 */
+		List<Supplier> suppliers = this.service.getSupplierByName("McDonalds");
+		assertEquals(1, suppliers.size());
+		List<Supplier> suppliers2 = this.service.getSupplierByName("Mc");
+		assertEquals(1, suppliers2.size());
+
+		assertEquals(0, this.service.getSupplierByName("NO EXISTE").size());
+		assertThrows(DeliveryException.class, () -> this.service.createSupplier("McDonalds", "30554442220", "Calle 50 esq 8", 24.894f, 62.489f), "Constraint Violation");
+	}
+
 }

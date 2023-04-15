@@ -20,7 +20,7 @@ public class Supplier {
 	@Column(name="name")
     private String name;
 
-	@Column(name="cuit")
+	@Column(name="cuit", unique=true)
     private String cuit;
 
 	@Column(name="address")
@@ -40,6 +40,19 @@ public class Supplier {
 		
 	}
 	
+	
+	
+	public Supplier(String name, String cuit, String address, float coordX, float coordY) {
+		super();
+		this.name = name;
+		this.cuit = cuit;
+		this.address = address;
+		this.coordX = coordX;
+		this.coordY = coordY;
+	}
+
+
+
 	public Long getId() {
 		return this.id;
 	}

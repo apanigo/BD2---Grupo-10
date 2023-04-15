@@ -86,6 +86,26 @@ public interface DeliveryService {
 	 **/
 	
 	public Address createAddress(String name, String address, float coordX, float coordY, String description, Client client) throws DeliveryException;
+	
+	/**
+	 * Crea y retorna un nuevo Proveedor
+	 * @param name nombre del Proveedor
+	 * @param cuil cuil del Proveedor
+	 * @param address dirección del Proveedor
+	 * @param coordX  coordenada X de la dirección del Proveedor
+	 * @param coordY coordeada Y de la dirección del Proveedor
+	 * @return el proveedor creado
+	 **/
+	
+	public Supplier createSupplier(String name, String cuil, String address, float coordX, float coordY) throws DeliveryException;
+	
+	/**
+	 * Obtener y retornar los Suppliers con un nombre
+	 * @param name nombre a buscar
+	 * @return listado de Suppliers
+	 **/
+	public List<Supplier> getSupplierByName(String name);
+	
 	/**
 	 * Crea y retorna un nuevo pedido
 	 * @param number numero de orden
@@ -102,22 +122,6 @@ public interface DeliveryService {
 	 * @return el pedido con el id provisto
 	 
 	public Optional<Order> getOrderById(Long id);
-	/**
-	 * Crea y retorna un nuevo Proveedor
-	 * @param name nombre del Proveedor
-	 * @param cuil cuil del Proveedor
-	 * @param address dirección del Proveedor
-	 * @param coordX  coordenada X de la dirección del Proveedor
-	 * @param coordY coordeada Y de la dirección del Proveedor
-	 * @return el proveedor creado
-	 
-	public Supplier createSupplier(String name, String cuil, String address, float coordX, float coordY) throws DeliveryException;
-	/**
-	 * Obtener y retornar los Suppliers con un nombre
-	 * @param name nombre a buscar
-	 * @return listado de Suppliers
-	 
-	public List<Supplier> getSupplierByName(String name);
 	/**
 	 * Crea y retorna un nuevo tipo de producto
 	 * @param name nombre del tipo de producto
