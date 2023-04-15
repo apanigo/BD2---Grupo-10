@@ -1,9 +1,12 @@
 package ar.edu.unlp.info.bd2.repositories;
 
+import ar.edu.unlp.info.bd2.DeliveryException;
 import ar.edu.unlp.info.bd2.model.*;
 
 import org.springframework.stereotype.Repository;
 import java.util.*;
+
+import javax.persistence.PersistenceException;
 
 @Repository
 public class DeliveryRepository extends GenericDeliveryRepository{
@@ -51,6 +54,23 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 	public Address saveAddress (Address newAddress) {
 		Long newAddressId = this.saveClass(newAddress);
 		return this.getAddressById(newAddressId);
+	}
+
+	public Supplier saveSupplier(Supplier newSupplier) throws DeliveryException {
+		try {
+			Long newSupplierId = this.saveClass(newSupplier);
+			return this.getSuppliersById(newSupplierId);
+		} catch (PersistenceException  e) {
+			throw new DeliveryException("Constraint Violation");
+		}
+	}
+
+	private Supplier getSuppliersById(Long id) {
+		return this.getClassByProperty("id", id, Supplier.class);
+	}
+
+	public List<Supplier> getSupplierByName(String name) {
+		return this.getClassListByProperty("name", name, Supplier.class);
 	}
 
 }
