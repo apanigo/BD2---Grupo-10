@@ -17,6 +17,7 @@ public abstract class User {
 
     private String password;
 
+    @Column(unique=true)
     private String email;
 
     private Date dateOfBirth;

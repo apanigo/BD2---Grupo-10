@@ -11,18 +11,26 @@ import javax.persistence.PersistenceException;
 @Repository
 public class DeliveryRepository extends GenericDeliveryRepository{
 	
-	public Client saveClient (Client newClient) {
-		Long newClientId = this.saveClass(newClient);
-		return this.getClientById(newClientId);
+	public Client saveClient (Client newClient) throws DeliveryException {
+		try {
+			Long newClientId = this.saveClass(newClient);
+			return this.getClientById(newClientId);
+		} catch (PersistenceException  e) {
+			throw new DeliveryException("Constraint Violation");
+		}
 	}
 		 
 	public Client getClientById(long id) {
 	    return this.getClassByProperty("id", id, Client.class);
 	}
 	
-	public DeliveryMan saveDeliveryMan (DeliveryMan newDeliveryMan) {
-		Long newDeliveryManId = this.saveClass(newDeliveryMan);
-		return this.getDeliveryManById(newDeliveryManId);
+	public DeliveryMan saveDeliveryMan (DeliveryMan newDeliveryMan) throws DeliveryException {
+		try {
+			Long newDeliveryManId = this.saveClass(newDeliveryMan);
+			return this.getDeliveryManById(newDeliveryManId);
+		} catch (PersistenceException  e) {
+			throw new DeliveryException("Constraint Violation");
+		}
 	}
 	
 	public DeliveryMan getDeliveryManById(long id) {
@@ -51,9 +59,13 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 		return this.getClassByProperty("id", id, Address.class);
 	}
 	
-	public Address saveAddress (Address newAddress) {
-		Long newAddressId = this.saveClass(newAddress);
-		return this.getAddressById(newAddressId);
+	public Address saveAddress (Address newAddress) throws DeliveryException {
+		try {
+			Long newAddressId = this.saveClass(newAddress);
+			return this.getAddressById(newAddressId);
+		} catch (PersistenceException  e) {
+			throw new DeliveryException("Constraint Violation");
+		}
 	}
 
 	public Supplier saveSupplier(Supplier newSupplier) throws DeliveryException {
