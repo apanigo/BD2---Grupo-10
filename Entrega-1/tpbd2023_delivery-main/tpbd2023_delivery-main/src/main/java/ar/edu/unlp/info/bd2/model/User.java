@@ -1,15 +1,23 @@
 package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
+import javax.persistence.*;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User {
-
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
     private String name;
 
     private String username;
 
     private String password;
 
+    @Column(unique=true)
     private String email;
 
     private Date dateOfBirth;
@@ -74,6 +82,10 @@ public abstract class User {
 
     public void setScore(int score) {
         this.score = score;
+    }
+    
+    public Long getId() {
+    	return id;
     }
 
 }

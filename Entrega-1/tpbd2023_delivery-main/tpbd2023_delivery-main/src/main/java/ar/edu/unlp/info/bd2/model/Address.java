@@ -1,51 +1,56 @@
 package ar.edu.unlp.info.bd2.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "address")
 public class Address {
 	
-	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;	
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "name")
     private String name;
 
-	@Column(name = "address")
     private String address;
 
-	@Column(name = "apartment")
     private String apartment;
 
-	@Column(name = "coordX")
     private float coordX;
 
-	@Column(name = "coordY")
     private float coordY;
 
-	@Column(name = "description")
     private String description;
 
-//	
-//    private Client client;
-    
-    public Long getId() {
-    	return this.id;
+    @ManyToOne
+    private Client client;
+
+    public Address () {
+    	
     }
     
-    public void setId(Long id) {
-    	this.id = id;
+    public Address(String name, String address, String apartment, float coordX, float coordY, String description, Client client) {
+		this.name = name;
+		this.address = address;
+		this.apartment = apartment;
+		this.coordX = coordX;
+		this.coordY = coordY;
+		this.description = description;
+		this.client = client;
+		this.client.setNewAddress(this); //le paso el objeto o algún atributo identificador?
+	}
+    
+    public Address(String name, String address, float coordX, float coordY, String description, Client client) {
+    	this.name = name;
+		this.address = address;
+		this.coordX = coordX;
+		this.coordY = coordY;
+		this.description = description;
+		this.client = client;
+		this.client.setNewAddress(this);
     }
 
-    public String getName() {
+	public String getName() {
         return name;
     }
 
@@ -77,13 +82,13 @@ public class Address {
         this.description = description;
     }
 
-//    public Client getClient() {
-//        return client;
-//    }
-//
-//    public void setClient(Client client) {
-//        this.client = client;
-//    }
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
 
     public float getCoordX() {
         return coordX;
@@ -100,4 +105,13 @@ public class Address {
     public void setCoordY(float coordY) {
         this.coordY = coordY;
     }
+    
+    public Long getId() {
+    	return this.id;
+    }
+    
+    public void setId(Long id) { 
+    	this.id = id;
+    }
+    
 }

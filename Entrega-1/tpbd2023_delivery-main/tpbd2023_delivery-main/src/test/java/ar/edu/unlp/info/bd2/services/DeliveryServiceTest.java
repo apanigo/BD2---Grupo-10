@@ -1,11 +1,9 @@
 package ar.edu.unlp.info.bd2.services;
 
-import java.util.Calendar;
-import java.util.Date;
-
+import ar.edu.unlp.info.bd2.DeliveryException;
 import ar.edu.unlp.info.bd2.config.AppConfig;
 import ar.edu.unlp.info.bd2.config.HibernateConfiguration;
-
+import ar.edu.unlp.info.bd2.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,12 +14,15 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {AppConfig.class, HibernateConfiguration.class}, loader = AnnotationConfigContextLoader.class)
 @Transactional
 @Rollback(true)
-public class DeliveryServiceTests {
+public class DeliveryServiceTest {
 
 	@Autowired
 	DeliveryService service;
@@ -46,90 +47,90 @@ public class DeliveryServiceTests {
 		// Probar correcta conexión con la BD y creación de entidades
 	}
 
-//	@Test
-//	void testCreationAndGetUsers() throws DeliveryException {
-//		/**
-//		 * Creacion de Usuario tipo Cliente
-//		 */
-//		Client client = this.service.createClient("Juan Perez", "jperez", "1234", "jperez@gmail.com", dob1);
-//		assertNotNull(client.getId());
-//		assertEquals(0, client.getScore());
-//		assertEquals("jperez@gmail.com", client.getEmail());
-//
-//		/**
-//		 * Creción de Usuario tipo DeliveryMan
-//		 */
-//		DeliveryMan deliveryMan = this.service.createDeliveryMan("Ramiro Benítez", "rbenitez", "1234", "rbenitez@gmail.com", dob2);
-//		assertNotNull(deliveryMan.getId());
-//		assertEquals(0, deliveryMan.getScore());
-//		assertEquals("rbenitez", deliveryMan.getUsername());
-//
-//		/**
-//		 * Obtención de Usuario por ID
-//		 */
-//		Long idClient = client.getId();
-//		Optional<User> optionalUser1 = this.service.getUserById(idClient);
-//		assertTrue(optionalUser1.isPresent());
-//		User user1 = optionalUser1.get();
-//		assertEquals(Client.class, user1.getClass());
-//		Client client1 = (Client) user1;
-//		assertEquals(idClient, client1.getId());
-//		assertEquals("jperez", client1.getUsername());
-//		assertEquals("jperez@gmail.com", client1.getEmail());
-//
-//		/**
-//		 * Obtención de Usuario por Email
-//		 */
-//		Long idDeliveryMan = deliveryMan.getId();
-//		Optional<User> optionalUser2 = this.service.getUserById(idDeliveryMan);
-//		assertTrue(optionalUser2.isPresent());
-//		User user2 = optionalUser2.get();
-//		assertEquals(user2.getClass(), DeliveryMan.class);
-//		DeliveryMan deliveryMan1 = (DeliveryMan) user2;
-//		assertEquals(idDeliveryMan, deliveryMan1.getId());
-//		assertEquals("rbenitez", deliveryMan1.getUsername());
-//		assertEquals("rbenitez@gmail.com", deliveryMan1.getEmail());
-//
-//		assertFalse(this.service.getUserByEmail("otromail@gmail.com").isPresent());
-//	}
-//
-//	@Test
-//	void testCreationAndGetAddresses() throws DeliveryException {
-//		/**
-//		 * Creación de Address
-//		 */
-//		Client client = this.service.createClient("Juan Perez", "jperez1", "1234", "jperez1@gmail.com", dob1);
-//		Address address1 = this.service.createAddress("Direccion 1", "Calle 50 y 120", 23.595f, 65.854f, "Direccion Facultad", client);
-//		assertNotNull(address1.getId());
-//		assertEquals("Direccion 1", address1.getName());
-//		Address address2 = this.service.createAddress("Direccion 2", "Calle 50 n5000", "12D", 24.845f, 65.084f, "Direccion Casa", client);
-//		assertNotNull(address2.getId());
-//		assertEquals("Calle 50 n5000", address2.getAddress());
-//		assertTrue(client.getAddresses().contains(address1));
-//		assertTrue(client.getAddresses().contains(address2));
-//	}
-//
-//	@Test
-//	void testCreationAndGetSuppliers() throws DeliveryException {
-//		/**
-//		 * Creacion de Suppliers
-//		 */
-//		Supplier supplier = this.service.createSupplier("McDonalds", "30554442220", "Calle 50 esq 8", 24.894f, 62.489f);
-//		assertNotNull(supplier.getId());
-//		assertEquals("McDonalds", supplier.getName());
-//
-//		/**
-//		 * Obtener Supplier por su nombre
-//		 */
-//		List<Supplier> suppliers = this.service.getSupplierByName("McDonalds");
-//		assertEquals(1, suppliers.size());
-//		List<Supplier> suppliers2 = this.service.getSupplierByName("Mc");
-//		assertEquals(1, suppliers2.size());
-//
-//		assertEquals(0, this.service.getSupplierByName("NO EXISTE").size());
-//		assertThrows(DeliveryException.class, () -> this.service.createSupplier("McDonalds", "30554442220", "Calle 50 esq 8", 24.894f, 62.489f), "Constraint Violation");
-//	}
-//
+	@Test
+	void testCreationAndGetUsers() throws DeliveryException {
+		/**
+		 * Creacion de Usuario tipo Cliente
+		 */
+		Client client = this.service.createClient("Juan Perez", "jperez", "1234", "jperez@gmail.com", dob1);
+		assertNotNull(client.getId());
+		assertEquals(0, client.getScore());
+		assertEquals("jperez@gmail.com", client.getEmail());
+
+		/**
+		 * Creción de Usuario tipo DeliveryMan
+		 */
+		DeliveryMan deliveryMan = this.service.createDeliveryMan("Ramiro Benítez", "rbenitez", "1234", "rbenitez@gmail.com", dob2);
+		assertNotNull(deliveryMan.getId());
+		assertEquals(0, deliveryMan.getScore());
+		assertEquals("rbenitez", deliveryMan.getUsername());
+
+		/**
+		 * Obtención de Usuario por ID
+		 */
+		Long idClient = client.getId();
+		Optional<User> optionalUser1 = this.service.getUserById(idClient);
+		assertTrue(optionalUser1.isPresent());
+		User user1 = optionalUser1.get();
+		assertEquals(Client.class, user1.getClass());
+		Client client1 = (Client) user1;
+		assertEquals(idClient, client1.getId());
+		assertEquals("jperez", client1.getUsername());
+		assertEquals("jperez@gmail.com", client1.getEmail());
+
+		/**
+		 * Obtención de Usuario por Email
+		 */
+		Long idDeliveryMan = deliveryMan.getId();
+		Optional<User> optionalUser2 = this.service.getUserById(idDeliveryMan);
+		assertTrue(optionalUser2.isPresent());
+		User user2 = optionalUser2.get();
+		assertEquals(user2.getClass(), DeliveryMan.class);
+		DeliveryMan deliveryMan1 = (DeliveryMan) user2;
+		assertEquals(idDeliveryMan, deliveryMan1.getId());
+		assertEquals("rbenitez", deliveryMan1.getUsername());
+		assertEquals("rbenitez@gmail.com", deliveryMan1.getEmail());
+
+		assertFalse(this.service.getUserByEmail("otromail@gmail.com").isPresent());
+	}
+
+	@Test
+	void testCreationAndGetAddresses() throws DeliveryException {
+		/**
+		 * Creación de Address
+		 */
+		Client client = this.service.createClient("Juan Perez", "jperez1", "1234", "jperez1@gmail.com", dob1);
+		Address address1 = this.service.createAddress("Direccion 1", "Calle 50 y 120", 23.595f, 65.854f, "Direccion Facultad", client);
+		assertNotNull(address1.getId());
+		assertEquals("Direccion 1", address1.getName());
+		Address address2 = this.service.createAddress("Direccion 2", "Calle 50 n5000", "12D", 24.845f, 65.084f, "Direccion Casa", client);
+		assertNotNull(address2.getId());
+		assertEquals("Calle 50 n5000", address2.getAddress());
+		assertTrue(client.getAddresses().contains(address1));
+		assertTrue(client.getAddresses().contains(address2));
+	}
+
+	@Test
+	void testCreationAndGetSuppliers() throws DeliveryException {
+		/**
+		 * Creacion de Suppliers
+		 */
+		Supplier supplier = this.service.createSupplier("McDonalds", "30554442220", "Calle 50 esq 8", 24.894f, 62.489f);
+		assertNotNull(supplier.getId());
+		assertEquals("McDonalds", supplier.getName());
+
+		/**
+		 * Obtener Supplier por su nombre
+		 */
+		List<Supplier> suppliers = this.service.getSupplierByName("McDonalds");
+		assertEquals(1, suppliers.size());
+		List<Supplier> suppliers2 = this.service.getSupplierByName("Mc");
+		assertEquals(1, suppliers2.size());
+
+		assertEquals(0, this.service.getSupplierByName("NO EXISTE").size());
+		assertThrows(DeliveryException.class, () -> this.service.createSupplier("McDonalds", "30554442220", "Calle 50 esq 8", 24.894f, 62.489f), "Constraint Violation");
+	}
+
 //	@Test
 //	void testCreationAndGetProducts() throws DeliveryException {
 //		/**
@@ -315,7 +316,7 @@ public class DeliveryServiceTests {
 //		Client client = this.service.createClient("Juan Perez", "jperez4", "1234", "jperez4@gmail.com", dob2);
 //		Address address1 = this.service.createAddress("Direccion 1", "Calle 50 y 120", 23.595f, 65.854f, "Direccion Facultad", client);
 //		ProductType productType1 = this.service.createProductType("Kiosco", "Productos de kiosco, como golosinas, alfajores, etc.");
-//		Supplier supplier1 = this.service.createSupplier("Kiosco 5", "30801112225", "Calle 51 esq 10", -34.917995f, -57.952061f);
+//		Supplier supplier1 = this.service.createSupplier("Kibosco 5", "30801112225", "Calle 51 esq 10", -34.917995f, -57.952061f);
 //		Product product1 = this.service.createProduct("Alfajor de Fruta", 180f, 80f, "Alfajor Triple relleno de fruta", supplier1, new ArrayList<ProductType>(Arrays.asList(productType1)));
 //		Calendar cal3 = Calendar.getInstance();
 //		Order order = this.service.createOrder(20, cal3.getTime(), "Ultima orden de prueba", client, address1);
