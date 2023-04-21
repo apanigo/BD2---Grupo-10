@@ -1,10 +1,15 @@
 package ar.edu.unlp.info.bd2.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -16,14 +21,27 @@ public class ProductType {
 	@Column(name = "id")
 	private Long id;
 	
-	@Column(name = "name")
+	@Column(name = "name", unique=true)
     private String name;
 
 	@Column(name = "description")
     private String description;
 
-//    private List<Product> products;
+	@ManyToMany // aca poner cosas propias de many to many
+	@JoinTable(name = "product_types",
+				joinColumns = {@JoinColumn(name="type")},
+				inverseJoinColumns = {@JoinColumn(name="product")})
+    private List<Product> products;
 
+	
+	public ProductType() {
+		
+	}
+	
+	public ProductType(String name, String description) {
+		this.name = name;
+		this.description = description;
+	}
 
     public Long getId() {
     	return this.id;
@@ -49,12 +67,12 @@ public class ProductType {
         this.description = description;
     }
 
-//    public List<Product> getProducts() {
-//        return products;
-//    }
-//
-//    public void setProducts(List<Product> products) {
-//        this.products = products;
-//    }
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 
 }

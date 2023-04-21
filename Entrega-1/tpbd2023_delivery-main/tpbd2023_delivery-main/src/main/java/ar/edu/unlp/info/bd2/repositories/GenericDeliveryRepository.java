@@ -49,4 +49,16 @@ public abstract class GenericDeliveryRepository {
 	    query.setParameter("propertyValue", propertyValue);
 	    return query.getResultList();
     }
+	
+	protected <T> List<T> getClassListByExactProperty(String propertyName, Object propertyValue, Class<T> entityClass) {
+		String queryString = "FROM " + entityClass.getName() + " WHERE " + propertyName + " = :propertyValue";
+	    Query<T> query = this.sessionFactory.getCurrentSession().createQuery(queryString, entityClass);
+	    query.setParameter("propertyValue", propertyValue);
+	    return query.getResultList();
+    }
+	
+//	protected <T> List<Product> getProductsByTypeName(String productTypeName) {
+//		
+//	}
+	
 }

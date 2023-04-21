@@ -8,7 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
@@ -35,12 +38,39 @@ public class Product {
 	@Column(name="description")
     private String description;
 
-//	@Column(name="supplier")
-//    private Supplier supplier;
+	@ManyToOne
+	@JoinColumn(name="supplier")
+    private Supplier supplier;
 
-	@ManyToMany
+	// CAMBIAR
+	/*
+	 * LA TABLA TIENE QUE ESTAR DEL LADO DE PRODUCT TYPE OSEA INVERTIR LO QUE HAY EN AMBAS LISTAS DE CADA MODELO - done
+	 * PARA LA CONSULTA DE OBTENER PRODUCTOS DEBERIAMOS RECORRER LA LISTA DE TIPOS Y ENCONTRAR LAS DEL TIPO PASADO COMO PARAMETRO
+	 * DESPUES HACER UN GETSESULTLIST Y MANDARLE AL RETURN LA LISTA DE PRODUCTOS :====ssdADSA
+	 */
+	// https://www.adictosaltrabajo.com/2020/04/02/hibernate-onetoone-onetomany-manytoone-y-manytomany/
+	@ManyToMany 
     private List<ProductType> types;
 	
+	
+	public Product(String name, float price, float weight, String description, Supplier supplier, List<ProductType> types) {
+		this.name = name;
+		this.price = price;
+		this.weight = weight;
+		this.description = description;
+		this.supplier = supplier;
+		this.types = types;
+	}
+	
+	public Product(String name, float price, Date lastPriceUpdateDate, float weight, String description, Supplier supplier, List<ProductType> types) {
+		this.name = name;
+		this.price = price;
+		this.lastPriceUpdateDate = lastPriceUpdateDate;
+		this.weight = weight;
+		this.description = description;
+		this.supplier = supplier;
+		this.types = types;
+	}
 	
 	public Product() {
 		
@@ -86,13 +116,13 @@ public class Product {
         this.description = description;
     }
 
-//    public Supplier getSupplier() {
-//        return supplier;
-//    }
-//
-//    public void setSupplier(Supplier supplier) {
-//        this.supplier = supplier;
-//    }
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
 
     public List<ProductType> getTypes() {
         return types;
