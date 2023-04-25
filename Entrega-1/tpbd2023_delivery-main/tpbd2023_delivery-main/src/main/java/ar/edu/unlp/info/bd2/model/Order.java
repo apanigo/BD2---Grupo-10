@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 
 @Entity
+@Table(name = "Orders")
 public class Order {
 
 	@Id
@@ -44,8 +45,7 @@ public class Order {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Column(name = "items")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Item> items;
 
     public Order(int number, Date dateOfOrder, String comments, Client client, Address address) {
@@ -55,6 +55,10 @@ public class Order {
         this.client = client;
         this.client.setNewOrder(this);
         this.address = address;
+    }
+
+    public Order() {
+
     }
 
     public Long getId() {

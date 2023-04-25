@@ -3,12 +3,7 @@ package ar.edu.unlp.info.bd2.model;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
 
 @Entity
@@ -33,10 +28,11 @@ public class Product {
 	@Column(name="description")
     private String description;
 
-//	@Column(name="supplier")
-//    private Supplier supplier;
+    @ManyToOne
+    @JoinColumn(name = "supplier_id")
+    private Supplier supplier;
 
-	@ManyToMany
+	@ManyToMany(mappedBy = "products")
     private List<ProductType> types;
 	
 	
@@ -84,13 +80,13 @@ public class Product {
         this.description = description;
     }
 
-//    public Supplier getSupplier() {
-//        return supplier;
-//    }
-//
-//    public void setSupplier(Supplier supplier) {
-//        this.supplier = supplier;
-//    }
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
 
     public List<ProductType> getTypes() {
         return types;

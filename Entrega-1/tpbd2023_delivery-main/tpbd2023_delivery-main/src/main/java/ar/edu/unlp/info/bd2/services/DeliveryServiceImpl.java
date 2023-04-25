@@ -191,8 +191,18 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @param name nombre del tipo de producto
 	 * @param description descripcion del tipo de producto
 	 * @return el nuevo tipo de producto
-	  *
-	public ProductType createProductType(String name, String description) throws DeliveryException;
+	  */
+
+	public ProductType createProductType(String name, String description) throws DeliveryException{
+		ProductType newProductType = new ProductType();
+		newProductType.setName(name);
+		newProductType.setDescription(description);
+		try {
+			return delivery_repo.saveProductType(newProductType);
+		} catch (DeliveryException de) {
+			throw de;
+		}
+	}
 	/**
 	 *  Crea y devuelve un nuevo Producto.
 	 * @param name nombre del producto a ser creado
@@ -202,8 +212,22 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @param supplier el productor del producto
 	 * @param types listado de los tipos del producto
 	 * @return el producto creado
-	  *
-	public Product createProduct(String name, float price, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException;
+	  */
+
+	public Product createProduct(String name, float price, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException {
+		Product newProduct = new Product();
+		newProduct.setName(name);
+		newProduct.setPrice(price);
+		newProduct.setWeight(weight);
+		newProduct.setDescription(description);
+		newProduct.setSupplier(supplier);
+		newProduct.setTypes(types);
+		try {
+			return delivery_repo.saveProduct(newProduct);
+		} catch (DeliveryException de) {
+			throw de;
+		}
+	}
 	/**
 	 *  Crea y devuelve un nuevo Producto.
 	 * @param name nombre del producto a ser creado

@@ -2,11 +2,7 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class ProductType {
@@ -22,8 +18,8 @@ public class ProductType {
 	@Column(name = "description")
     private String description;
 
-//    private List<Product> products;
-
+    @ManyToMany
+    private List<Product> products;
 
     public Long getId() {
     	return this.id;

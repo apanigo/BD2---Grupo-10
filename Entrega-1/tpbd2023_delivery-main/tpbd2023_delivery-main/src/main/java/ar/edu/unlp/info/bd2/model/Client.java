@@ -16,12 +16,10 @@ public class Client extends User{
     @Column(name = "dateOfRegister")
     private Date dateOfRegister;
 
-    @OneToMany(mappedBy = "addresses", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Column(name = "addresses")
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addresses = new ArrayList<>();
 
-    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Column(name = "orders")
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
     
     public Client() {

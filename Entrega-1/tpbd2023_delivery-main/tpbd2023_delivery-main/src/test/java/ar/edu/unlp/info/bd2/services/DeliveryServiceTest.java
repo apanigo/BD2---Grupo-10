@@ -252,8 +252,7 @@ public class DeliveryServiceTest {
 		assertEquals((180 * 3) + 100, updatedOrder2.getTotalPrice());
 
 		assertThrows(DeliveryException.class, () -> this.service.createOrder(10, cal2.getTime(), "Otra orden", client, address1 ), "Constraint Violation"); // No deberia repetirse el numero de orden
-		 */
-	}
+	*/}
 
 //	@Test
 //	void testCompleteOrder() throws DeliveryException {

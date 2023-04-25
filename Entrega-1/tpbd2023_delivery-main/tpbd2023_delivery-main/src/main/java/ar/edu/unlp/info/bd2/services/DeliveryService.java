@@ -127,7 +127,8 @@ public interface DeliveryService {
 	 * @param name nombre del tipo de producto
 	 * @param description descripcion del tipo de producto
 	 * @return el nuevo tipo de producto
-	 
+	 */
+
 	public ProductType createProductType(String name, String description) throws DeliveryException;
 	/**
 	 *  Crea y devuelve un nuevo Producto.
@@ -138,7 +139,8 @@ public interface DeliveryService {
 	 * @param supplier el productor del producto
 	 * @param types listado de los tipos del producto
 	 * @return el producto creado
-	 
+	 */
+
 	public Product createProduct(String name, float price, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException;
 	/**
 	 *  Crea y devuelve un nuevo Producto.
