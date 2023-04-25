@@ -11,11 +11,6 @@ import javax.persistence.Id;
 @Entity
 public class DeliveryMan extends User{
 	
-	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;	
-
 	@Column(name = "numberOfSuccessOrders")
     private int numberOfSuccessOrders;
 
@@ -34,16 +29,7 @@ public class DeliveryMan extends User{
     	super(name, username, password, email, dateOfBirth);
     	this.setDateOfAdmission(new Date());
     }
-    
-    public Long getId() {
-    	return id;
-    }
-    
-    public void setId(Long id) {
-    	this.id = id;
-    }
-
-    
+     
     public int getNumberOfSuccessOrders() {
         return numberOfSuccessOrders;
     }

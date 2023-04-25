@@ -8,11 +8,6 @@ import java.util.List;
 @Entity
 public class Client extends User{
 	
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-    
     @Column(name = "dateOfRegister")
     private Date dateOfRegister;
 
@@ -31,9 +26,6 @@ public class Client extends User{
     	this.setDateOfRegister(new Date());
     }
 
-    public Long getId() {
-        return id;
-    }
     public Date getDateOfRegister() {
         return dateOfRegister;
     }
