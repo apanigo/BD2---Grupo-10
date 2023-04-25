@@ -16,11 +16,11 @@ public class Client extends User{
     @Column(name = "dateOfRegister")
     private Date dateOfRegister;
 
-    @OneToMany
+    @OneToMany(mappedBy = "addresses", cascade = CascadeType.ALL, orphanRemoval = true)
     @Column(name = "addresses")
     private List<Address> addresses = new ArrayList<>();
 
-    @OneToMany
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
     @Column(name = "orders")
     private List<Order> orders = new ArrayList<>();
     
@@ -62,6 +62,10 @@ public class Client extends User{
     
     public void setNewAddress(Address newAddress) {
     	this.addresses.add(newAddress);
+    }
+
+    public void setNewOrder(Order newOrder) {
+        this.orders.add(newOrder);
     }
 
 

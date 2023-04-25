@@ -85,4 +85,16 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 		return this.getClassListByProperty("name", name, Supplier.class);
 	}
 
+	public Order saveOrder(Order newOrder) throws DeliveryException {
+		try {
+			Long newOrderId = this.saveClass(newOrder);
+			return this.getOrderById(newOrderId).get();
+		} catch (PersistenceException  e) {
+			throw new DeliveryException("Constraint Violation");
+		}
+	}
+
+	public Optional<Order> getOrderById(Long id) {
+		return this.getOptionalById(id, Order.class);
+	}
 }

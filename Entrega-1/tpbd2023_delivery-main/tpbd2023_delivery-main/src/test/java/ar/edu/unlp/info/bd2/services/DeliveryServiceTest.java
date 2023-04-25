@@ -206,54 +206,55 @@ public class DeliveryServiceTest {
 //		assertThrows(DeliveryException.class, () -> this.service.updateProductPrice(new Long(999), 200f), "No existe el producto a actualizar");
 //	}
 //
-//	@Test
-//	void testCreationAndGetOrders() throws DeliveryException {
-//		/**
-//		 * Creación de Ordenes
-//		 */
-//		Client client = this.service.createClient("Juan Perez", "jperez2", "1234", "jperez2@gmail.com", dob1);
-//		Address address1 = this.service.createAddress("Direccion 1", "Calle 50 y 120", 23.595f, 65.854f, "Direccion Facultad", client);
-//
-//		Calendar cal2 = Calendar.getInstance();
-//		Order order = this.service.createOrder(10, cal2.getTime(), "Una orden de prueba", client, address1);
-//		assertNotNull(order.getId());
-//		assertEquals(10, order.getNumber());
-//		assertEquals(0, order.getTotalPrice());
-//
-//		/**
-//		 * Obtener orden por su id
-//		 */
-//		Long idOrder = order.getId();
-//		Optional<Order> optionalOrder1 = this.service.getOrderById(idOrder);
-//		assertTrue(optionalOrder1.isPresent());
-//		Order order1 = optionalOrder1.get();
-//		assertEquals(idOrder, order1.getId());
-//		assertEquals(10, order1.getNumber());
-//
-//		/**
-//		 * Agregar Items a la orden
-//		 */
-//		ProductType productType1 = this.service.createProductType("Kiosco", "Productos de kiosco, como golosinas, alfajores, etc.");
-//		Supplier supplier1 = this.service.createSupplier("Kiosco 2", "30801112222", "Calle 51 esq 10", -34.917995f, -57.952061f);
-//		Product product1 = this.service.createProduct("Alfajor Dulce de Leche", 180f, 80f, "Alfajor Triple de Dulce de Leche", supplier1, new ArrayList<ProductType>(Arrays.asList(productType1)));
-//
-//		Item item = this.service.addItemToOrder(idOrder, product1, 3, "Una descripción");
-//		assertNotNull(item.getId());
-//		assertNotNull(item.getOrder().getId());
-//		Order updatedOrder1 = this.service.getOrderById(idOrder).orElse(null);
-//		assertEquals(10, item.getOrder().getNumber());
-//		assertEquals(1, updatedOrder1.getItems().size());
-//		assertEquals(180 * 3, updatedOrder1.getTotalPrice());
-//
-//		Product product2 = this.service.createProduct("Alfajor Blanco", 100f, 80f, "Alfajor Simple Blanco", supplier1, new ArrayList<ProductType>(Arrays.asList(productType1)));
-//		Item item2 = this.service.addItemToOrder(idOrder, product2, 1, "Una descipción");
-//		Order updatedOrder2 = this.service.getOrderById(idOrder).orElse(null);
-//		assertEquals(2, updatedOrder2.getItems().size());
-//		assertEquals((180 * 3) + 100, updatedOrder2.getTotalPrice());
-//
-//		assertThrows(DeliveryException.class, () -> this.service.createOrder(10, cal2.getTime(), "Otra orden", client, address1 ), "Constraint Violation"); // No deberia repetirse el numero de orden
-//	}
-//
+	@Test
+	void testCreationAndGetOrders() throws DeliveryException {
+		/**
+		 * Creación de Ordenes
+		 */
+		Client client = this.service.createClient("Juan Perez", "jperez2", "1234", "jperez2@gmail.com", dob1);
+		Address address1 = this.service.createAddress("Direccion 1", "Calle 50 y 120", 23.595f, 65.854f, "Direccion Facultad", client);
+
+		Calendar cal2 = Calendar.getInstance();
+		Order order = this.service.createOrder(10, cal2.getTime(), "Una orden de prueba", client, address1);
+		assertNotNull(order.getId());
+		assertEquals(10, order.getNumber());
+		assertEquals(0, order.getTotalPrice());
+
+		/**
+		 * Obtener orden por su id
+		 */
+		Long idOrder = order.getId();
+		Optional<Order> optionalOrder1 = this.service.getOrderById(idOrder);
+		assertTrue(optionalOrder1.isPresent());
+		Order order1 = optionalOrder1.get();
+		assertEquals(idOrder, order1.getId());
+		assertEquals(10, order1.getNumber());
+
+		/**
+		 * Agregar Items a la orden
+		 *
+		ProductType productType1 = this.service.createProductType("Kiosco", "Productos de kiosco, como golosinas, alfajores, etc.");
+		Supplier supplier1 = this.service.createSupplier("Kiosco 2", "30801112222", "Calle 51 esq 10", -34.917995f, -57.952061f);
+		Product product1 = this.service.createProduct("Alfajor Dulce de Leche", 180f, 80f, "Alfajor Triple de Dulce de Leche", supplier1, new ArrayList<ProductType>(Arrays.asList(productType1)));
+
+		Item item = this.service.addItemToOrder(idOrder, product1, 3, "Una descripción");
+		assertNotNull(item.getId());
+		assertNotNull(item.getOrder().getId());
+		Order updatedOrder1 = this.service.getOrderById(idOrder).orElse(null);
+		assertEquals(10, item.getOrder().getNumber());
+		assertEquals(1, updatedOrder1.getItems().size());
+		assertEquals(180 * 3, updatedOrder1.getTotalPrice());
+
+		Product product2 = this.service.createProduct("Alfajor Blanco", 100f, 80f, "Alfajor Simple Blanco", supplier1, new ArrayList<ProductType>(Arrays.asList(productType1)));
+		Item item2 = this.service.addItemToOrder(idOrder, product2, 1, "Una descipción");
+		Order updatedOrder2 = this.service.getOrderById(idOrder).orElse(null);
+		assertEquals(2, updatedOrder2.getItems().size());
+		assertEquals((180 * 3) + 100, updatedOrder2.getTotalPrice());
+
+		assertThrows(DeliveryException.class, () -> this.service.createOrder(10, cal2.getTime(), "Otra orden", client, address1 ), "Constraint Violation"); // No deberia repetirse el numero de orden
+		 */
+	}
+
 //	@Test
 //	void testCompleteOrder() throws DeliveryException {
 //		/**

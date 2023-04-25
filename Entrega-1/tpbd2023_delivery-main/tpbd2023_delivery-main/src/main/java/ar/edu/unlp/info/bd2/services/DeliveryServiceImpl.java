@@ -168,14 +168,24 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @param client cliente que realizó el pedido
 	 * @param address dirección en la cual se debe entregar el pedido
 	 * @return el nuevo pedido
-	 
-	public Order createOrder(int number, Date dateOfOrder, String comments, Client client,  Address address) throws DeliveryException;
+	 */
+	public Order createOrder(int number, Date dateOfOrder, String comments, Client client,  Address address) throws DeliveryException {
+		Order newOrder = new Order(number, dateOfOrder, comments, client, address);
+		try {
+			return delivery_repo.saveOrder(newOrder);
+		} catch (DeliveryException de) {
+			throw de;
+		}
+	}
 	/**
 	 * Obtiene el pedido por id
 	 * @param id
 	 * @return el pedido con el id provisto
-	 
-	public Optional<Order> getOrderById(Long id);
+	 */
+
+	public Optional<Order> getOrderById(Long id) {
+		return delivery_repo.getOrderById(id);
+	}
 	/**
 	 * Crea y retorna un nuevo tipo de producto
 	 * @param name nombre del tipo de producto

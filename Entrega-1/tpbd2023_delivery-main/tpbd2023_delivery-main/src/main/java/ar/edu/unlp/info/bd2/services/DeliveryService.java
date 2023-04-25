@@ -114,13 +114,13 @@ public interface DeliveryService {
 	 * @param client cliente que realizó el pedido
 	 * @param address dirección en la cual se debe entregar el pedido
 	 * @return el nuevo pedido
-	 
+	 */
 	public Order createOrder(int number, Date dateOfOrder, String comments, Client client,  Address address) throws DeliveryException;
 	/**
 	 * Obtiene el pedido por id
 	 * @param id
 	 * @return el pedido con el id provisto
-	 
+	 */
 	public Optional<Order> getOrderById(Long id);
 	/**
 	 * Crea y retorna un nuevo tipo de producto
