@@ -3,6 +3,7 @@ package ar.edu.unlp.info.bd2.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "address")
 public class Address {
 	
     @Id

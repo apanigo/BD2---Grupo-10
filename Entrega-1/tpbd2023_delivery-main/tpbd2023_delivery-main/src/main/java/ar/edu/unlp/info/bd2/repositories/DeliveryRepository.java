@@ -3,6 +3,7 @@ package ar.edu.unlp.info.bd2.repositories;
 import ar.edu.unlp.info.bd2.DeliveryException;
 import ar.edu.unlp.info.bd2.model.*;
 
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import java.util.*;
 
@@ -83,6 +84,48 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 
 	public List<Supplier> getSupplierByName(String name) {
 		return this.getClassListByProperty("name", name, Supplier.class);
+	}
+	
+	public Product saveProduct(Product newProduct) {
+		Long newProductId = this.saveClass(newProduct);
+		Optional<Product> p = this.getProductById(newProductId);
+		try {
+			return p.get();
+		} catch (NoSuchElementException ne) {
+			return null;
+		}
+
+		//return this.getOptionalById(newProductId, Product.class);
+	}
+
+	public Optional<Product> getProductById(Long id) {
+		return this.getOptionalById(id, Product.class);
+	}
+	
+	public ProductType saveProductType(ProductType newProductType) {
+		Long newProductTypeId = this.saveClass(newProductType);
+		Optional<ProductType> p = this.getProductTypeById(newProductTypeId);
+		try {
+			return p.get();
+		} catch (NoSuchElementException ne) {
+			return null;
+		}
+	}
+	
+	public Optional<ProductType> getProductTypeById(Long id) {
+		return this.getOptionalById(id, ProductType.class);
+	}
+	
+	public List<Product> getProductsByName(String name) {
+		return this.getClassListByProperty("name", name, Product.class);
+	}
+	
+	public List<Product> getProductsByType(String type) {
+		String queryString = ("FROM " + ProductType.class.getCanonicalName() + " WHERE name = :name");
+		Query<ProductType> query = this.sessionFactory.getCurrentSession().createQuery(queryString);
+	    query.setParameter("name", type);
+	    ProductType answer = query.getSingleResult();
+	    return answer.getProducts();    
 	}
 
 }

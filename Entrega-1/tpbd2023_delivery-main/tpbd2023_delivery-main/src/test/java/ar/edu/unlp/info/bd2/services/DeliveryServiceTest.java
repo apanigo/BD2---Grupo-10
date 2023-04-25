@@ -131,63 +131,63 @@ public class DeliveryServiceTest {
 		assertThrows(DeliveryException.class, () -> this.service.createSupplier("McDonalds", "30554442220", "Calle 50 esq 8", 24.894f, 62.489f), "Constraint Violation");
 	}
 
-//	@Test
-//	void testCreationAndGetProducts() throws DeliveryException {
-//		/**
-//		 * Creación de ProductTypes
-//		 */
-//		ProductType productType1 = this.service.createProductType("Kiosco", "Productos de kiosco, como golosinas, alfajores, etc.");
-//		assertNotNull(productType1.getId());
-//		assertEquals("Kiosco", productType1.getName());
-//
-//		/**
-//		 * Creación de Products (con y sin fecha de precio)
-//		 */
-//		Supplier supplier = this.service.createSupplier("Kiosco 1", "30801112220", "Calle 51 esq 10", -34.917995f, -57.952061f);
-//		ProductType productType2 = this.service.createProductType("Helado", "Productos Helados");
-//
-//		Product product1 = this.service.createProduct("Alfajor Chocolate", 180f, 80f, "Alfajor Triple de Chocolate", supplier, new ArrayList<ProductType>(Arrays.asList(productType1)));
-//		assertNotNull(product1.getId());
-//		assertEquals("Alfajor Chocolate", product1.getName());
-//		assertEquals(180f, product1.getPrice());
-//		assertEquals(1, product1.getTypes().size());
-//		Product product2 = this.service.createProduct("Helado Frutilla", 140f, dpri, 80f, "Helado de Agua sabor Frutilla", supplier, new ArrayList<>(Arrays.asList(productType1,productType2)));
-//		assertNotNull(product2.getId());
-//		assertEquals(2, product2.getTypes().size());
-//
-//		/**
-//		 * Obtener producto por su ID
-//		 */
-//		Long idProduct1 = product1.getId();
-//		Optional<Product> optionalProduct3 = this.service.getProductById(idProduct1);
-//		assertTrue(optionalProduct3.isPresent());
-//		Product product3 = optionalProduct3.get();
-//		assertEquals(idProduct1, product3.getId());
-//		assertEquals(product1.getName(), product3.getName());
-//
-//		/**
-//		 * Obtener producto por su nombre
-//		 */
-//		List<Product> listProduct4 = this.service.getProductByName("Helado");
-//		assertEquals(1, listProduct4.size());
-//		Product product4 = listProduct4.get(0);
-//		assertEquals(product2.getId(), product4.getId());
-//		assertEquals(product2.getName(), product4.getName());
-//		List<Product> listProduct5 = this.service.getProductByName("la");
-//		assertEquals(2, listProduct5.size());
-//		List<Product> listProduct6 = this.service.getProductByName("OTRO");
-//		assertEquals(0, listProduct6.size());
-//
-//		/**
-//		 * Obtener productos por su tipo
-//		 */
-//		List<Product> products1 = this.service.getProductsByType("Kiosco");
-//		assertEquals(2, products1.size());
-//		List<Product> products2 = this.service.getProductsByType("Helado");
-//		assertEquals(1, products2.size());
-//		assertThrows(DeliveryException.class, () -> this.service.getProductsByType("Limpieza"), "No existe el tipo de producto");
-//	}
-//
+	@Test
+	void testCreationAndGetProducts() throws DeliveryException {
+		/**
+		 * Creación de ProductTypes
+		 */
+		ProductType productType1 = this.service.createProductType("Kiosco", "Productos de kiosco, como golosinas, alfajores, etc.");
+		assertNotNull(productType1.getId());
+		assertEquals("Kiosco", productType1.getName());
+
+		/**
+		 * Creación de Products (con y sin fecha de precio)
+		 */
+		Supplier supplier = this.service.createSupplier("Kiosco 1", "30801112220", "Calle 51 esq 10", -34.917995f, -57.952061f);
+		ProductType productType2 = this.service.createProductType("Helado", "Productos Helados");
+
+		Product product1 = this.service.createProduct("Alfajor Chocolate", 180f, 80f, "Alfajor Triple de Chocolate", supplier, new ArrayList<ProductType>(Arrays.asList(productType1)));
+		assertNotNull(product1.getId());
+		assertEquals("Alfajor Chocolate", product1.getName());
+		assertEquals(180f, product1.getPrice());
+		assertEquals(1, product1.getTypes().size());
+		Product product2 = this.service.createProduct("Helado Frutilla", 140f, dpri, 80f, "Helado de Agua sabor Frutilla", supplier, new ArrayList<>(Arrays.asList(productType1,productType2)));
+		assertNotNull(product2.getId());
+		assertEquals(2, product2.getTypes().size());
+
+		/**
+		 * Obtener producto por su ID
+		 */
+		Long idProduct1 = product1.getId();
+		Optional<Product> optionalProduct3 = this.service.getProductById(idProduct1);
+		assertTrue(optionalProduct3.isPresent());
+		Product product3 = optionalProduct3.get();
+		assertEquals(idProduct1, product3.getId());
+		assertEquals(product1.getName(), product3.getName());
+
+		/**
+		 * Obtener producto por su nombre
+		 */
+		List<Product> listProduct4 = this.service.getProductByName("Helado");
+		assertEquals(1, listProduct4.size());
+		Product product4 = listProduct4.get(0);
+		assertEquals(product2.getId(), product4.getId());
+		assertEquals(product2.getName(), product4.getName());
+		List<Product> listProduct5 = this.service.getProductByName("la");
+		assertEquals(2, listProduct5.size());
+		List<Product> listProduct6 = this.service.getProductByName("OTRO");
+		assertEquals(0, listProduct6.size());
+
+		/**
+		 * Obtener productos por su tipo
+		 */
+		List<Product> products1 = this.service.getProductsByType("Kiosco");
+		assertEquals(2, products1.size());
+		List<Product> products2 = this.service.getProductsByType("Helado");
+		assertEquals(1, products2.size());
+		assertThrows(DeliveryException.class, () -> this.service.getProductsByType("Limpieza"), "No existe el tipo de producto");
+	}
+
 //	@Test
 //	void testUpdatePriceProduct() throws DeliveryException {
 //		/**
