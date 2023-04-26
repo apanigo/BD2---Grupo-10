@@ -7,6 +7,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import java.util.*;
 
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 @Repository
@@ -132,10 +133,23 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 	}
 	
 	public List<Product>  getProductsbyType(String type){
+		//a revisar consulta o relación Many to Many
 		String queryString = "SELECT p FROM Product p"
 				+ "    JOIN p.types t"
 				+ "    WHERE t.name = :type";
 		return (List<Product>) sessionFactory.getCurrentSession().createQuery(queryString).setParameter("type",type).list();
+	}
+	
+	public Product updateProductPrice(Long id, float price) throws DeliveryException {
+		try {
+		Product product = this.getProductById(id).get();
+		product.setPrice(price);
+		product.setLastPriceUpdateDate(new Date());
+		sessionFactory.getCurrentSession().update(product);
+		return product;
+		}
+		catch (NoSuchElementException e)
+		{throw new DeliveryException("No existe el producto a actualizar");}
 	}
 	
 

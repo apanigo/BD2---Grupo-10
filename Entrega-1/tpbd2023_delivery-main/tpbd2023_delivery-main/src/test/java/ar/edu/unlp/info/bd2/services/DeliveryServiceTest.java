@@ -186,25 +186,25 @@ public class DeliveryServiceTest {
 		assertEquals(1, products2.size());
 		assertThrows(DeliveryException.class, () -> this.service.getProductsByType("Limpieza"), "No existe el tipo de producto");
 	}
-//
-//	@Test
-//	void testUpdatePriceProduct() throws DeliveryException {
-//		/**
-//		 * Actualizar el precio de un producto
-//		 */
-//		ProductType productType1 = this.service.createProductType("Kiosco", "Productos de kiosco, como golosinas, alfajores, etc.");
-//		Supplier supplier1 = this.service.createSupplier("Kiosco 1", "30801112221", "Calle 51 esq 10", -34.917995f, -57.952061f);
-//		Product product1 = this.service.createProduct("Alfajor Chocolate", 180f, dpri, 80f, "Alfajor Triple de Chocolate", supplier1, new ArrayList<ProductType>(Arrays.asList(productType1)));
-//
-//		this.service.updateProductPrice(product1.getId(), 200);
-//		Product updatedProduct = this.service.getProductById(product1.getId()).orElse(null);
-//		assertNotNull(updatedProduct);
-//		assertEquals(product1.getId(), updatedProduct.getId());
-//		assertEquals(200, updatedProduct.getPrice());
-//
-//		assertThrows(DeliveryException.class, () -> this.service.updateProductPrice(new Long(999), 200f), "No existe el producto a actualizar");
-//	}
-//
+
+	@Test
+	void testUpdatePriceProduct() throws DeliveryException {
+		/**
+		 * Actualizar el precio de un producto
+		 */
+		ProductType productType1 = this.service.createProductType("Kiosco", "Productos de kiosco, como golosinas, alfajores, etc.");
+		Supplier supplier1 = this.service.createSupplier("Kiosco 1", "30801112221", "Calle 51 esq 10", -34.917995f, -57.952061f);
+		Product product1 = this.service.createProduct("Alfajor Chocolate", 180f, dpri, 80f, "Alfajor Triple de Chocolate", supplier1, new ArrayList<ProductType>(Arrays.asList(productType1)));
+
+		this.service.updateProductPrice(product1.getId(), 200);
+		Product updatedProduct = this.service.getProductById(product1.getId()).orElse(null);
+		assertNotNull(updatedProduct);
+		assertEquals(product1.getId(), updatedProduct.getId());
+		assertEquals(200, updatedProduct.getPrice());
+
+		assertThrows(DeliveryException.class, () -> this.service.updateProductPrice(new Long(999), 200f), "No existe el producto a actualizar");
+	}
+
 	@Test
 	void testCreationAndGetOrders() throws DeliveryException {
 		/**

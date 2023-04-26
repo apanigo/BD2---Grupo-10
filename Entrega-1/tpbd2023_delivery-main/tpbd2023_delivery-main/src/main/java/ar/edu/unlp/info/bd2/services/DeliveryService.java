@@ -178,7 +178,7 @@ public interface DeliveryService {
 	 * @param price nuevo precio del producto
 	 * @return el producto modificado
 	 * @throws DeliveryException en caso de que no exista el producto para el id dado
-	 
+	 */
 	public Product updateProductPrice(Long id, float price) throws DeliveryException;
 	/**
 	 * Asigna un repartidor a una orden

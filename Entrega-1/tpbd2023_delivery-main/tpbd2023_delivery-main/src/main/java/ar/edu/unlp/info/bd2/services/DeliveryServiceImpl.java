@@ -286,7 +286,14 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @return el producto modificado
 	 * @throws DeliveryException en caso de que no exista el producto para el id dado
 	  *
-	public Product updateProductPrice(Long id, float price) throws DeliveryException;
+	  */
+	public Product updateProductPrice(Long id, float price) throws DeliveryException{
+		try {
+		return delivery_repo.updateProductPrice(id, price);
+		} catch(DeliveryException de) {
+		throw de;
+	}
+	}
 	/**
 	 * Asigna un repartidor a una orden
 	 * Se debe verificar si el repartidor esta libre y si la orden no fue entregada
