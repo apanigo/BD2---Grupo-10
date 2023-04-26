@@ -36,6 +36,17 @@ public class Product {
     private List<ProductType> types;
 	
 	
+	public Product(String name, float price, Date lastPriceUpdateDate, float weight, String description,
+			Supplier supplier, List<ProductType> types) {
+		this.name = name;
+		this.price = price;
+		this.lastPriceUpdateDate = lastPriceUpdateDate;
+		this.weight = weight;
+		this.description = description;
+		this.supplier = supplier;
+		this.types = types;
+	}
+
 	public Product() {
 		
 	}

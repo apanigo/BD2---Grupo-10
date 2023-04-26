@@ -15,11 +15,19 @@ public class ProductType {
 	@Column(name = "name")
     private String name;
 
+
 	@Column(name = "description")
     private String description;
 
     @ManyToMany
     private List<Product> products;
+
+    
+	public ProductType(String name, String description) {
+		super();
+		this.name = name;
+		this.description = description;
+	}
 
     public Long getId() {
     	return this.id;

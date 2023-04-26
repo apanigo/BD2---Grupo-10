@@ -3,6 +3,7 @@ package ar.edu.unlp.info.bd2.repositories;
 import ar.edu.unlp.info.bd2.DeliveryException;
 import ar.edu.unlp.info.bd2.model.*;
 
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import java.util.*;
 
@@ -114,13 +115,28 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 	public Product saveProduct(Product newProduct) throws DeliveryException {
 		try {
 			Long newProductId = this.saveClass(newProduct);
-			return this.getProductById(newProductId);
+			return this.getProductById(newProductId).get();
 		} catch (PersistenceException  e) {
 			throw new DeliveryException("Constraint Violation");
 		}
 	}
 
-	private Product getProductById(Long id) {
-		return this.getOptionalById(id, Product.class).get();
+	public Optional<Product> getProductById(Long id) {
+		return this.getOptionalById(id, Product.class);
 	}
+	
+	public List<Product>  getProductsbyName(String name){
+		//return this.getSimilarsByProperty("name", name, Product.class);
+		String queryString = "FROM Product as p WHERE p.name like :name"; 
+		return (List<Product>) sessionFactory.getCurrentSession().createQuery(queryString).setParameter("name",'%'+name+'%').list();
+	}
+	
+	public List<Product>  getProductsbyType(String type){
+		String queryString = "SELECT p FROM Product p"
+				+ "    JOIN p.types t"
+				+ "    WHERE t.name = :type";
+		return (List<Product>) sessionFactory.getCurrentSession().createQuery(queryString).setParameter("type",type).list();
+	}
+	
+
 }

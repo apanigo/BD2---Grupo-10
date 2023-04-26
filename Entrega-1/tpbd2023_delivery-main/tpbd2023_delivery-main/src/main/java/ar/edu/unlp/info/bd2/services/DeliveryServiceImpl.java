@@ -194,9 +194,7 @@ public class DeliveryServiceImpl implements DeliveryService{
 	  */
 
 	public ProductType createProductType(String name, String description) throws DeliveryException{
-		ProductType newProductType = new ProductType();
-		newProductType.setName(name);
-		newProductType.setDescription(description);
+		ProductType newProductType = new ProductType(name, description);
 		try {
 			return delivery_repo.saveProductType(newProductType);
 		} catch (DeliveryException de) {
@@ -239,25 +237,48 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @param types listado de los tipos del producto
 	 * @return el producto creado
 	  *
-	public Product createProduct(String name, float price, Date lastPriceUpdateDate, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException;
+	  */
+	
+	public Product createProduct(String name, float price, Date lastPriceUpdateDate, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException{
+		Product newProduct = new Product(name, price, lastPriceUpdateDate, weight, description, supplier, types);
+		try {
+			return delivery_repo.saveProduct(newProduct);
+		} catch (DeliveryException de) {
+			throw de;
+		}
+	}
+	
 	/**
 	 * Obtiene el producto por id
 	 * @param id
 	 * @return el producto con el id provisto
 	  *
-	public Optional<Product> getProductById(Long id);
+	  */
+	public Optional<Product> getProductById(Long id){	
+		return delivery_repo.getProductById(id);	
+	}
 	/**
 	 * Obtiene el listado de productos que su nombre contega el string dado
 	 * @param name string a buscar
 	 * @return Lista de productos
 	  *
-	public List<Product> getProductByName(String name);
+	*/
+	
+	public List<Product> getProductByName(String name){
+		return delivery_repo.getProductsbyName(name);
+	}
+	
 	/**
 	 * Obtiene el listado de productos que el nombre de alguno de sus tipo coincide con el string dado
 	 * @param type nombre del tipo
 	 * @return Lista de productos
 	  *
-	public List<Product> getProductsByType(String type) throws DeliveryException;
+	*/
+	
+	public List<Product> getProductsByType(String type) throws DeliveryException{
+		return delivery_repo.getProductsbyType(type);
+	}
+	
 	/**
 	 * Actualiza el precio del producto guardando la fecha de la actualización.
 	 * @param id id del producto
