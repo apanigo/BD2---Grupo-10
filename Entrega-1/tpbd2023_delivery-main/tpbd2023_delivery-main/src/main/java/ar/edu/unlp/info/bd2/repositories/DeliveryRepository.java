@@ -61,6 +61,10 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 		return this.getClassByProperty("id", id, Address.class);
 	}
 	
+	public Item getItemById(long id) {
+		return this.getClassByProperty("id", id, Item.class);
+	}
+	
 	public Address saveAddress (Address newAddress) throws DeliveryException {
 		try {
 			Long newAddressId = this.saveClass(newAddress);
@@ -74,6 +78,15 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 		try {
 			Long newSupplierId = this.saveClass(newSupplier);
 			return this.getSuppliersById(newSupplierId);
+		} catch (PersistenceException  e) {
+			throw new DeliveryException("Constraint Violation");
+		}
+	}
+	
+	public Item saveItem (Item newItem) throws DeliveryException {
+		try {
+			Long newItemId = this.saveClass(newItem);
+			return this.getItemById(newItemId);
 		} catch (PersistenceException  e) {
 			throw new DeliveryException("Constraint Violation");
 		}
@@ -151,6 +164,33 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 		catch (NoSuchElementException e)
 		{throw new DeliveryException("No existe el producto a actualizar");}
 	}
+	
+	public boolean addDeliveryManToOrder(Long order, DeliveryMan deliveryMan) throws DeliveryException{
+		try {
+			Order anOrder = this.getOrderById(order).get();
+			System.out.print(deliveryMan.isFree() +" , "+ anOrder.isDelivered() +" , "+ ((anOrder.getItems() == null)||(anOrder.getItems().isEmpty())));
+			if (deliveryMan.isFree() && !anOrder.isDelivered() && !((anOrder.getItems() == null))) {
+			anOrder.setDeliveryMan(deliveryMan);
+			sessionFactory.getCurrentSession().update(anOrder);
+			return true;
+			}
+			return false;
+		} catch (NoSuchElementException e) {
+			throw new DeliveryException("No existe la orden");
+		}
+	}
+	
+	
+	public Item addItemToOrder( Long order, Product product,  int quantity, String description ) throws DeliveryException{
+		try {
+			Order anOrder = this.getOrderById(order).get();
+			Item newItem = new Item(quantity, description, anOrder, product);
+			return this.saveItem(newItem);
+		}catch(PersistenceException e) {
+			throw new DeliveryException("");
+		}
+	}
+	
 	
 
 }

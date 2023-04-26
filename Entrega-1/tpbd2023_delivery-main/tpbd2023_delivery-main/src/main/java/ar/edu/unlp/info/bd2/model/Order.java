@@ -31,9 +31,9 @@ public class Order {
 	@Column(name = "delivered")
     private boolean delivered;
 
-//    @OneToOne
-//    @Column(name = "delivery_man")
-//    private DeliveryMan deliveryMan;
+  
+    @OneToOne(cascade = CascadeType.ALL )
+    private DeliveryMan deliveryMan;
 
     @ManyToOne()
     @JoinColumn(name = "client_id")
@@ -55,6 +55,7 @@ public class Order {
         this.client = client;
         this.client.setNewOrder(this);
         this.address = address;
+        this.delivered = false;
     }
 
     public Order() {
@@ -101,13 +102,13 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-//    public DeliveryMan getDeliveryMan() {
-//        return deliveryMan;
-//    }
-//
-//    public void setDeliveryMan(DeliveryMan deliveryMan) {
-//        this.deliveryMan = deliveryMan;
-//    }
+    public DeliveryMan getDeliveryMan() {
+        return deliveryMan;
+    }
+
+    public void setDeliveryMan(DeliveryMan deliveryMan) {
+        this.deliveryMan = deliveryMan;
+    }
 
     public Client getClient() {
         return client;

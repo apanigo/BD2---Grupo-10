@@ -187,7 +187,7 @@ public interface DeliveryService {
 	 * @param deliveryMan repartidor a asignar
 	 * @return retorna si se pudo hacer la asignación
 	 * @throws DeliveryException en caso de no existir el numero de orden
-	 
+	 */
 	public boolean addDeliveryManToOrder(Long order, DeliveryMan deliveryMan) throws DeliveryException;
 	/**
 	 * Registra que la orden fue entregada y libera al repartidor
@@ -211,7 +211,7 @@ public interface DeliveryService {
 	 * @param product producto a agregar
 	 * @return el pedido con el nuevo producto
 	 * @throws DeliveryException en caso de no existir el pedido
-	 
+	 */
 	public Item addItemToOrder( Long order, Product product,  int quantity, String description ) throws DeliveryException;
-*/
+
 }
