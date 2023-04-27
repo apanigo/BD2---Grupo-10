@@ -187,7 +187,12 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 		try {
 			Order anOrder = this.getOrderById(order).get();
 			Item newItem = new Item(quantity, description, anOrder, product);
-			return this.saveItem(newItem);
+			Item savedItem = this.saveItem(newItem);
+
+			anOrder.addItem(savedItem);
+			anOrder.setTotalPrice(anOrder.getTotalPrice() + (product.getPrice() * quantity));
+
+			return savedItem;
 		} catch(PersistenceException e) {
 			throw new DeliveryException("");
 		}

@@ -1,6 +1,7 @@
 package ar.edu.unlp.info.bd2.model;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class Order {
 	@Column(name = "id")
 	private Long id;
 	
-	@Column(name = "number")
+	@Column(name = "number", unique = true)
     private int number;
 
 	@Column(name = "date_of_order")
@@ -57,6 +58,7 @@ public class Order {
         this.client.setNewOrder(this);
         this.address = address;
         this.delivered = false;
+        this.items = new ArrayList<>();
     }
 
     public Order() {
@@ -141,6 +143,10 @@ public class Order {
 
     public void setItems(List<Item> items) {
         this.items = items;
+    }
+
+    public void addItem(Item newItem) {
+        this.items.add(newItem);
     }
 
     public boolean isDelivered() {

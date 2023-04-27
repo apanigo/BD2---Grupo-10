@@ -232,7 +232,7 @@ public class DeliveryServiceTest {
 
 		/**
 		 * Agregar Items a la orden
-		 *
+		 */
 		ProductType productType1 = this.service.createProductType("Kiosco", "Productos de kiosco, como golosinas, alfajores, etc.");
 		Supplier supplier1 = this.service.createSupplier("Kiosco 2", "30801112222", "Calle 51 esq 10", -34.917995f, -57.952061f);
 		Product product1 = this.service.createProduct("Alfajor Dulce de Leche", 180f, 80f, "Alfajor Triple de Dulce de Leche", supplier1, new ArrayList<ProductType>(Arrays.asList(productType1)));
@@ -252,7 +252,7 @@ public class DeliveryServiceTest {
 		assertEquals((180 * 3) + 100, updatedOrder2.getTotalPrice());
 
 		assertThrows(DeliveryException.class, () -> this.service.createOrder(10, cal2.getTime(), "Otra orden", client, address1 ), "Constraint Violation"); // No deberia repetirse el numero de orden
-	*/}
+	}
 
 	@Test
 	void testCompleteOrder() throws DeliveryException {
