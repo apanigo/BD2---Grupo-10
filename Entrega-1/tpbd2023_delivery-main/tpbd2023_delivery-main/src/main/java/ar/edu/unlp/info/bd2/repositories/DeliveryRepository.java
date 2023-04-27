@@ -101,15 +101,12 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 	}
 	
 	public Product saveProduct(Product newProduct) throws DeliveryException{
-		Long newProductId = this.saveClass(newProduct);
-		Optional<Product> p = this.getProductById(newProductId);
 		try {
-			return p.get();
+			Long newProductId = this.saveClass(newProduct);
+			return this.getProductById(newProductId).get();
 		} catch (NoSuchElementException ne) {
 			return null;
 		}
-
-		//return this.getOptionalById(newProductId, Product.class);
 	}
 
 	public Optional<Product> getProductById(Long id) {
@@ -117,10 +114,9 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 	}
 	
 	public ProductType saveProductType(ProductType newProductType) throws DeliveryException{
-		Long newProductTypeId = this.saveClass(newProductType);
-		Optional<ProductType> p = this.getProductTypeById(newProductTypeId);
 		try {
-			return p.get();
+			Long newProductTypeId = this.saveClass(newProductType);
+			return this.getProductTypeById(newProductTypeId).get();
 		} catch (NoSuchElementException ne) {
 			return null;
 		}
@@ -161,24 +157,24 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 	
 	public Product updateProductPrice(Long id, float price) throws DeliveryException {
 		try {
-		Product product = this.getProductById(id).get();
-		product.setPrice(price);
-		product.setLastPriceUpdateDate(new Date());
-		sessionFactory.getCurrentSession().update(product);
-		return product;
+			Product product = this.getProductById(id).get();
+			product.setPrice(price);
+			product.setLastPriceUpdateDate(new Date());
+			this.sessionFactory.getCurrentSession().update(product);
+			return product;
+		} catch (NoSuchElementException e) {
+			throw new DeliveryException("No existe el producto a actualizar");
 		}
-		catch (NoSuchElementException e)
-		{throw new DeliveryException("No existe el producto a actualizar");}
 	}
 	
 	public boolean addDeliveryManToOrder(Long order, DeliveryMan deliveryMan) throws DeliveryException{
 		try {
 			Order anOrder = this.getOrderById(order).get();
-			System.out.print(deliveryMan.isFree() +" , "+ anOrder.isDelivered() +" , "+ ((anOrder.getItems() == null)||(anOrder.getItems().isEmpty())));
-			if (deliveryMan.isFree() && !anOrder.isDelivered() && !((anOrder.getItems() == null))) {
-			anOrder.setDeliveryMan(deliveryMan);
-			sessionFactory.getCurrentSession().update(anOrder);
-			return true;
+			//System.out.print(deliveryMan.isFree() +" , "+ anOrder.isDelivered() +" , "+ ((anOrder.getItems() == null)||(anOrder.getItems().isEmpty())));
+			if (deliveryMan.isFree() && !anOrder.isDelivered() && !(anOrder.getItems() == null)) {
+				anOrder.setDeliveryMan(deliveryMan);
+				this.sessionFactory.getCurrentSession().update(anOrder);
+				return true;
 			}
 			return false;
 		} catch (NoSuchElementException e) {
@@ -187,12 +183,12 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 	}
 	
 	
-	public Item addItemToOrder( Long order, Product product,  int quantity, String description ) throws DeliveryException{
+	public Item addItemToOrder(Long order, Product product, int quantity, String description) throws DeliveryException {
 		try {
 			Order anOrder = this.getOrderById(order).get();
 			Item newItem = new Item(quantity, description, anOrder, product);
 			return this.saveItem(newItem);
-		}catch(PersistenceException e) {
+		} catch(PersistenceException e) {
 			throw new DeliveryException("");
 		}
 	}
