@@ -281,9 +281,9 @@ public class DeliveryServiceTest {
 
 		Calendar cal3 = Calendar.getInstance();
 		Order order = this.service.createOrder(20, cal3.getTime(), "Una orden de prueba", client, address1);
-		assertFalse(this.service.addDeliveryManToOrder(order.getId(), deliveryMan)); // La orden no tiene items.
+		assertFalse(this.service.addDeliveryManToOrder(order.getId(), deliveryMan));
 		Item item = this.service.addItemToOrder(order.getId(), product1, 3, "");
-		assertFalse(this.service.addDeliveryManToOrder(order.getId(), deliveryMan1)); // El DM no esta free.
+		assertFalse(this.service.addDeliveryManToOrder(order.getId(), deliveryMan1));
 		assertThrows(DeliveryException.class, () -> this.service.addDeliveryManToOrder(new Long(50), deliveryMan), "No existe la orden");
 		assertTrue(this.service.addDeliveryManToOrder(order.getId(), deliveryMan));
 		DeliveryMan updatedDeliveryMan = (DeliveryMan) this.service.getUserById(deliveryMan.getId()).orElse(null);
@@ -291,20 +291,20 @@ public class DeliveryServiceTest {
 		Order updatedOrder = this.service.getOrderById(order.getId()).orElse(null);
 		assertFalse(updatedOrder.isDelivered());
 
-//		/**
-//		 * Finalizar una orden
-//		 */
-//		Order order2 = this.service.createOrder(30, cal3.getTime(), "Otra orden", client, address1);
-//		assertFalse(this.service.setOrderAsDelivered(order2.getId())); //No se puede finalizar una orden no asignada
-//		Long idDM = updatedOrder.getDeliveryMan().getId();
-//		assertTrue(this.service.setOrderAsDelivered(updatedOrder.getId()));
-//		DeliveryMan updatedDM = (DeliveryMan) this.service.getUserById(idDM).orElse(null);
-//		assertTrue(updatedDM.isFree());
-//		assertEquals(1, updatedDM.getScore());
-//		assertEquals(1, updatedDM.getNumberOfSuccessOrders());
-//		Order updatedOrder2 = this.service.getOrderById(updatedOrder.getId()).get();
-//		assertTrue(updatedOrder2.isDelivered());
-//		assertEquals(1, updatedOrder.getClient().getScore());
+		/**
+		 * Finalizar una orden
+		 */
+		Order order2 = this.service.createOrder(30, cal3.getTime(), "Otra orden", client, address1);
+		assertFalse(this.service.setOrderAsDelivered(order2.getId()));
+		Long idDM = updatedOrder.getDeliveryMan().getId();
+		assertTrue(this.service.setOrderAsDelivered(updatedOrder.getId()));
+		DeliveryMan updatedDM = (DeliveryMan) this.service.getUserById(idDM).orElse(null);
+		assertTrue(updatedDM.isFree());
+		assertEquals(1, updatedDM.getScore());
+		assertEquals(1, updatedDM.getNumberOfSuccessOrders());
+		Order updatedOrder2 = this.service.getOrderById(updatedOrder.getId()).get();
+		assertTrue(updatedOrder2.isDelivered());
+		assertEquals(1, updatedOrder.getClient().getScore());
 	}
 //
 //	@Test

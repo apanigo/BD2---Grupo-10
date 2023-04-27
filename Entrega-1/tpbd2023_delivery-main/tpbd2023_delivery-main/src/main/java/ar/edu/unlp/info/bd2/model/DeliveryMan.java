@@ -29,7 +29,8 @@ public class DeliveryMan extends User{
     
     public DeliveryMan(String name, String username, String password, String email, Date dateOfBirth) {
     	super(name, username, password, email, dateOfBirth);
-    	this.setDateOfAdmission(new Date());
+        this.numberOfSuccessOrders = 0;
+    	this.dateOfAdmission = new Date();
     	this.free = true;
     }
      

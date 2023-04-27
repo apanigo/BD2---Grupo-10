@@ -198,7 +198,8 @@ public interface DeliveryService {
 	 * @param order id de la orden a actualizar
 	 * @return retorno si se pudo actualizar la orden
 	 * @throws DeliveryException en caso de no existir el numero de orden
-	 
+	 **/
+
 	public boolean setOrderAsDelivered(Long order) throws DeliveryException;
 	/**
 	 * Agrega una reseña a una orden
@@ -206,6 +207,7 @@ public interface DeliveryService {
 	 * @param commentary comentario de la reseña
 	 * @return la nueva reseña
 	 * @throws DeliveryException en caso de no existir el numero de orden
+	 **
 
 	public Qualification addQualificatioToOrder(Long order, String commentary) throws DeliveryException ;
 	/**

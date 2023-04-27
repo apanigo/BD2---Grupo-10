@@ -294,7 +294,7 @@ public class DeliveryServiceImpl implements DeliveryService{
 	public boolean addDeliveryManToOrder(Long order, DeliveryMan deliveryMan) throws DeliveryException{
 		try {
 			return delivery_repo.addDeliveryManToOrder(order, deliveryMan);
-		}catch(DeliveryException de) {
+		} catch(DeliveryException de) {
 			throw de;
 		}
 	}
@@ -304,16 +304,28 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @param order id de la orden a actualizar
 	 * @return retorno si se pudo actualizar la orden
 	 * @throws DeliveryException en caso de no existir el numero de orden
-	  *
-	public boolean setOrderAsDelivered(Long order) throws DeliveryException;
+	  */
+	public boolean setOrderAsDelivered(Long order) throws DeliveryException {
+		try {
+			return delivery_repo.setOrderAsDelivered(order);
+		} catch(DeliveryException de) {
+			throw de;
+		}
+	}
 	/**
 	 * Agrega una reseña a una orden
 	 * @param order id de orden sobre la que hace la reseña
 	 * @param commentary comentario de la reseña
 	 * @return la nueva reseña
 	 * @throws DeliveryException en caso de no existir el numero de orden
-	  *
-	public Qualification addQualificatioToOrder(Long order, String commentary) throws DeliveryException ;
+	 **
+	public Qualification addQualificatioToOrder(Long order, String commentary) throws DeliveryException {
+		try {
+			return delivery_repo.addQualificatioToOrder(order, commentary);
+		} catch(DeliveryException de) {
+			throw de;
+		}
+	}
 	/**
 	 * agrega un item al pedido, es decir, una cantidad de un producto
 	 * @param order pedido al cual se le agrega el producto
@@ -325,7 +337,7 @@ public class DeliveryServiceImpl implements DeliveryService{
 	public Item addItemToOrder( Long order, Product product,  int quantity, String description ) throws DeliveryException{
 		try {
 			return delivery_repo.addItemToOrder(order, product, quantity, description);
-		}catch(DeliveryException de) {
+		} catch(DeliveryException de) {
 			throw de;
 		}
 	}
