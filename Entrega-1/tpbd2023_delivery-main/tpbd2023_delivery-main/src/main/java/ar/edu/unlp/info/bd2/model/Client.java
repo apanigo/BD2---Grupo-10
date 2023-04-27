@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "client")
 public class Client extends User{
 	
     @Id
