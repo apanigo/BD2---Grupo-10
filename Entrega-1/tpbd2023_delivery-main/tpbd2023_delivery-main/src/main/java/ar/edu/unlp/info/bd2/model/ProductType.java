@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -20,9 +21,9 @@ public class ProductType {
     private String description;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "product_type_product",
-            joinColumns = @JoinColumn(name = "product_type_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    @JoinTable(name = "product_types",
+            joinColumns = @JoinColumn(name="type"),
+            inverseJoinColumns = @JoinColumn(name="product"))
     private List<Product> products;
 
 	
@@ -33,6 +34,7 @@ public class ProductType {
 	public ProductType(String name, String description) {
 		this.name = name;
 		this.description = description;
+        this.products = new ArrayList<>();
 	}
 
     public Long getId() {
@@ -65,6 +67,12 @@ public class ProductType {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public void addProducts(Product newProduct) {
+        if (!this.products.contains(newProduct)) {
+            this.products.add(newProduct);
+        }
     }
 
 }

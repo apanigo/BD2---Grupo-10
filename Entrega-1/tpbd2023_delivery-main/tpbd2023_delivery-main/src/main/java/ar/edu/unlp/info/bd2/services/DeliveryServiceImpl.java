@@ -212,13 +212,7 @@ public class DeliveryServiceImpl implements DeliveryService{
 	  **/
 
 	public Product createProduct(String name, float price, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException {
-		Product newProduct = new Product();
-		newProduct.setName(name);
-		newProduct.setPrice(price);
-		newProduct.setWeight(weight);
-		newProduct.setDescription(description);
-		newProduct.setSupplier(supplier);
-		newProduct.setTypes(types);
+		Product newProduct = new Product(name, price, weight, description, supplier, types);
 		try {
 			return delivery_repo.saveProduct(newProduct);
 		} catch (DeliveryException de) {

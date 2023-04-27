@@ -57,6 +57,25 @@ public class Product {
         this.description = description;
         this.supplier = supplier;
         this.types = types;
+
+        // C
+        for (ProductType type : types) {
+            type.addProducts(this);
+        }
+    }
+
+    public Product(String name, float price, float weight, String description, Supplier supplier, List<ProductType> types) {
+        this.name = name;
+        this.price = price;
+        this.weight = weight;
+        this.description = description;
+        this.supplier = supplier;
+        this.types = types;
+
+        // C
+        for (ProductType type : types) {
+            type.addProducts(this);
+        }
     }
 
 

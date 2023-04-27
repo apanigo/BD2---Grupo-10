@@ -133,13 +133,16 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 	public List<Product> getProductsByName(String name) {
 		return this.getClassListByProperty("name", name, Product.class);
 	}
-	
-	public List<Product> getProductsByType(String type) {
-		String queryString = ("FROM " + ProductType.class.getCanonicalName() + " WHERE name = :name");
-		Query<ProductType> query = this.sessionFactory.getCurrentSession().createQuery(queryString);
-	    query.setParameter("name", type);
-	    ProductType answer = query.getSingleResult();
-	    return answer.getProducts();    
+
+	public List<Product> getProductsByType(String type) throws DeliveryException {
+		String hql = "SELECT p FROM Product p JOIN p.types t WHERE t.name = :type";
+		Query<Product> query = this.sessionFactory.getCurrentSession().createQuery(hql, Product.class);
+		query.setParameter("type", type);
+		if (query.getResultList().size() != 0) {
+			return query.getResultList();
+		} else {
+			throw new DeliveryException("No existe el tipo de producto");
+		}
 	}
 
 	public Order saveOrder(Order newOrder) throws DeliveryException {
@@ -154,20 +157,7 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 	public Optional<Order> getOrderById(Long id) {
 		return this.getOptionalById(id, Order.class);
 	}
-	
-	public List<Product>  getProductsbyName(String name){
-		//return this.getSimilarsByProperty("name", name, Product.class);
-		String queryString = "FROM Product as p WHERE p.name like :name"; 
-		return (List<Product>) sessionFactory.getCurrentSession().createQuery(queryString).setParameter("name",'%'+name+'%').list();
-	}
-	
-	public List<Product>  getProductsbyType(String type){
-		//a revisar consulta o relación Many to Many
-		String queryString = "SELECT p FROM Product p"
-				+ "    JOIN p.types t"
-				+ "    WHERE t.name = :type";
-		return (List<Product>) sessionFactory.getCurrentSession().createQuery(queryString).setParameter("type",type).list();
-	}
+
 	
 	public Product updateProductPrice(Long id, float price) throws DeliveryException {
 		try {
