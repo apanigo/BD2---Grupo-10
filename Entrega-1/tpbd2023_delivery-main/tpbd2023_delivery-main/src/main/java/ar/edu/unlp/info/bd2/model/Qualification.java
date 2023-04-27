@@ -24,7 +24,13 @@ public class Qualification {
     public Qualification() {
     	
     }
-    
+
+    public Qualification(float score, String commentary, Order order) {
+        this.score = score;
+        this.commentary = commentary;
+        this.order = order;
+    }
+
     public Long getId() {
     	return this.id;
     }

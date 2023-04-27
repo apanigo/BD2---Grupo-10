@@ -318,7 +318,7 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @param commentary comentario de la reseña
 	 * @return la nueva reseña
 	 * @throws DeliveryException en caso de no existir el numero de orden
-	 **
+	 **/
 	public Qualification addQualificatioToOrder(Long order, String commentary) throws DeliveryException {
 		try {
 			return delivery_repo.addQualificatioToOrder(order, commentary);

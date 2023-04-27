@@ -306,29 +306,29 @@ public class DeliveryServiceTest {
 		assertTrue(updatedOrder2.isDelivered());
 		assertEquals(1, updatedOrder.getClient().getScore());
 	}
-//
-//	@Test
-//	void testQualifyOrder() throws DeliveryException {
-//		/**
-//		 * Agregar una calificación
-//		 */
-//		DeliveryMan deliveryMan1 = this.service.createDeliveryMan("Ramiro Benítez", "rbenitez4", "1234", "rbenitez4@gmail.com", dob1);
-//		Client client = this.service.createClient("Juan Perez", "jperez4", "1234", "jperez4@gmail.com", dob2);
-//		Address address1 = this.service.createAddress("Direccion 1", "Calle 50 y 120", 23.595f, 65.854f, "Direccion Facultad", client);
-//		ProductType productType1 = this.service.createProductType("Kiosco", "Productos de kiosco, como golosinas, alfajores, etc.");
-//		Supplier supplier1 = this.service.createSupplier("Kibosco 5", "30801112225", "Calle 51 esq 10", -34.917995f, -57.952061f);
-//		Product product1 = this.service.createProduct("Alfajor de Fruta", 180f, 80f, "Alfajor Triple relleno de fruta", supplier1, new ArrayList<ProductType>(Arrays.asList(productType1)));
-//		Calendar cal3 = Calendar.getInstance();
-//		Order order = this.service.createOrder(20, cal3.getTime(), "Ultima orden de prueba", client, address1);
-//		Item item = this.service.addItemToOrder(order.getId(), product1, 1, "");
-//		assertTrue(this.service.addDeliveryManToOrder(order.getId(), deliveryMan1));
-//		assertTrue(this.service.setOrderAsDelivered(order.getId()));
-//
-//		assertNull(order.getQualification());
-//		Qualification qualification = this.service.addQualificatioToOrder(order.getId(), "Excelente servicio!");
-//		assertNotNull(qualification.getId());
-//		Order updatedOrder = this.service.getOrderById(order.getId()).get();
-//		assertEquals(qualification.getId(), updatedOrder.getQualification().getId());
-//	}
+
+	@Test
+	void testQualifyOrder() throws DeliveryException {
+		/**
+		 * Agregar una calificación
+		 */
+		DeliveryMan deliveryMan1 = this.service.createDeliveryMan("Ramiro Benítez", "rbenitez4", "1234", "rbenitez4@gmail.com", dob1);
+		Client client = this.service.createClient("Juan Perez", "jperez4", "1234", "jperez4@gmail.com", dob2);
+		Address address1 = this.service.createAddress("Direccion 1", "Calle 50 y 120", 23.595f, 65.854f, "Direccion Facultad", client);
+		ProductType productType1 = this.service.createProductType("Kiosco", "Productos de kiosco, como golosinas, alfajores, etc.");
+		Supplier supplier1 = this.service.createSupplier("Kibosco 5", "30801112225", "Calle 51 esq 10", -34.917995f, -57.952061f);
+		Product product1 = this.service.createProduct("Alfajor de Fruta", 180f, 80f, "Alfajor Triple relleno de fruta", supplier1, new ArrayList<ProductType>(Arrays.asList(productType1)));
+		Calendar cal3 = Calendar.getInstance();
+		Order order = this.service.createOrder(20, cal3.getTime(), "Ultima orden de prueba", client, address1);
+		Item item = this.service.addItemToOrder(order.getId(), product1, 1, "");
+		assertTrue(this.service.addDeliveryManToOrder(order.getId(), deliveryMan1));
+		assertTrue(this.service.setOrderAsDelivered(order.getId()));
+
+		assertNull(order.getQualification());
+		Qualification qualification = this.service.addQualificatioToOrder(order.getId(), "Excelente servicio!");
+		assertNotNull(qualification.getId());
+		Order updatedOrder = this.service.getOrderById(order.getId()).get();
+		assertEquals(qualification.getId(), updatedOrder.getQualification().getId());
+	}
 
 }

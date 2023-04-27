@@ -228,4 +228,29 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 			throw new DeliveryException("No existe la orden");
 		}
 	}
+
+	public Qualification addQualificatioToOrder(Long order, String commentary) throws DeliveryException {
+		try {
+			Order anOrder = this.getOrderById(order).get();
+
+			Qualification aQualification = new Qualification(5, commentary, anOrder);
+			Qualification newQualification = this.saveQualification(aQualification);
+
+			anOrder.setQualification(newQualification);
+			this.sessionFactory.getCurrentSession().update(anOrder);
+
+			return newQualification;
+		} catch (NoSuchElementException e) {
+			throw new DeliveryException("No existe la orden");
+		}
+	}
+
+	public Qualification saveQualification(Qualification newQualification) throws DeliveryException {
+		try {
+			this.saveClass(newQualification);
+			return newQualification;
+		} catch (PersistenceException  e) {
+			throw new DeliveryException("Constraint Violation");
+		}
+	}
 }
