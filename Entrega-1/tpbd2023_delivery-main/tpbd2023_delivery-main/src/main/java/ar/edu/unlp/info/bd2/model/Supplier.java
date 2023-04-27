@@ -100,8 +100,7 @@ public class Supplier {
     public List<Product> getProducts() {
     	return this.products;
     }
-    
-    
+
     public void setProducts(List<Product> products) {
     	this.products = products;
     }

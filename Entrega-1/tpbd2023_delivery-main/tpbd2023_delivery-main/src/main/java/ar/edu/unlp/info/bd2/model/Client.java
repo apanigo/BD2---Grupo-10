@@ -9,7 +9,7 @@ import java.util.List;
 @Table(name = "client")
 public class Client extends User{
 	
-    @Column(name = "dateOfRegister")
+    @Column(name = "date_of_register")
     private Date dateOfRegister;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)

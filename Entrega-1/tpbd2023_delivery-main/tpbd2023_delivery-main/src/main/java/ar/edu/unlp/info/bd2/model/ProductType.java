@@ -19,10 +19,10 @@ public class ProductType {
 	@Column(name = "description")
     private String description;
 
-	@ManyToMany // aca poner cosas propias de many to many
-	@JoinTable(name = "product_types",
-				joinColumns = {@JoinColumn(name="type")},
-				inverseJoinColumns = {@JoinColumn(name="product")})
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "product_type_product",
+            joinColumns = @JoinColumn(name = "product_type_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products;
 
 	

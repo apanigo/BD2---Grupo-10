@@ -17,7 +17,7 @@ public class Item {
 	@Column(name = "description")
     private String description;
 
-	@ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 

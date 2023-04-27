@@ -12,6 +12,7 @@ public class Product {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
 	private Long id;
 
 	@Column(name="name")
@@ -20,7 +21,7 @@ public class Product {
 	@Column(name="price")
     private float price;
 
-	@Column(name="lastPriceUpdateDate")
+	@Column(name="last_price_update_date")
     private Date lastPriceUpdateDate;
 
 	@Column(name="weight")
@@ -40,7 +41,7 @@ public class Product {
 	 * DESPUES HACER UN GETSESULTLIST Y MANDARLE AL RETURN LA LISTA DE PRODUCTOS :====ssdADSA
 	 */
 	// https://www.adictosaltrabajo.com/2020/04/02/hibernate-onetoone-onetomany-manytoone-y-manytomany/
-	@ManyToMany
+    @ManyToMany(mappedBy = "products")
     private List<ProductType> types;
 
 

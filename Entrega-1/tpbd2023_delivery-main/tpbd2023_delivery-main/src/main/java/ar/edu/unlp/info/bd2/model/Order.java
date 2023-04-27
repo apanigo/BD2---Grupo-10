@@ -31,17 +31,18 @@ public class Order {
 	@Column(name = "delivered")
     private boolean delivered;
 
-  
-    @OneToOne(cascade = CascadeType.ALL )
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "delivery_man_id")
     private DeliveryMan deliveryMan;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
     private Client client;
 
-//    private Qualification qualification;
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Qualification qualification;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     private Address address;
 
@@ -117,14 +118,14 @@ public class Order {
     public void setClient(Client client) {
         this.client = client;
     }
-//
-//    public Qualification getQualification() {
-//        return qualification;
-//    }
-//
-//    public void setQualification(Qualification qualification) {
-//        this.qualification = qualification;
-//    }
+
+    public Qualification getQualification() {
+        return qualification;
+    }
+
+    public void setQualification(Qualification qualification) {
+        this.qualification = qualification;
+    }
 
     public Address getAddress() {
         return address;

@@ -13,10 +13,10 @@ import javax.persistence.Table;
 @Table(name = "deliveryMan")
 public class DeliveryMan extends User{
 	
-	@Column(name = "numberOfSuccessOrders")
+	@Column(name = "number_of_success_orders")
     private int numberOfSuccessOrders;
 
-	@Column(name = "dateOfAdmission")
+	@Column(name = "date_of_admission")
     private Date dateOfAdmission;
 
 	@Column(name = "free")
