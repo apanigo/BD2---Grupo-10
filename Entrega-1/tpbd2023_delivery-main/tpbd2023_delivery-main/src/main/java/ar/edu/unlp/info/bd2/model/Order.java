@@ -2,17 +2,13 @@ package ar.edu.unlp.info.bd2.model;
 
 
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Entity
-@Table(name = "order")
+@Table(name = "Orders")
 public class Order {
 
 	@Id
@@ -23,28 +19,49 @@ public class Order {
 	@Column(name = "number")
     private int number;
 
-	@Column(name = "dateOfOrder")
+	@Column(name = "date_of_order")
     private Date dateOfOrder;
 
 	@Column(name = "comments")
     private String comments;
 
-	@Column(name = "totalPrice")
+	@Column(name = "total_price")
     private float totalPrice;
 
 	@Column(name = "delivered")
     private boolean delivered;
 
-//    private DeliveryMan deliveryMan;
-//
-//    private Client client;
-//
+  
+    @OneToOne(cascade = CascadeType.ALL )
+    private DeliveryMan deliveryMan;
+
+    @ManyToOne()
+    @JoinColumn(name = "client_id")
+    private Client client;
+
 //    private Qualification qualification;
-//
-//    private Address address;
-//
-//    private List<Item> items;
-    
+
+    @ManyToOne()
+    @JoinColumn(name = "address_id")
+    private Address address;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Item> items;
+
+    public Order(int number, Date dateOfOrder, String comments, Client client, Address address) {
+        this.number = number;
+        this.dateOfOrder = dateOfOrder;
+        this.comments = comments;
+        this.client = client;
+        this.client.setNewOrder(this);
+        this.address = address;
+        this.delivered = false;
+    }
+
+    public Order() {
+
+    }
+
     public Long getId() {
     	return this.id;
     }
@@ -85,21 +102,21 @@ public class Order {
         this.totalPrice = totalPrice;
     }
 
-//    public DeliveryMan getDeliveryMan() {
-//        return deliveryMan;
-//    }
-//
-//    public void setDeliveryMan(DeliveryMan deliveryMan) {
-//        this.deliveryMan = deliveryMan;
-//    }
-//
-//    public Client getClient() {
-//        return client;
-//    }
-//
-//    public void setClient(Client client) {
-//        this.client = client;
-//    }
+    public DeliveryMan getDeliveryMan() {
+        return deliveryMan;
+    }
+
+    public void setDeliveryMan(DeliveryMan deliveryMan) {
+        this.deliveryMan = deliveryMan;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
 //
 //    public Qualification getQualification() {
 //        return qualification;
@@ -108,22 +125,22 @@ public class Order {
 //    public void setQualification(Qualification qualification) {
 //        this.qualification = qualification;
 //    }
-//
-//    public Address getAddress() {
-//        return address;
-//    }
-//
-//    public void setAddress(Address address) {
-//        this.address = address;
-//    }
-//
-//    public List<Item> getItems() {
-//        return items;
-//    }
-//
-//    public void setItems(List<Item> items) {
-//        this.items = items;
-//    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
 
     public boolean isDelivered() {
         return delivered;

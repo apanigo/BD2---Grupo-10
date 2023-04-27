@@ -3,16 +3,7 @@ package ar.edu.unlp.info.bd2.model;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Entity
@@ -49,34 +40,26 @@ public class Product {
 	 * DESPUES HACER UN GETSESULTLIST Y MANDARLE AL RETURN LA LISTA DE PRODUCTOS :====ssdADSA
 	 */
 	// https://www.adictosaltrabajo.com/2020/04/02/hibernate-onetoone-onetomany-manytoone-y-manytomany/
-	@ManyToMany 
+	@ManyToMany
     private List<ProductType> types;
-	
-	
-	public Product(String name, float price, float weight, String description, Supplier supplier, List<ProductType> types) {
-		this.name = name;
-		this.price = price;
-		this.weight = weight;
-		this.description = description;
-		this.supplier = supplier;
-		this.types = types;
-	}
-	
-	public Product(String name, float price, Date lastPriceUpdateDate, float weight, String description, Supplier supplier, List<ProductType> types) {
-		this.name = name;
-		this.price = price;
-		this.lastPriceUpdateDate = lastPriceUpdateDate;
-		this.weight = weight;
-		this.description = description;
-		this.supplier = supplier;
-		this.types = types;
-	}
-	
+
+
 	public Product() {
 		
 	}
-	
-	public Long getId() {
+
+    public Product(String name, float price, Date lastPriceUpdateDate, float weight, String description, Supplier supplier, List<ProductType> types) {
+        this.name = name;
+        this.price = price;
+        this.lastPriceUpdateDate = lastPriceUpdateDate;
+        this.weight = weight;
+        this.description = description;
+        this.supplier = supplier;
+        this.types = types;
+    }
+
+
+    public Long getId() {
 		return this.id;
 	}
 	

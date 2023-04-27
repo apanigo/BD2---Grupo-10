@@ -13,11 +13,6 @@ import javax.persistence.Table;
 @Table(name = "deliveryMan")
 public class DeliveryMan extends User{
 	
-	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;	
-
 	@Column(name = "numberOfSuccessOrders")
     private int numberOfSuccessOrders;
 
@@ -35,17 +30,9 @@ public class DeliveryMan extends User{
     public DeliveryMan(String name, String username, String password, String email, Date dateOfBirth) {
     	super(name, username, password, email, dateOfBirth);
     	this.setDateOfAdmission(new Date());
+    	this.free = true;
     }
-    
-    public Long getId() {
-    	return id;
-    }
-    
-    public void setId(Long id) {
-    	this.id = id;
-    }
-
-    
+     
     public int getNumberOfSuccessOrders() {
         return numberOfSuccessOrders;
     }

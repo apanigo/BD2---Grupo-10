@@ -1,11 +1,6 @@
 package ar.edu.unlp.info.bd2.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "item")
@@ -21,11 +16,24 @@ public class Item {
 
 	@Column(name = "description")
     private String description;
-//
-//    private Order order;
-//
-//    private Product product;
-//    
+
+	@ManyToOne()
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Product product;
+    
+    public Item(int quantity, String description, Order order, Product product) {
+		super();
+		this.quantity = quantity;
+		this.description = description;
+		this.order = order;
+		this.product = product;
+	}
+
+    public Item () {}
+    
     public Long getId() {
     	return this.id;
     }
@@ -51,20 +59,20 @@ public class Item {
         this.description = description;
     }
 
-//    public Order getOrder() {
-//        return order;
-//    }
-//
-//    public void setOrder(Order order) {
-//        this.order = order;
-//    }
-//
-//    public Product getProduct() {
-//        return product;
-//    }
-//
-//    public void setProduct(Product product) {
-//        this.product = product;
-//    }
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 
 }

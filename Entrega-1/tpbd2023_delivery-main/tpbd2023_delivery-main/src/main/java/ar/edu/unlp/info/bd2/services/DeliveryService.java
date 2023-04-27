@@ -114,13 +114,13 @@ public interface DeliveryService {
 	 * @param client cliente que realizó el pedido
 	 * @param address dirección en la cual se debe entregar el pedido
 	 * @return el nuevo pedido
-	 
+	 */
 	public Order createOrder(int number, Date dateOfOrder, String comments, Client client,  Address address) throws DeliveryException;
 	/**
 	 * Obtiene el pedido por id
 	 * @param id
 	 * @return el pedido con el id provisto
-	 
+	 */
 	public Optional<Order> getOrderById(Long id);
 	/**
 	 * Crea y retorna un nuevo tipo de producto
@@ -166,7 +166,7 @@ public interface DeliveryService {
 	 * Obtiene el listado de productos que su nombre contega el string dado
 	 * @param name string a buscar
 	 * @return Lista de productos
-	**/ 
+	**/
 	public List<Product> getProductByName(String name);
 	
 	/**
@@ -182,7 +182,7 @@ public interface DeliveryService {
 	 * @param price nuevo precio del producto
 	 * @return el producto modificado
 	 * @throws DeliveryException en caso de que no exista el producto para el id dado
-	 
+	 */
 	public Product updateProductPrice(Long id, float price) throws DeliveryException;
 	/**
 	 * Asigna un repartidor a una orden
@@ -191,7 +191,7 @@ public interface DeliveryService {
 	 * @param deliveryMan repartidor a asignar
 	 * @return retorna si se pudo hacer la asignación
 	 * @throws DeliveryException en caso de no existir el numero de orden
-	 
+	 */
 	public boolean addDeliveryManToOrder(Long order, DeliveryMan deliveryMan) throws DeliveryException;
 	/**
 	 * Registra que la orden fue entregada y libera al repartidor
@@ -206,7 +206,7 @@ public interface DeliveryService {
 	 * @param commentary comentario de la reseña
 	 * @return la nueva reseña
 	 * @throws DeliveryException en caso de no existir el numero de orden
-	 
+
 	public Qualification addQualificatioToOrder(Long order, String commentary) throws DeliveryException ;
 	/**
 	 * agrega un item al pedido, es decir, una cantidad de un producto
@@ -215,7 +215,7 @@ public interface DeliveryService {
 	 * @param product producto a agregar
 	 * @return el pedido con el nuevo producto
 	 * @throws DeliveryException en caso de no existir el pedido
-	 
+	 */
 	public Item addItemToOrder( Long order, Product product,  int quantity, String description ) throws DeliveryException;
-*/
+
 }

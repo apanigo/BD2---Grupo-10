@@ -7,6 +7,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import java.util.*;
 
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 @Repository
@@ -60,6 +61,10 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 		return this.getClassByProperty("id", id, Address.class);
 	}
 	
+	public Item getItemById(long id) {
+		return this.getClassByProperty("id", id, Item.class);
+	}
+	
 	public Address saveAddress (Address newAddress) throws DeliveryException {
 		try {
 			Long newAddressId = this.saveClass(newAddress);
@@ -77,6 +82,15 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 			throw new DeliveryException("Constraint Violation");
 		}
 	}
+	
+	public Item saveItem (Item newItem) throws DeliveryException {
+		try {
+			Long newItemId = this.saveClass(newItem);
+			return this.getItemById(newItemId);
+		} catch (PersistenceException  e) {
+			throw new DeliveryException("Constraint Violation");
+		}
+	}
 
 	private Supplier getSuppliersById(Long id) {
 		return this.getClassByProperty("id", id, Supplier.class);
@@ -86,7 +100,7 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 		return this.getClassListByProperty("name", name, Supplier.class);
 	}
 	
-	public Product saveProduct(Product newProduct) {
+	public Product saveProduct(Product newProduct) throws DeliveryException{
 		Long newProductId = this.saveClass(newProduct);
 		Optional<Product> p = this.getProductById(newProductId);
 		try {
@@ -102,7 +116,7 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 		return this.getOptionalById(id, Product.class);
 	}
 	
-	public ProductType saveProductType(ProductType newProductType) {
+	public ProductType saveProductType(ProductType newProductType) throws DeliveryException{
 		Long newProductTypeId = this.saveClass(newProductType);
 		Optional<ProductType> p = this.getProductTypeById(newProductTypeId);
 		try {
@@ -127,5 +141,72 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 	    ProductType answer = query.getSingleResult();
 	    return answer.getProducts();    
 	}
+
+	public Order saveOrder(Order newOrder) throws DeliveryException {
+		try {
+			Long newOrderId = this.saveClass(newOrder);
+			return this.getOrderById(newOrderId).get();
+		} catch (PersistenceException  e) {
+			throw new DeliveryException("Constraint Violation");
+		}
+	}
+
+	public Optional<Order> getOrderById(Long id) {
+		return this.getOptionalById(id, Order.class);
+	}
+	
+	public List<Product>  getProductsbyName(String name){
+		//return this.getSimilarsByProperty("name", name, Product.class);
+		String queryString = "FROM Product as p WHERE p.name like :name"; 
+		return (List<Product>) sessionFactory.getCurrentSession().createQuery(queryString).setParameter("name",'%'+name+'%').list();
+	}
+	
+	public List<Product>  getProductsbyType(String type){
+		//a revisar consulta o relación Many to Many
+		String queryString = "SELECT p FROM Product p"
+				+ "    JOIN p.types t"
+				+ "    WHERE t.name = :type";
+		return (List<Product>) sessionFactory.getCurrentSession().createQuery(queryString).setParameter("type",type).list();
+	}
+	
+	public Product updateProductPrice(Long id, float price) throws DeliveryException {
+		try {
+		Product product = this.getProductById(id).get();
+		product.setPrice(price);
+		product.setLastPriceUpdateDate(new Date());
+		sessionFactory.getCurrentSession().update(product);
+		return product;
+		}
+		catch (NoSuchElementException e)
+		{throw new DeliveryException("No existe el producto a actualizar");}
+	}
+	
+	public boolean addDeliveryManToOrder(Long order, DeliveryMan deliveryMan) throws DeliveryException{
+		try {
+			Order anOrder = this.getOrderById(order).get();
+			System.out.print(deliveryMan.isFree() +" , "+ anOrder.isDelivered() +" , "+ ((anOrder.getItems() == null)||(anOrder.getItems().isEmpty())));
+			if (deliveryMan.isFree() && !anOrder.isDelivered() && !((anOrder.getItems() == null))) {
+			anOrder.setDeliveryMan(deliveryMan);
+			sessionFactory.getCurrentSession().update(anOrder);
+			return true;
+			}
+			return false;
+		} catch (NoSuchElementException e) {
+			throw new DeliveryException("No existe la orden");
+		}
+	}
+	
+	
+	public Item addItemToOrder( Long order, Product product,  int quantity, String description ) throws DeliveryException{
+		try {
+			Order anOrder = this.getOrderById(order).get();
+			Item newItem = new Item(quantity, description, anOrder, product);
+			return this.saveItem(newItem);
+		}catch(PersistenceException e) {
+			throw new DeliveryException("");
+		}
+	}
+	
+	
 
 }

@@ -168,26 +168,38 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @param client cliente que realizó el pedido
 	 * @param address dirección en la cual se debe entregar el pedido
 	 * @return el nuevo pedido
-	 
-	public Order createOrder(int number, Date dateOfOrder, String comments, Client client,  Address address) throws DeliveryException;
+	 */
+	public Order createOrder(int number, Date dateOfOrder, String comments, Client client,  Address address) throws DeliveryException {
+		Order newOrder = new Order(number, dateOfOrder, comments, client, address);
+		try {
+			return delivery_repo.saveOrder(newOrder);
+		} catch (DeliveryException de) {
+			throw de;
+		}
+	}
 	/**
 	 * Obtiene el pedido por id
 	 * @param id
 	 * @return el pedido con el id provisto
-	 
-	public Optional<Order> getOrderById(Long id);
+	 */
+
+	public Optional<Order> getOrderById(Long id) {
+		return delivery_repo.getOrderById(id);
+	}
 	/**
 	 * Crea y retorna un nuevo tipo de producto
 	 * @param name nombre del tipo de producto
 	 * @param description descripcion del tipo de producto
 	 * @return el nuevo tipo de producto
 	  **/
-	public ProductType createProductType(String name, String description) throws DeliveryException {
-		ProductType newProductType = new ProductType(name, description) ;
-		return delivery_repo.saveProductType(newProductType);
+	public ProductType createProductType(String name, String description) throws DeliveryException{
+		ProductType newProductType = new ProductType(name, description);
+		try {
+			return delivery_repo.saveProductType(newProductType);
+		} catch (DeliveryException de) {
+			throw de;
+		}
 	}
-	
-	
 	/**
 	 *  Crea y devuelve un nuevo Producto.
 	 * @param name nombre del producto a ser creado
@@ -198,12 +210,21 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @param types listado de los tipos del producto
 	 * @return el producto creado
 	  **/
-	
+
 	public Product createProduct(String name, float price, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException {
-		Product newProduct = new Product(name, price, weight, description, supplier, types);
-		return delivery_repo.saveProduct(newProduct);
+		Product newProduct = new Product();
+		newProduct.setName(name);
+		newProduct.setPrice(price);
+		newProduct.setWeight(weight);
+		newProduct.setDescription(description);
+		newProduct.setSupplier(supplier);
+		newProduct.setTypes(types);
+		try {
+			return delivery_repo.saveProduct(newProduct);
+		} catch (DeliveryException de) {
+			throw de;
+		}
 	}
-	
 	/**
 	 *  Crea y devuelve un nuevo Producto.
 	 * @param name nombre del producto a ser creado
@@ -216,9 +237,13 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @return el producto creado
 	  **/
 	
-	public Product createProduct(String name, float price, Date lastPriceUpdateDate, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException {
+	public Product createProduct(String name, float price, Date lastPriceUpdateDate, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException{
 		Product newProduct = new Product(name, price, lastPriceUpdateDate, weight, description, supplier, types);
-		return delivery_repo.saveProduct(newProduct);
+		try {
+			return delivery_repo.saveProduct(newProduct);
+		} catch (DeliveryException de) {
+			throw de;
+		}
 	}
 	
 	/**
@@ -229,7 +254,6 @@ public class DeliveryServiceImpl implements DeliveryService{
 	public Optional<Product> getProductById(Long id) {
 		return delivery_repo.getProductById(id);
 	}
-	
 	/**
 	 * Obtiene el listado de productos que su nombre contega el string dado
 	 * @param name string a buscar
@@ -255,7 +279,14 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @return el producto modificado
 	 * @throws DeliveryException en caso de que no exista el producto para el id dado
 	  *
-	public Product updateProductPrice(Long id, float price) throws DeliveryException;
+	  */
+	public Product updateProductPrice(Long id, float price) throws DeliveryException{
+		try {
+			return delivery_repo.updateProductPrice(id, price);
+		} catch(DeliveryException de) {
+			throw de;
+		}
+	}
 	/**
 	 * Asigna un repartidor a una orden
 	 * Se debe verificar si el repartidor esta libre y si la orden no fue entregada
@@ -263,8 +294,17 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @param deliveryMan repartidor a asignar
 	 * @return retorna si se pudo hacer la asignación
 	 * @throws DeliveryException en caso de no existir el numero de orden
-	  *
-	public boolean addDeliveryManToOrder(Long order, DeliveryMan deliveryMan) throws DeliveryException;
+	  * 
+	 */
+	
+	public boolean addDeliveryManToOrder(Long order, DeliveryMan deliveryMan) throws DeliveryException{
+		try {
+			return delivery_repo.addDeliveryManToOrder(order, deliveryMan);
+		}catch(DeliveryException de) {
+			throw de;
+		}
+	}
+
 	/**
 	 * Registra que la orden fue entregada y libera al repartidor
 	 * @param order id de la orden a actualizar
@@ -287,7 +327,13 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @param product producto a agregar
 	 * @return el pedido con el nuevo producto
 	 * @throws DeliveryException en caso de no existir el pedido
-	  *
-	public Item addItemToOrder( Long order, Product product,  int quantity, String description ) throws DeliveryException;
-*/
+	 */
+	public Item addItemToOrder( Long order, Product product,  int quantity, String description ) throws DeliveryException{
+		try {
+			return delivery_repo.addItemToOrder(order, product, quantity, description);
+		}catch(DeliveryException de) {
+			throw de;
+		}
+	}
+
 }

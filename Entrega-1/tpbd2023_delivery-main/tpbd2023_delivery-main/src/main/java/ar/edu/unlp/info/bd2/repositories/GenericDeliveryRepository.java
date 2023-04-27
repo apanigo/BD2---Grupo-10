@@ -24,6 +24,14 @@ public abstract class GenericDeliveryRepository {
 	    query.setParameter("value", value);
 	    return Optional.ofNullable(query.uniqueResult());
     }
+	
+	protected <T> List<T> getSimilarsByProperty(String propertyName, Object propertyValue, Class<T> entityClass) {
+		String queryString = "FROM " + entityClass.getName() + " WHERE " + propertyName + " LIKE '%:propertyValue%'";
+	    Query<T> query = this.sessionFactory.getCurrentSession().createQuery(queryString, entityClass);
+	    query.setParameter("propertyValue", propertyValue);
+	    List<T> resultList = query.getResultList();
+	    return  resultList;
+    }
 
 	protected <T> T getClassByProperty(String property, Object value, Class<T> entityClass) {
 		String hql = "FROM " + entityClass.getName() + " WHERE " + property + " = :value";

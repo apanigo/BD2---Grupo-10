@@ -9,20 +9,13 @@ import java.util.List;
 @Table(name = "client")
 public class Client extends User{
 	
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
-    
     @Column(name = "dateOfRegister")
     private Date dateOfRegister;
 
-    @OneToMany
-    @Column(name = "addresses")
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addresses = new ArrayList<>();
 
-    @OneToMany
-    @Column(name = "orders")
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> orders = new ArrayList<>();
     
     public Client() {
@@ -34,9 +27,6 @@ public class Client extends User{
     	this.setDateOfRegister(new Date());
     }
 
-    public Long getId() {
-        return id;
-    }
     public Date getDateOfRegister() {
         return dateOfRegister;
     }
@@ -63,6 +53,10 @@ public class Client extends User{
     
     public void setNewAddress(Address newAddress) {
     	this.addresses.add(newAddress);
+    }
+
+    public void setNewOrder(Order newOrder) {
+        this.orders.add(newOrder);
     }
 
 

@@ -4,7 +4,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class User {
 	
 	@Id
@@ -86,6 +86,10 @@ public abstract class User {
     
     public Long getId() {
     	return id;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }

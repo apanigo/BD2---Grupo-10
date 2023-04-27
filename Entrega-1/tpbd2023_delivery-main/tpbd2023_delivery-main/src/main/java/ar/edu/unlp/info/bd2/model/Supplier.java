@@ -2,13 +2,7 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "supplier")
@@ -34,7 +28,7 @@ public class Supplier {
 	@Column(name="coordY")
     private float coordY;
 
-	@OneToMany(mappedBy="supplier")
+	@OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
 
 
