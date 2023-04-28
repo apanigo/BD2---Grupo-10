@@ -13,11 +13,6 @@ public abstract class GenericDeliveryRepository {
 	@Autowired
 	SessionFactory sessionFactory;
 	
-	
-	protected <T> Long saveClass(T model) {
-	    return (Long) this.sessionFactory.getCurrentSession().save(model);
-	}
-	
 	protected <T> Optional<T> getOptionalByProperty(String property, Object value, Class<T> entityClass) {
 		String hql = "FROM " + entityClass.getName() + " WHERE " + property + " = :value";
 	    Query<T> query = this.sessionFactory.getCurrentSession().createQuery(hql, entityClass);

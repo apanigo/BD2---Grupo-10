@@ -31,7 +31,8 @@ public class DeliveryServiceImpl implements DeliveryService{
 	*/
 	public Client createClient(String name, String username, String password, String email, Date dateOfBirth) throws DeliveryException{
 		Client newClient =  new Client(name, username, password, email, dateOfBirth);
-		return delivery_repo.saveClient(newClient);
+		delivery_repo.saveClass(newClient);
+		return newClient;
 	}
 
 	/**
@@ -47,7 +48,8 @@ public class DeliveryServiceImpl implements DeliveryService{
 	public DeliveryMan createDeliveryMan(String name, String username, String password, String email, Date dateOfBirth) throws DeliveryException{
 		DeliveryMan newDeliveryMan = new DeliveryMan(name, username, password, email, dateOfBirth);
 		try {
-			return delivery_repo.saveDeliveryMan(newDeliveryMan);
+			delivery_repo.saveClass(newDeliveryMan);
+			return newDeliveryMan;
 		} catch (DeliveryException de) {
 			throw de;
 		}
@@ -107,7 +109,8 @@ public class DeliveryServiceImpl implements DeliveryService{
 	public Address createAddress(String name, String address, String apartment, float coordX, float coordY, String description, Client client) throws DeliveryException{
 		Address newAddress = new Address(name, address, apartment, coordX, coordY, description, client);
 		try {
-			return delivery_repo.saveAddress(newAddress);
+			delivery_repo.saveClass(newAddress);
+			return newAddress;
 		} catch (DeliveryException de) {
 			throw de;
 		}
@@ -126,7 +129,8 @@ public class DeliveryServiceImpl implements DeliveryService{
 	public Address createAddress(String name, String address, float coordX, float coordY, String description, Client client) throws DeliveryException {
 		Address newAddress = new Address(name, address, coordX, coordY, description, client);
 		try {
-			return delivery_repo.saveAddress(newAddress);
+			delivery_repo.saveClass(newAddress);
+			return newAddress;
 		} catch (DeliveryException de) {
 			throw de;
 		}
@@ -144,7 +148,8 @@ public class DeliveryServiceImpl implements DeliveryService{
 	public Supplier createSupplier(String name, String cuil, String address, float coordX, float coordY) throws DeliveryException {
 		Supplier newSupplier = new Supplier(name, cuil, address, coordX, coordY); 
 		try {
-			return delivery_repo.saveSupplier(newSupplier);
+			delivery_repo.saveClass(newSupplier);
+			return newSupplier;
 		} catch (DeliveryException de) {
 			throw de;
 		}
@@ -172,7 +177,8 @@ public class DeliveryServiceImpl implements DeliveryService{
 	public Order createOrder(int number, Date dateOfOrder, String comments, Client client,  Address address) throws DeliveryException {
 		Order newOrder = new Order(number, dateOfOrder, comments, client, address);
 		try {
-			return delivery_repo.saveOrder(newOrder);
+			delivery_repo.saveClass(newOrder);
+			return newOrder;
 		} catch (DeliveryException de) {
 			throw de;
 		}
@@ -195,7 +201,8 @@ public class DeliveryServiceImpl implements DeliveryService{
 	public ProductType createProductType(String name, String description) throws DeliveryException{
 		ProductType newProductType = new ProductType(name, description);
 		try {
-			return delivery_repo.saveProductType(newProductType);
+			delivery_repo.saveClass(newProductType);
+			return newProductType;
 		} catch (DeliveryException de) {
 			throw de;
 		}
@@ -214,7 +221,8 @@ public class DeliveryServiceImpl implements DeliveryService{
 	public Product createProduct(String name, float price, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException {
 		Product newProduct = new Product(name, price, weight, description, supplier, types);
 		try {
-			return delivery_repo.saveProduct(newProduct);
+			delivery_repo.saveClass(newProduct);
+			return newProduct;
 		} catch (DeliveryException de) {
 			throw de;
 		}
@@ -234,7 +242,8 @@ public class DeliveryServiceImpl implements DeliveryService{
 	public Product createProduct(String name, float price, Date lastPriceUpdateDate, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException{
 		Product newProduct = new Product(name, price, lastPriceUpdateDate, weight, description, supplier, types);
 		try {
-			return delivery_repo.saveProduct(newProduct);
+			delivery_repo.saveClass(newProduct);
+			return newProduct;
 		} catch (DeliveryException de) {
 			throw de;
 		}

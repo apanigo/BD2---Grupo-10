@@ -58,7 +58,7 @@ public class Product {
         this.supplier = supplier;
         this.types = types;
 
-        // C
+        // populate product_types
         for (ProductType type : types) {
             type.addProducts(this);
         }
@@ -72,7 +72,7 @@ public class Product {
         this.supplier = supplier;
         this.types = types;
 
-        // C
+        // populate product_types
         for (ProductType type : types) {
             type.addProducts(this);
         }
