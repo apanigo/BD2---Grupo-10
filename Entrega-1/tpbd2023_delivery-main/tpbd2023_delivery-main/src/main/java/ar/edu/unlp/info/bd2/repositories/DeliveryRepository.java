@@ -4,19 +4,25 @@ import ar.edu.unlp.info.bd2.DeliveryException;
 import ar.edu.unlp.info.bd2.model.*;
 
 import org.hibernate.PersistentObjectException;
+import org.hibernate.SessionFactory;
 import org.hibernate.exception.*;
 import org.hibernate.hql.internal.ast.QuerySyntaxException;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.io.Serializable;
 import java.util.*;
 
-import javax.persistence.NoResultException;
-import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceException;
+import javax.persistence.*;
 
 @Repository
-public class DeliveryRepository extends GenericDeliveryRepository{
+public class DeliveryRepository {
 
+	@Autowired
+	SessionFactory sessionFactory;
+
+	// metodos genericos
 	public <T> void saveClass(T model) throws DeliveryException {
 		try {
 			this.sessionFactory.getCurrentSession().save(model);
@@ -51,60 +57,40 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 		}
 	}
 
-	public Client getClientById(long id) {
-		return this.getClassByProperty("id", id, Client.class); //tiene sentido esto o mejor hacerlo directo en service? no esta mal
+	public <T> T getClassByProperty(String property, Object value, Class<T> entityClass) {
+		String hql = "FROM " + entityClass.getName() + " WHERE " + property + " = :value";
+		Query<T> query = this.sessionFactory.getCurrentSession().createQuery(hql, entityClass);
+		query.setParameter("value", value);
+		return query.uniqueResult();
 	}
 
-	public DeliveryMan getDeliveryManById(long id) {
-		return this.getClassByProperty("id", id, DeliveryMan.class);
+	public <T> Optional<T> getOptionalByProperty(String property, Object value, Class<T> entityClass) {
+		String hql = "FROM " + entityClass.getName() + " WHERE " + property + " = :value";
+		Query<T> query = this.sessionFactory.getCurrentSession().createQuery(hql, entityClass);
+		query.setParameter("value", value);
+		return Optional.ofNullable(query.uniqueResult());
 	}
 
-	public Optional<User> getUserById (long id) {
-		return this.getOptionalById(id, User.class);
+	public <T> Optional<T> getOptionalById(Serializable id, Class<T> entityClass) {
+		T entity = sessionFactory.getCurrentSession().get(entityClass, id);
+		return Optional.ofNullable(entity);
 	}
 
-	public Optional<User> getUserByEmail (String email) {
-		return this.getOptionalByProperty("email", email, User.class);
+	public <T> List<T> getClassListByProperty(String property, Object value, Class<T> entityClass) {
+		String hql = "FROM " + entityClass.getName() + " WHERE " + property + " LIKE CONCAT('%',:value,'%')";
+		Query<T> query = this.sessionFactory.getCurrentSession().createQuery(hql, entityClass);
+		query.setParameter("value", value);
+		return query.getResultList();
 	}
 
-	public Optional<DeliveryMan> getFreeDeliveryMan() {
-		Boolean free = true;
-		return this.getOptionalByProperty("free", free, DeliveryMan.class);
+	public <T> List<T> getClassListByExactProperty(String propertyName, Object propertyValue, Class<T> entityClass) {
+		String queryString = "FROM " + entityClass.getName() + " WHERE " + propertyName + " = :propertyValue";
+		Query<T> query = this.sessionFactory.getCurrentSession().createQuery(queryString, entityClass);
+		query.setParameter("propertyValue", propertyValue);
+		return query.getResultList();
 	}
 
-	public DeliveryMan updateDeliveryMan(DeliveryMan aDeliveryMan) {
-		this.sessionFactory.getCurrentSession().update(aDeliveryMan);
-		return this.getDeliveryManById(aDeliveryMan.getId());
-	}
-
-	public Address getAddressById(long id) {
-		return this.getClassByProperty("id", id, Address.class);
-	}
-
-	public Item getItemById(long id) {
-		return this.getClassByProperty("id", id, Item.class);
-	}
-
-	private Supplier getSuppliersById(Long id) {
-		return this.getClassByProperty("id", id, Supplier.class);
-	}
-
-	public List<Supplier> getSupplierByName(String name) {
-		return this.getClassListByProperty("name", name, Supplier.class);
-	}
-
-	public Optional<Product> getProductById(Long id) {
-		return this.getOptionalById(id, Product.class);
-	}
-
-	public Optional<ProductType> getProductTypeById(Long id) {
-		return this.getOptionalById(id, ProductType.class);
-	}
-
-	public List<Product> getProductsByName(String name) {
-		return this.getClassListByProperty("name", name, Product.class);
-	}
-
+	// metodos para DeliveryServiceTest
 	public List<Product> getProductsByType(String type) throws DeliveryException {
 		String hql = "SELECT p FROM Product p JOIN p.types t WHERE t.name = :type";
 		Query<Product> query = this.sessionFactory.getCurrentSession().createQuery(hql, Product.class);
@@ -116,27 +102,26 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 		}
 	}
 
-	public Optional<Order> getOrderById(Long id) {
-		return this.getOptionalById(id, Order.class);
-	}
-
-
 	public Product updateProductPrice(Long id, float price) throws DeliveryException {
 		try {
-			Product product = this.getProductById(id).get();
+			Product product = this.getClassByProperty("id", id, Product.class);
 			product.setPrice(price);
 			product.setLastPriceUpdateDate(new Date());
 			this.updateClass(product);
 
 			return product;
-		} catch (NoSuchElementException e) {
-			throw new DeliveryException("No existe el producto a actualizar");
+		} catch (Exception e) {
+			if (e instanceof NoSuchElementException || e instanceof NullPointerException) {
+				throw new DeliveryException("No existe el producto a actualizar");
+			} else {
+				throw new DeliveryException("Hubo un error");
+			}
 		}
 	}
 
 	public boolean addDeliveryManToOrder(Long order, DeliveryMan deliveryMan) throws DeliveryException{
 		try {
-			Order anOrder = this.getOrderById(order).get();
+			Order anOrder = this.getClassByProperty("id", order, Order.class);
 			//System.out.print(deliveryMan.isFree() +" , "+ anOrder.isDelivered() +" , "+ ((anOrder.getItems() == null)||(anOrder.getItems().isEmpty())));
 			if (deliveryMan.isFree() && !anOrder.isDelivered() && !anOrder.getItems().isEmpty()) {
 				anOrder.setDeliveryMan(deliveryMan);
@@ -148,15 +133,19 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 				return true;
 			}
 			return false;
-		} catch (NoSuchElementException e) {
-			throw new DeliveryException("No existe la orden");
+		} catch (Exception e) {
+			if (e instanceof NoSuchElementException || e instanceof NullPointerException) {
+				throw new DeliveryException("No existe la orden");
+			} else {
+				throw new DeliveryException("Hubo un error");
+			}
 		}
 	}
 
 
 	public Item addItemToOrder(Long order, Product product, int quantity, String description) throws DeliveryException {
 		try {
-			Order anOrder = this.getOrderById(order).get();
+			Order anOrder = this.getClassByProperty("id", order, Order.class);
 			Item newItem = new Item(quantity, description, anOrder, product);
 			this.saveClass(newItem);
 
@@ -165,15 +154,18 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 			this.updateClass(anOrder);
 
 			return newItem;
-		} catch(PersistenceException e) {
-			throw new DeliveryException("");
+		} catch (Exception e) {
+			if (e instanceof NoSuchElementException || e instanceof NullPointerException) {
+				throw new DeliveryException("No existe la orden");
+			} else {
+				throw new DeliveryException("Hubo un error");
+			}
 		}
 	}
 
-
 	public boolean setOrderAsDelivered(Long order) throws DeliveryException {
 		try {
-			Order anOrder = this.getOrderById(order).get();
+			Order anOrder = this.getClassByProperty("id", order, Order.class);
 			if(anOrder.getDeliveryMan() != null){
 				anOrder.setDelivered(true);
 				this.updateClass(anOrder);
@@ -191,14 +183,18 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 				return true;
 			}
 			return false;
-		} catch (NoSuchElementException e) {
-			throw new DeliveryException("No existe la orden");
+		} catch (Exception e) {
+			if (e instanceof NoSuchElementException || e instanceof NullPointerException) {
+				throw new DeliveryException("No existe la orden");
+			} else {
+				throw new DeliveryException("Hubo un error");
+			}
 		}
 	}
 
 	public Qualification addQualificatioToOrder(Long order, String commentary) throws DeliveryException {
 		try {
-			Order anOrder = this.getOrderById(order).get();
+			Order anOrder = this.getClassByProperty("id", order, Order.class);
 
 			Qualification aQualification = new Qualification(5, commentary, anOrder);
 			this.saveClass(aQualification);
@@ -207,8 +203,12 @@ public class DeliveryRepository extends GenericDeliveryRepository{
 			this.updateClass(anOrder);
 
 			return aQualification;
-		} catch (NoSuchElementException e) {
-			throw new DeliveryException("No existe la orden");
+		} catch (Exception e) {
+			if (e instanceof NoSuchElementException || e instanceof NullPointerException) {
+				throw new DeliveryException("No existe la orden");
+			} else {
+				throw new DeliveryException("Hubo un error");
+			}
 		}
 	}
 }

@@ -31,8 +31,12 @@ public class DeliveryServiceImpl implements DeliveryService{
 	*/
 	public Client createClient(String name, String username, String password, String email, Date dateOfBirth) throws DeliveryException{
 		Client newClient =  new Client(name, username, password, email, dateOfBirth);
-		delivery_repo.saveClass(newClient);
-		return newClient;
+		try {
+			delivery_repo.saveClass(newClient);
+			return newClient;
+		} catch (DeliveryException de) {
+			throw de;
+		}
 	}
 
 	/**
@@ -62,7 +66,7 @@ public class DeliveryServiceImpl implements DeliveryService{
 	*/
 	
 	public Optional<User> getUserById(Long id){
-		return delivery_repo.getUserById(id);
+		return delivery_repo.getOptionalById(id, User.class);
 	}
 
 	/**
@@ -72,7 +76,7 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 */
 	
 	public Optional<User> getUserByEmail(String email){
-		return delivery_repo.getUserByEmail(email);
+		return delivery_repo.getOptionalByProperty("email", email, User.class);
 	}
 
 	/**
@@ -81,7 +85,8 @@ public class DeliveryServiceImpl implements DeliveryService{
 	*/
 	
 	public Optional<DeliveryMan> getAFreeDeliveryMan(){
-		return delivery_repo.getFreeDeliveryMan();
+		Boolean free = true;
+		return delivery_repo.getOptionalByProperty("free", free, DeliveryMan.class);
 	}
 
 	/**
@@ -90,8 +95,13 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @return el repartidor actualizo
 	*/
 	
-	public DeliveryMan updateDeliveryMan(DeliveryMan deliveryMan1) throws DeliveryException{
-		return delivery_repo.updateDeliveryMan(deliveryMan1);
+	public DeliveryMan updateDeliveryMan(DeliveryMan deliveryMan1) throws DeliveryException {
+		try{
+			delivery_repo.updateClass(deliveryMan1);
+			return deliveryMan1;
+		} catch(DeliveryException de) {
+			throw de;
+		}
 	}
 
 	/**
@@ -162,7 +172,7 @@ public class DeliveryServiceImpl implements DeliveryService{
 	  **/
 	
 	public List<Supplier> getSupplierByName(String name) {
-		return delivery_repo.getSupplierByName(name);
+		return delivery_repo.getClassListByProperty("name", name, Supplier.class);
 	}
 	
 	/**
@@ -190,7 +200,7 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 */
 
 	public Optional<Order> getOrderById(Long id) {
-		return delivery_repo.getOrderById(id);
+		return delivery_repo.getOptionalById(id, Order.class);
 	}
 	/**
 	 * Crea y retorna un nuevo tipo de producto
@@ -255,7 +265,7 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @return el producto con el id provisto
 	  **/
 	public Optional<Product> getProductById(Long id) {
-		return delivery_repo.getProductById(id);
+		return delivery_repo.getOptionalById(id, Product.class);
 	}
 	/**
 	 * Obtiene el listado de productos que su nombre contega el string dado
@@ -263,7 +273,7 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @return Lista de productos
 	  **/
 	public List<Product> getProductByName(String name) {
-		return delivery_repo.getProductsByName(name);
+		return delivery_repo.getClassListByProperty("name", name, Product.class);
 	}
 	
 	/**
@@ -272,7 +282,12 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @return Lista de productos
 	  **/
 	public List<Product> getProductsByType(String type) throws DeliveryException {
-		return delivery_repo.getProductsByType(type);
+		try{
+			return delivery_repo.getProductsByType(type);
+		} catch(DeliveryException de) {
+			throw de;
+		}
+
 	}
 	
 	/**
