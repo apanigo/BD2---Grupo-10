@@ -95,10 +95,10 @@ public class DeliveryServiceImpl implements DeliveryService{
 	 * @return el repartidor actualizo
 	*/
 	
-	public DeliveryMan updateDeliveryMan(DeliveryMan deliveryMan1) throws DeliveryException {
+	public DeliveryMan updateDeliveryMan(DeliveryMan newDeliveryMan) throws DeliveryException {
 		try{
-			delivery_repo.updateClass(deliveryMan1);
-			return deliveryMan1;
+			delivery_repo.updateClass(newDeliveryMan);
+			return newDeliveryMan;
 		} catch(DeliveryException de) {
 			throw de;
 		}
@@ -361,6 +361,24 @@ public class DeliveryServiceImpl implements DeliveryService{
 	public Item addItemToOrder( Long order, Product product,  int quantity, String description ) throws DeliveryException{
 		try {
 			return delivery_repo.addItemToOrder(order, product, quantity, description);
+		} catch(DeliveryException de) {
+			throw de;
+		}
+	}
+
+	public User updateUser(User newUser) throws DeliveryException {
+		try{
+			delivery_repo.updateClass(newUser);
+			return newUser;
+		} catch(DeliveryException de) {
+			throw de;
+		}
+	}
+
+	public Qualification updateQualification(Qualification newQualification) throws DeliveryException {
+		try{
+			delivery_repo.updateClass(newQualification);
+			return newQualification;
 		} catch(DeliveryException de) {
 			throw de;
 		}

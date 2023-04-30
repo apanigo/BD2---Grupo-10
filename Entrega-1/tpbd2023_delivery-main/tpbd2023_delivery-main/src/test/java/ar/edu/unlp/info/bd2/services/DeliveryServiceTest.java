@@ -281,9 +281,9 @@ public class DeliveryServiceTest {
 
 		Calendar cal3 = Calendar.getInstance();
 		Order order = this.service.createOrder(20, cal3.getTime(), "Una orden de prueba", client, address1);
-		assertFalse(this.service.addDeliveryManToOrder(order.getId(), deliveryMan));
+		assertFalse(this.service.addDeliveryManToOrder(order.getId(), deliveryMan)); // La orden no tiene items.
 		Item item = this.service.addItemToOrder(order.getId(), product1, 3, "");
-		assertFalse(this.service.addDeliveryManToOrder(order.getId(), deliveryMan1));
+		assertFalse(this.service.addDeliveryManToOrder(order.getId(), deliveryMan1)); // El DM no esta free.
 		assertThrows(DeliveryException.class, () -> this.service.addDeliveryManToOrder(new Long(50), deliveryMan), "No existe la orden");
 		assertTrue(this.service.addDeliveryManToOrder(order.getId(), deliveryMan));
 		DeliveryMan updatedDeliveryMan = (DeliveryMan) this.service.getUserById(deliveryMan.getId()).orElse(null);
@@ -295,7 +295,7 @@ public class DeliveryServiceTest {
 		 * Finalizar una orden
 		 */
 		Order order2 = this.service.createOrder(30, cal3.getTime(), "Otra orden", client, address1);
-		assertFalse(this.service.setOrderAsDelivered(order2.getId()));
+		assertFalse(this.service.setOrderAsDelivered(order2.getId())); //No se puede finalizar una orden no asignada
 		Long idDM = updatedOrder.getDeliveryMan().getId();
 		assertTrue(this.service.setOrderAsDelivered(updatedOrder.getId()));
 		DeliveryMan updatedDM = (DeliveryMan) this.service.getUserById(idDM).orElse(null);
@@ -316,7 +316,7 @@ public class DeliveryServiceTest {
 		Client client = this.service.createClient("Juan Perez", "jperez4", "1234", "jperez4@gmail.com", dob2);
 		Address address1 = this.service.createAddress("Direccion 1", "Calle 50 y 120", 23.595f, 65.854f, "Direccion Facultad", client);
 		ProductType productType1 = this.service.createProductType("Kiosco", "Productos de kiosco, como golosinas, alfajores, etc.");
-		Supplier supplier1 = this.service.createSupplier("Kibosco 5", "30801112225", "Calle 51 esq 10", -34.917995f, -57.952061f);
+		Supplier supplier1 = this.service.createSupplier("Kiosco 5", "30801112225", "Calle 51 esq 10", -34.917995f, -57.952061f);
 		Product product1 = this.service.createProduct("Alfajor de Fruta", 180f, 80f, "Alfajor Triple relleno de fruta", supplier1, new ArrayList<ProductType>(Arrays.asList(productType1)));
 		Calendar cal3 = Calendar.getInstance();
 		Order order = this.service.createOrder(20, cal3.getTime(), "Ultima orden de prueba", client, address1);
