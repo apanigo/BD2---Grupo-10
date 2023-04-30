@@ -3,6 +3,7 @@ package ar.edu.unlp.info.bd2.repositories;
 import ar.edu.unlp.info.bd2.DeliveryException;
 import ar.edu.unlp.info.bd2.model.*;
 
+import javassist.NotFoundException;
 import org.hibernate.PersistentObjectException;
 import org.hibernate.SessionFactory;
 import org.hibernate.exception.*;
@@ -210,5 +211,12 @@ public class DeliveryRepository {
 				throw new DeliveryException("Hubo un error");
 			}
 		}
+	}
+
+	public List<User> getTopNUserWithMoreScore(int n) {
+		String hql = "FROM User u ORDER BY u.score DESC";
+		Query<User> query = this.sessionFactory.getCurrentSession().createQuery(hql, User.class);
+		query.setMaxResults(n);
+		return query.getResultList();
 	}
 }
