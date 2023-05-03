@@ -10,25 +10,25 @@ public class Supplier {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column(name = "id_supplier")
 	private Long id;
 	
-	@Column(name="name")
+	@Column(name="name", nullable = false, length = 20, unique = false, updatable = true)
     private String name;
 
-	@Column(name="cuit", unique=true)
+	@Column(name="cuit", nullable = false, length = 20, unique = true, updatable = false)
     private String cuit;
 
-	@Column(name="address")
+	@Column(name="address", nullable = false, length = 20, unique = false, updatable = true)
     private String address;
 
-	@Column(name="coordX")
+	@Column(name="coord_x", nullable = false, unique = false, updatable = true)
     private float coordX;
 
-	@Column(name="coordY")
+	@Column(name="coord_y", nullable = false, unique = false, updatable = true)
     private float coordY;
 
-	@OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
     private List<Product> products;
 
 

@@ -12,35 +12,28 @@ public class Product {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id_product")
 	private Long id;
 
-	@Column(name="name")
+	@Column(name="name", nullable = false, length = 50, unique = false, updatable = true)
     private String name;
 
-	@Column(name="price")
+	@Column(name="price", nullable = false, unique = false, updatable = true)
     private float price;
 
-	@Column(name="last_price_update_date")
+	@Column(name="last_price_update_date", nullable = false, unique = false, updatable = true)
     private Date lastPriceUpdateDate;
 
-	@Column(name="weight")
+	@Column(name="weight", nullable = false, unique = false, updatable = true)
     private float weight;
 
-	@Column(name="description")
+	@Column(name="description", nullable = false, length = 100, unique = false, updatable = true)
     private String description;
 
 	@ManyToOne
-	@JoinColumn(name="supplier")
+	@JoinColumn(name="supplier", nullable = false, unique = false, updatable = true)
     private Supplier supplier;
 
-	// CAMBIAR
-	/*
-	 * LA TABLA TIENE QUE ESTAR DEL LADO DE PRODUCT TYPE OSEA INVERTIR LO QUE HAY EN AMBAS LISTAS DE CADA MODELO - done
-	 * PARA LA CONSULTA DE OBTENER PRODUCTOS DEBERIAMOS RECORRER LA LISTA DE TIPOS Y ENCONTRAR LAS DEL TIPO PASADO COMO PARAMETRO
-	 * DESPUES HACER UN GETSESULTLIST Y MANDARLE AL RETURN LA LISTA DE PRODUCTOS :====ssdADSA
-	 */
-	// https://www.adictosaltrabajo.com/2020/04/02/hibernate-onetoone-onetomany-manytoone-y-manytomany/
     @ManyToMany(mappedBy = "products")
     private List<ProductType> types;
 
@@ -57,27 +50,7 @@ public class Product {
         this.description = description;
         this.supplier = supplier;
         this.types = types;
-
-        // populate product_types
-        for (ProductType type : types) {
-            type.addProducts(this);
-        }
     }
-
-    public Product(String name, float price, float weight, String description, Supplier supplier, List<ProductType> types) {
-        this.name = name;
-        this.price = price;
-        this.weight = weight;
-        this.description = description;
-        this.supplier = supplier;
-        this.types = types;
-
-        // populate product_types
-        for (ProductType type : types) {
-            type.addProducts(this);
-        }
-    }
-
 
     public Long getId() {
 		return this.id;

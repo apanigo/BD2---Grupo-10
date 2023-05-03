@@ -73,7 +73,10 @@ public class DeliveryRepository {
 	}
 
 	public <T> Optional<T> getOptionalById(Serializable id, Class<T> entityClass) {
-		T entity = sessionFactory.getCurrentSession().get(entityClass, id);
+		String hql = "FROM " + entityClass.getName() + " WHERE id = :id";
+		Query<T> query = this.sessionFactory.getCurrentSession().createQuery(hql, entityClass);
+		query.setParameter("id", id);
+		T entity = query.getSingleResult();
 		return Optional.ofNullable(entity);
 	}
 

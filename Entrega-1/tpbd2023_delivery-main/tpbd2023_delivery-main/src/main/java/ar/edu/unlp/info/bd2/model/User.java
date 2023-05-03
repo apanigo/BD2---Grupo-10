@@ -4,27 +4,44 @@ import java.util.Date;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "user")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 public abstract class User {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_user")
     private Long id;
-    
+
+    @Column(name = "name", nullable = false, length = 20, unique = false, updatable = true)
     private String name;
 
+    @Column(name = "username", nullable = false, length = 10, unique = false, updatable = true)
     private String username;
 
+    @Column(name = "password", nullable = false, length = 15, unique = false, updatable = true)
     private String password;
 
-    @Column(unique=true)
+    @Column(name = "email", nullable = false, length = 50, unique = true, updatable = true)
     private String email;
 
+    @Column(name = "date_of_birth", nullable = false, unique = false, updatable = true)
     private Date dateOfBirth;
 
+    @Column(name = "score", nullable = false, unique = false, updatable = true)
     private int score;
 
     public User() {
+    }
+
+    public User(String name, String username, String password, String email, Date dateOfBirth, int score) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+        this.score = score;
     }
 
     public User(String name, String username, String password, String email, Date dateOfBirth) {

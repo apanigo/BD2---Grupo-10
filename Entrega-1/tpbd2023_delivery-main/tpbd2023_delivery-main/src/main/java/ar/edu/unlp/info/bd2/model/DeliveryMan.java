@@ -2,30 +2,32 @@ package ar.edu.unlp.info.bd2.model;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "deliveryMan")
+@DiscriminatorValue("DM")
 public class DeliveryMan extends User{
 	
-	@Column(name = "number_of_success_orders")
+	@Column(name = "number_of_success_orders", nullable = true, unique = false, updatable = true)
     private int numberOfSuccessOrders;
 
-	@Column(name = "date_of_admission")
+	@Column(name = "date_of_admission", nullable = true, unique = false, updatable = false)
     private Date dateOfAdmission;
 
-	@Column(name = "free")
+	@Column(name = "free", nullable = true, unique = false, updatable = true)
     private boolean free;
 
 
 	public DeliveryMan() {
 		
 	}
+
+    public DeliveryMan(String name, String username, String password, String email, Date dateOfBirth, int score) {
+        super(name, username, password, email, dateOfBirth, score);
+        this.numberOfSuccessOrders = 0;
+        this.dateOfAdmission = new Date();
+        this.free = true;
+    }
     
     public DeliveryMan(String name, String username, String password, String email, Date dateOfBirth) {
     	super(name, username, password, email, dateOfBirth);

@@ -6,18 +6,18 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "productType")
+@Table(name = "product_type")
 public class ProductType {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column(name = "id_product_type")
 	private Long id;
 	
-	@Column(name = "name", unique=true)
+	@Column(name = "name", nullable = false, unique = true, updatable = true)
     private String name;
 
-	@Column(name = "description")
+	@Column(name = "description", nullable = false, length = 100, unique = false, updatable = true)
     private String description;
 
     @ManyToMany(cascade = CascadeType.ALL)

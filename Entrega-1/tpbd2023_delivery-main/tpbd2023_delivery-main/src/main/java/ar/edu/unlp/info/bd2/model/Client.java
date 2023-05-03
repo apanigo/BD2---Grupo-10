@@ -2,29 +2,37 @@ package ar.edu.unlp.info.bd2.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "client")
+@DiscriminatorValue("C")
 public class Client extends User{
 	
-    @Column(name = "date_of_register")
+    @Column(name = "date_of_register", nullable = true, unique = false, updatable = false)
     private Date dateOfRegister;
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Address> addresses = new ArrayList<>();
 
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
     
     public Client() {
     	
     }
+
+    public Client(String name, String username, String password, String email, Date dateOfBirth, int score) {
+        super(name, username, password, email, dateOfBirth, score);
+        Calendar calendar = Calendar.getInstance();
+        this.dateOfRegister = calendar.getTime();
+    }
     
     public Client(String name, String username, String password, String email, Date dateOfBirth) {
     	super(name, username, password, email, dateOfBirth);
-    	this.setDateOfRegister(new Date());
+        Calendar calendar = Calendar.getInstance();
+        this.dateOfRegister = calendar.getTime();
     }
 
     public Date getDateOfRegister() {

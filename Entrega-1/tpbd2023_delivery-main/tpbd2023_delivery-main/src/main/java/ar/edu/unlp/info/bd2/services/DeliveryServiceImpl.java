@@ -7,15 +7,16 @@ import ar.edu.unlp.info.bd2.repositories.DeliveryRepository;
 import org.springframework.stereotype.Service;
 
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsService {
-	
-	
-    private DeliveryRepository delivery_repo;
+
+
+	private DeliveryRepository delivery_repo;
     public DeliveryServiceImpl(DeliveryRepository repo){
         this.delivery_repo=repo;
     }
@@ -28,7 +29,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param email email del cliente
 	 * @param dateOfBirth fecha de nacimiento del cliente
 	 * @return el cliente creado
-	*/
+	 */
 	public Client createClient(String name, String username, String password, String email, Date dateOfBirth) throws DeliveryException{
 		Client newClient =  new Client(name, username, password, email, dateOfBirth);
 		try {
@@ -47,8 +48,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param email email del repartidor
 	 * @param dateOfBirth fecha de nacimiento del repartidor
 	 * @return el cliente creado
-	*/
-	
+	 */
+
 	public DeliveryMan createDeliveryMan(String name, String username, String password, String email, Date dateOfBirth) throws DeliveryException{
 		DeliveryMan newDeliveryMan = new DeliveryMan(name, username, password, email, dateOfBirth);
 		try {
@@ -63,8 +64,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * Obtiene el usuario (de cualqueir tipo) por id
 	 * @param id
 	 * @return el usuario con el id provisto
-	*/
-	
+	 */
+
 	public Optional<User> getUserById(Long id){
 		return delivery_repo.getOptionalById(id, User.class);
 	}
@@ -74,7 +75,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param email
 	 * @return el usuario con el email provisto
 	 */
-	
+
 	public Optional<User> getUserByEmail(String email){
 		return delivery_repo.getOptionalByProperty("email", email, User.class);
 	}
@@ -82,8 +83,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	/**
 	 * Obtiene un repartidor libre de manera aleatoria
 	 * @return el repartidor obtenido
-	*/
-	
+	 */
+
 	public Optional<DeliveryMan> getAFreeDeliveryMan(){
 		Boolean free = true;
 		return delivery_repo.getOptionalByProperty("free", free, DeliveryMan.class);
@@ -93,8 +94,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * Actualiza los datos de un repartido
 	 * @param deliveryMan1 el repartidor a actualizar
 	 * @return el repartidor actualizo
-	*/
-	
+	 */
+
 	public DeliveryMan updateDeliveryMan(DeliveryMan newDeliveryMan) throws DeliveryException {
 		try{
 			delivery_repo.updateClass(newDeliveryMan);
@@ -114,8 +115,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param description detalle que acompaña la direccion
 	 * @param client cliente dueño de la dirección
 	 * @return la nueva dirección de entrega
-	*/
-	
+	 */
+
 	public Address createAddress(String name, String address, String apartment, float coordX, float coordY, String description, Client client) throws DeliveryException{
 		Address newAddress = new Address(name, address, apartment, coordX, coordY, description, client);
 		try {
@@ -135,7 +136,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param description detalle que acompaña la direccion
 	 * @param client cliente dueño de la dirección
 	 * @return la nueva dirección de entrega**/
-	 
+
 	public Address createAddress(String name, String address, float coordX, float coordY, String description, Client client) throws DeliveryException {
 		Address newAddress = new Address(name, address, coordX, coordY, description, client);
 		try {
@@ -145,7 +146,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 			throw de;
 		}
 	}
-	
+
 	/**
 	 * Crea y retorna un nuevo Proveedor
 	 * @param name nombre del Proveedor
@@ -156,7 +157,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return el proveedor creado
 	 **/
 	public Supplier createSupplier(String name, String cuil, String address, float coordX, float coordY) throws DeliveryException {
-		Supplier newSupplier = new Supplier(name, cuil, address, coordX, coordY); 
+		Supplier newSupplier = new Supplier(name, cuil, address, coordX, coordY);
 		try {
 			delivery_repo.saveClass(newSupplier);
 			return newSupplier;
@@ -164,17 +165,17 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 			throw de;
 		}
 	}
-	
+
 	/**
 	 * Obtener y retornar los Suppliers con un nombre
 	 * @param name nombre a buscar
 	 * @return listado de Suppliers
-	  **/
-	
+	 **/
+
 	public List<Supplier> getSupplierByName(String name) {
 		return delivery_repo.getClassListByProperty("name", name, Supplier.class);
 	}
-	
+
 	/**
 	 * Crea y retorna un nuevo pedido
 	 * @param number numero de orden
@@ -193,6 +194,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 			throw de;
 		}
 	}
+
 	/**
 	 * Obtiene el pedido por id
 	 * @param id
@@ -202,12 +204,13 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	public Optional<Order> getOrderById(Long id) {
 		return delivery_repo.getOptionalById(id, Order.class);
 	}
+
 	/**
 	 * Crea y retorna un nuevo tipo de producto
 	 * @param name nombre del tipo de producto
 	 * @param description descripcion del tipo de producto
 	 * @return el nuevo tipo de producto
-	  **/
+	 **/
 	public ProductType createProductType(String name, String description) throws DeliveryException{
 		ProductType newProductType = new ProductType(name, description);
 		try {
@@ -217,6 +220,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 			throw de;
 		}
 	}
+
 	/**
 	 *  Crea y devuelve un nuevo Producto.
 	 * @param name nombre del producto a ser creado
@@ -226,10 +230,15 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param supplier el productor del producto
 	 * @param types listado de los tipos del producto
 	 * @return el producto creado
-	  **/
+	 **/
 
 	public Product createProduct(String name, float price, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException {
-		Product newProduct = new Product(name, price, weight, description, supplier, types);
+		Calendar calendar = Calendar.getInstance();
+		Product newProduct = new Product(name, price, calendar.getTime(), weight, description, supplier, types);
+		// populate product_types
+		for (ProductType type : types) {
+			type.addProducts(newProduct);
+		}
 		try {
 			delivery_repo.saveClass(newProduct);
 			return newProduct;
@@ -237,6 +246,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 			throw de;
 		}
 	}
+
 	/**
 	 *  Crea y devuelve un nuevo Producto.
 	 * @param name nombre del producto a ser creado
@@ -247,10 +257,13 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param supplier el productor del producto
 	 * @param types listado de los tipos del producto
 	 * @return el producto creado
-	  **/
-	
+	 **/
+
 	public Product createProduct(String name, float price, Date lastPriceUpdateDate, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException{
 		Product newProduct = new Product(name, price, lastPriceUpdateDate, weight, description, supplier, types);
+		for (ProductType type : types) {
+			type.addProducts(newProduct);
+		}
 		try {
 			delivery_repo.saveClass(newProduct);
 			return newProduct;
@@ -258,29 +271,30 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 			throw de;
 		}
 	}
-	
+
 	/**
 	 * Obtiene el producto por id
 	 * @param id
 	 * @return el producto con el id provisto
-	  **/
+	 **/
 	public Optional<Product> getProductById(Long id) {
 		return delivery_repo.getOptionalById(id, Product.class);
 	}
+
 	/**
 	 * Obtiene el listado de productos que su nombre contega el string dado
 	 * @param name string a buscar
 	 * @return Lista de productos
-	  **/
+	 **/
 	public List<Product> getProductByName(String name) {
 		return delivery_repo.getClassListByProperty("name", name, Product.class);
 	}
-	
+
 	/**
 	 * Obtiene el listado de productos que el nombre de alguno de sus tipo coincide con el string dado
 	 * @param type nombre del tipo
 	 * @return Lista de productos
-	  **/
+	 **/
 	public List<Product> getProductsByType(String type) throws DeliveryException {
 		try{
 			return delivery_repo.getProductsByType(type);
@@ -289,15 +303,15 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 		}
 
 	}
-	
+
 	/**
 	 * Actualiza el precio del producto guardando la fecha de la actualización.
 	 * @param id id del producto
 	 * @param price nuevo precio del producto
 	 * @return el producto modificado
 	 * @throws DeliveryException en caso de que no exista el producto para el id dado
-	  *
-	  */
+	 *
+	 */
 	public Product updateProductPrice(Long id, float price) throws DeliveryException{
 		try {
 			return delivery_repo.updateProductPrice(id, price);
@@ -305,6 +319,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 			throw de;
 		}
 	}
+
 	/**
 	 * Asigna un repartidor a una orden
 	 * Se debe verificar si el repartidor esta libre y si la orden no fue entregada
@@ -312,9 +327,9 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param deliveryMan repartidor a asignar
 	 * @return retorna si se pudo hacer la asignación
 	 * @throws DeliveryException en caso de no existir el numero de orden
-	  * 
+	 *
 	 */
-	
+
 	public boolean addDeliveryManToOrder(Long order, DeliveryMan deliveryMan) throws DeliveryException{
 		try {
 			return delivery_repo.addDeliveryManToOrder(order, deliveryMan);
@@ -328,7 +343,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param order id de la orden a actualizar
 	 * @return retorno si se pudo actualizar la orden
 	 * @throws DeliveryException en caso de no existir el numero de orden
-	  */
+	 */
 	public boolean setOrderAsDelivered(Long order) throws DeliveryException {
 		try {
 			return delivery_repo.setOrderAsDelivered(order);
@@ -336,6 +351,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 			throw de;
 		}
 	}
+
 	/**
 	 * Agrega una reseña a una orden
 	 * @param order id de orden sobre la que hace la reseña
@@ -350,6 +366,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 			throw de;
 		}
 	}
+
 	/**
 	 * agrega un item al pedido, es decir, una cantidad de un producto
 	 * @param order pedido al cual se le agrega el producto

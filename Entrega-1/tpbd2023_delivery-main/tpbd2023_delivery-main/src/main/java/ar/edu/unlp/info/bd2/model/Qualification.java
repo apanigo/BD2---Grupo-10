@@ -8,17 +8,17 @@ public class Qualification {
 
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column(name = "id_qualification")
 	private Long id;	
 	
-	@Column(name = "score")
+	@Column(name = "score", nullable = false, unique = false, updatable = false)
     private float score; //De 1 a 5 estrellas
 
-	@Column(name = "commentary")
+	@Column(name = "commentary", nullable = false, length = 30, unique = false, updatable = false)
     private String commentary;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_id", nullable = false, unique = false, updatable = false)
     private Order order;
 
     public Qualification() {

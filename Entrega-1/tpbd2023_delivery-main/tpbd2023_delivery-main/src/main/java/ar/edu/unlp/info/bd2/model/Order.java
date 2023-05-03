@@ -9,42 +9,42 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name = "Orders")
+@Table(name = "order_")
 public class Order {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column(name = "id_order")
 	private Long id;
 	
-	@Column(name = "number", unique = true)
+	@Column(name = "number", nullable = false, unique = true, updatable = false)
     private int number;
 
-	@Column(name = "date_of_order")
+	@Column(name = "date_of_order", nullable = false, unique = false, updatable = false)
     private Date dateOfOrder;
 
-	@Column(name = "comments")
+	@Column(name = "comments", nullable = true, length = 30, unique = false, updatable = false)
     private String comments;
 
-	@Column(name = "total_price")
+	@Column(name = "total_price", nullable = false, unique = false, updatable = false)
     private float totalPrice;
 
-	@Column(name = "delivered")
+	@Column(name = "delivered", nullable = false, unique = false, updatable = true)
     private boolean delivered;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "delivery_man_id")
+    @JoinColumn(name = "delivery_man_id", nullable = true, unique = false, updatable = true)
     private DeliveryMan deliveryMan;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "client_id", nullable = false, unique = false, updatable = false)
     private Client client;
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Qualification qualification;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "address_id", nullable = false, unique = false, updatable = false)
     private Address address;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -59,6 +59,7 @@ public class Order {
         this.address = address;
         this.delivered = false;
         this.items = new ArrayList<>();
+        this.totalPrice = 0;
     }
 
     public Order() {
