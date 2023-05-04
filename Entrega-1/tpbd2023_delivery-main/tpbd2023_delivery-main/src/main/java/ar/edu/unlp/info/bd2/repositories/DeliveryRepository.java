@@ -98,126 +98,14 @@ public class DeliveryRepository {
 		String hql = "SELECT p FROM Product p JOIN p.types t WHERE t.name = :type";
 		Query<Product> query = this.sessionFactory.getCurrentSession().createQuery(hql, Product.class);
 		query.setParameter("type", type);
-		if (query.getResultList().size() != 0) {
-			return query.getResultList();
-		} else {
-			throw new DeliveryException("No existe el tipo de producto");
-		}
+		return query.getResultList();
 	}
 
-	public Product updateProductPrice(Long id, float price) throws DeliveryException {
-		try {
-			Product product = this.getClassByProperty("id_product", id, Product.class);
-			product.setPrice(price);
-			product.setLastPriceUpdateDate(new Date());
-			this.updateClass(product);
-
-			return product;
-		} catch (Exception e) {
-			if (e instanceof NoSuchElementException || e instanceof NullPointerException) {
-				throw new DeliveryException("No existe el producto a actualizar");
-			} else {
-				throw new DeliveryException("Hubo un error");
-			}
-		}
-	}
-
-	public boolean addDeliveryManToOrder(Long order, DeliveryMan deliveryMan) throws DeliveryException{
-		try {
-			Order anOrder = this.getClassByProperty("id_order", order, Order.class);
-			//System.out.print(deliveryMan.isFree() +" , "+ anOrder.isDelivered() +" , "+ ((anOrder.getItems() == null)||(anOrder.getItems().isEmpty())));
-			if (deliveryMan.isFree() && !anOrder.isDelivered() && !anOrder.getItems().isEmpty()) {
-				anOrder.setDeliveryMan(deliveryMan);
-				this.updateClass(anOrder);
-
-				deliveryMan.setFree(false);
-				this.updateClass(deliveryMan);
-
-				return true;
-			}
-			return false;
-		} catch (Exception e) {
-			if (e instanceof NoSuchElementException || e instanceof NullPointerException) {
-				throw new DeliveryException("No existe la orden");
-			} else {
-				throw new DeliveryException("Hubo un error");
-			}
-		}
-	}
-
-
-	public Item addItemToOrder(Long order, Product product, int quantity, String description) throws DeliveryException {
-		try {
-			Order anOrder = this.getClassByProperty("id_order", order, Order.class);
-			Item newItem = new Item(quantity, description, anOrder, product);
-			this.saveClass(newItem);
-
-			anOrder.setTotalPrice(anOrder.getTotalPrice() + (product.getPrice() * quantity));
-			this.updateClass(anOrder);
-
-			return newItem;
-		} catch (Exception e) {
-			if (e instanceof NoSuchElementException || e instanceof NullPointerException) {
-				throw new DeliveryException("No existe la orden");
-			} else {
-				throw new DeliveryException("Hubo un error");
-			}
-		}
-	}
-
-	public boolean setOrderAsDelivered(Long order) throws DeliveryException {
-		try {
-			Order anOrder = this.getClassByProperty("id_order", order, Order.class);
-			if(anOrder.getDeliveryMan() != null){
-				anOrder.setDelivered(true);
-				this.updateClass(anOrder);
-
-				DeliveryMan aDeliveryMan = anOrder.getDeliveryMan();
-				aDeliveryMan.setNumberOfSuccessOrders(aDeliveryMan.getNumberOfSuccessOrders() + 1);
-				aDeliveryMan.setScore(aDeliveryMan.getNumberOfSuccessOrders());
-				aDeliveryMan.setFree(true);
-				this.updateClass(aDeliveryMan);
-
-				Client aClient = anOrder.getClient();
-				aClient.setScore(aClient.getScore() + 1);
-				this.updateClass(aClient);
-
-				return true;
-			}
-			return false;
-		} catch (Exception e) {
-			if (e instanceof NoSuchElementException || e instanceof NullPointerException) {
-				throw new DeliveryException("No existe la orden");
-			} else {
-				throw new DeliveryException("Hubo un error");
-			}
-		}
-	}
-
-	public Qualification addQualificatioToOrder(Long order, String commentary) throws DeliveryException {
-		try {
-			Order anOrder = this.getClassByProperty("id_order", order, Order.class);
-
-			Qualification aQualification = new Qualification(5, commentary, anOrder);
-			this.saveClass(aQualification);
-
-			anOrder.setQualification(aQualification);
-			this.updateClass(anOrder);
-
-			return aQualification;
-		} catch (Exception e) {
-			if (e instanceof NoSuchElementException || e instanceof NullPointerException) {
-				throw new DeliveryException("No existe la orden");
-			} else {
-				throw new DeliveryException("Hubo un error");
-			}
-		}
-	}
-
+	// metodos para DeliveryStatisticsServiceTest
 	public List<User> getTopNUserWithMoreScore(int n) {
 		String hql = "FROM User u ORDER BY u.score DESC";
 		Query<User> query = this.sessionFactory.getCurrentSession().createQuery(hql, User.class);
-		query.setMaxResults(n);
-		return query.getResultList();
+		return query.setMaxResults(n).getResultList();
 	}
+
 }

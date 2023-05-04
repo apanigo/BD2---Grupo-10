@@ -17,7 +17,7 @@ public abstract class User {
     @Column(name = "name", nullable = false, length = 20, unique = false, updatable = true)
     private String name;
 
-    @Column(name = "username", nullable = false, length = 10, unique = false, updatable = true)
+    @Column(name = "username", nullable = false, length = 20, unique = false, updatable = true)
     private String username;
 
     @Column(name = "password", nullable = false, length = 15, unique = false, updatable = true)

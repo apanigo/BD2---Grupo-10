@@ -92,7 +92,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 
 	/**
 	 * Actualiza los datos de un repartido
-	 * @param deliveryMan1 el repartidor a actualizar
+	 * @param newDeliveryMan el repartidor a actualizar
 	 * @return el repartidor actualizo
 	 */
 
@@ -296,10 +296,11 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return Lista de productos
 	 **/
 	public List<Product> getProductsByType(String type) throws DeliveryException {
-		try{
-			return delivery_repo.getProductsByType(type);
-		} catch(DeliveryException de) {
-			throw de;
+		List<Product> typeList = delivery_repo.getProductsByType(type);
+		if (typeList.size() != 0) {
+			return typeList;
+		} else {
+			throw new DeliveryException("No existe el tipo de producto");
 		}
 
 	}
@@ -313,10 +314,15 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 *
 	 */
 	public Product updateProductPrice(Long id, float price) throws DeliveryException{
-		try {
-			return delivery_repo.updateProductPrice(id, price);
-		} catch(DeliveryException de) {
-			throw de;
+		Product aProduct = delivery_repo.getClassByProperty("id_product", id, Product.class);
+		if (aProduct != null){
+			aProduct.setPrice(price);
+			aProduct.setLastPriceUpdateDate(new Date());
+			delivery_repo.updateClass(aProduct);
+
+			return aProduct;
+		} else {
+			throw new DeliveryException("No existe el producto a actualizar");
 		}
 	}
 
@@ -331,10 +337,20 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 */
 
 	public boolean addDeliveryManToOrder(Long order, DeliveryMan deliveryMan) throws DeliveryException{
-		try {
-			return delivery_repo.addDeliveryManToOrder(order, deliveryMan);
-		} catch(DeliveryException de) {
-			throw de;
+		Order anOrder = delivery_repo.getClassByProperty("id_order", order, Order.class);
+		if (anOrder != null){
+			if (deliveryMan.isFree() && !anOrder.isDelivered() && !anOrder.getItems().isEmpty()) {
+				anOrder.setDeliveryMan(deliveryMan);
+				delivery_repo.updateClass(anOrder);
+
+				deliveryMan.setFree(false);
+				delivery_repo.updateClass(deliveryMan);
+
+				return true;
+			}
+			return false;
+		} else {
+			throw new DeliveryException("No existe la orden");
 		}
 	}
 
@@ -345,10 +361,27 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @throws DeliveryException en caso de no existir el numero de orden
 	 */
 	public boolean setOrderAsDelivered(Long order) throws DeliveryException {
-		try {
-			return delivery_repo.setOrderAsDelivered(order);
-		} catch(DeliveryException de) {
-			throw de;
+		Order anOrder = delivery_repo.getClassByProperty("id_order", order, Order.class);
+		if (anOrder != null){
+			if(anOrder.getDeliveryMan() != null){
+				anOrder.setDelivered(true);
+				delivery_repo.updateClass(anOrder);
+
+				DeliveryMan aDeliveryMan = anOrder.getDeliveryMan();
+				aDeliveryMan.setNumberOfSuccessOrders(aDeliveryMan.getNumberOfSuccessOrders() + 1);
+				aDeliveryMan.setScore(aDeliveryMan.getNumberOfSuccessOrders());
+				aDeliveryMan.setFree(true);
+				delivery_repo.updateClass(aDeliveryMan);
+
+				Client aClient = anOrder.getClient();
+				aClient.setScore(aClient.getScore() + 1);
+				delivery_repo.updateClass(aClient);
+
+				return true;
+			}
+			return false;
+		} else {
+			throw new DeliveryException("No existe la orden");
 		}
 	}
 
@@ -360,11 +393,20 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @throws DeliveryException en caso de no existir el numero de orden
 	 **/
 	public Qualification addQualificatioToOrder(Long order, String commentary) throws DeliveryException {
-		try {
-			return delivery_repo.addQualificatioToOrder(order, commentary);
-		} catch(DeliveryException de) {
-			throw de;
+		Order anOrder = delivery_repo.getClassByProperty("id_order", order, Order.class);
+		if (anOrder != null){
+			Qualification newQualification = new Qualification(5, commentary, anOrder);
+
+			anOrder.setQualification(newQualification);
+
+			delivery_repo.saveClass(newQualification);
+			delivery_repo.updateClass(anOrder);
+
+			return newQualification;
+		} else {
+			throw new DeliveryException("No existe la orden");
 		}
+
 	}
 
 	/**
@@ -376,10 +418,17 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @throws DeliveryException en caso de no existir el pedido
 	 */
 	public Item addItemToOrder( Long order, Product product,  int quantity, String description ) throws DeliveryException{
-		try {
-			return delivery_repo.addItemToOrder(order, product, quantity, description);
-		} catch(DeliveryException de) {
-			throw de;
+		Order anOrder = delivery_repo.getClassByProperty("id_order", order, Order.class);
+		if (anOrder != null){
+			Item newItem = new Item(quantity, description, anOrder, product);
+			delivery_repo.saveClass(newItem);
+
+			anOrder.setTotalPrice(anOrder.getTotalPrice() + (product.getPrice() * quantity));
+			delivery_repo.updateClass(anOrder);
+
+			return newItem;
+		} else {
+			throw new DeliveryException("No existe la orden");
 		}
 	}
 

@@ -14,7 +14,7 @@ public class Address {
     @Column(name = "name", nullable = false, length = 20, unique = false, updatable = true)
     private String name;
 
-    @Column(name = "address", nullable = false, length = 20, unique = false, updatable = true)
+    @Column(name = "address", nullable = false, length = 50, unique = false, updatable = true)
     private String address;
 
     @Column(name = "apartment", nullable = true, length = 20, unique = false, updatable = true)
