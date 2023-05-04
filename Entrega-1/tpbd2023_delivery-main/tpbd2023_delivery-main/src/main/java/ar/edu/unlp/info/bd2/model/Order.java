@@ -55,7 +55,6 @@ public class Order {
         this.dateOfOrder = dateOfOrder;
         this.comments = comments;
         this.client = client;
-        this.client.setNewOrder(this);
         this.address = address;
         this.delivered = false;
         this.items = new ArrayList<>();

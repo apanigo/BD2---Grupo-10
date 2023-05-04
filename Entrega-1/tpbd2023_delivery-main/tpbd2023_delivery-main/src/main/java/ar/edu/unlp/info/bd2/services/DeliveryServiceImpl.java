@@ -5,6 +5,7 @@ import ar.edu.unlp.info.bd2.model.*;
 import ar.edu.unlp.info.bd2.repositories.DeliveryRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.Calendar;
@@ -21,6 +22,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
         this.delivery_repo=repo;
     }
 
+	// TP1
+
 	/**
 	 * Crea y retorna un usuario de tipo Cliente
 	 * @param name nombre y apellido del cliente
@@ -30,6 +33,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param dateOfBirth fecha de nacimiento del cliente
 	 * @return el cliente creado
 	 */
+	@Override
+	@Transactional
 	public Client createClient(String name, String username, String password, String email, Date dateOfBirth) throws DeliveryException{
 		Client newClient =  new Client(name, username, password, email, dateOfBirth);
 		try {
@@ -49,7 +54,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param dateOfBirth fecha de nacimiento del repartidor
 	 * @return el cliente creado
 	 */
-
+	@Override
+	@Transactional
 	public DeliveryMan createDeliveryMan(String name, String username, String password, String email, Date dateOfBirth) throws DeliveryException{
 		DeliveryMan newDeliveryMan = new DeliveryMan(name, username, password, email, dateOfBirth);
 		try {
@@ -65,7 +71,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param id
 	 * @return el usuario con el id provisto
 	 */
-
+	@Override
+	@Transactional
 	public Optional<User> getUserById(Long id){
 		return delivery_repo.getOptionalById("id_user", id, User.class);
 	}
@@ -75,7 +82,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param email
 	 * @return el usuario con el email provisto
 	 */
-
+	@Override
+	@Transactional
 	public Optional<User> getUserByEmail(String email){
 		return delivery_repo.getOptionalByProperty("email", email, User.class);
 	}
@@ -84,7 +92,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * Obtiene un repartidor libre de manera aleatoria
 	 * @return el repartidor obtenido
 	 */
-
+	@Override
+	@Transactional
 	public Optional<DeliveryMan> getAFreeDeliveryMan(){
 		Boolean free = true;
 		return delivery_repo.getOptionalByProperty("free", free, DeliveryMan.class);
@@ -95,11 +104,12 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param newDeliveryMan el repartidor a actualizar
 	 * @return el repartidor actualizo
 	 */
-
+	@Override
+	@Transactional
 	public DeliveryMan updateDeliveryMan(DeliveryMan newDeliveryMan) throws DeliveryException {
 		try{
 			delivery_repo.updateClass(newDeliveryMan);
-			return newDeliveryMan;
+			return delivery_repo.getOptionalById("id_user", newDeliveryMan.getId(), DeliveryMan.class).orElse(null);
 		} catch(DeliveryException de) {
 			throw de;
 		}
@@ -116,7 +126,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param client cliente dueño de la dirección
 	 * @return la nueva dirección de entrega
 	 */
-
+	@Override
+	@Transactional
 	public Address createAddress(String name, String address, String apartment, float coordX, float coordY, String description, Client client) throws DeliveryException{
 		Address newAddress = new Address(name, address, apartment, coordX, coordY, description, client);
 		try {
@@ -136,11 +147,13 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param description detalle que acompaña la direccion
 	 * @param client cliente dueño de la dirección
 	 * @return la nueva dirección de entrega**/
-
+	@Override
+	@Transactional
 	public Address createAddress(String name, String address, float coordX, float coordY, String description, Client client) throws DeliveryException {
 		Address newAddress = new Address(name, address, coordX, coordY, description, client);
 		try {
 			delivery_repo.saveClass(newAddress);
+			client.setNewAddress(newAddress);
 			return newAddress;
 		} catch (DeliveryException de) {
 			throw de;
@@ -156,6 +169,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param coordY coordeada Y de la dirección del Proveedor
 	 * @return el proveedor creado
 	 **/
+	@Override
+	@Transactional
 	public Supplier createSupplier(String name, String cuil, String address, float coordX, float coordY) throws DeliveryException {
 		Supplier newSupplier = new Supplier(name, cuil, address, coordX, coordY);
 		try {
@@ -171,7 +186,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param name nombre a buscar
 	 * @return listado de Suppliers
 	 **/
-
+	@Override
+	@Transactional
 	public List<Supplier> getSupplierByName(String name) {
 		return delivery_repo.getClassListByProperty("name", name, Supplier.class);
 	}
@@ -185,10 +201,13 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param address dirección en la cual se debe entregar el pedido
 	 * @return el nuevo pedido
 	 */
+	@Override
+	@Transactional
 	public Order createOrder(int number, Date dateOfOrder, String comments, Client client,  Address address) throws DeliveryException {
 		Order newOrder = new Order(number, dateOfOrder, comments, client, address);
 		try {
 			delivery_repo.saveClass(newOrder);
+			client.setNewOrder(newOrder);
 			return newOrder;
 		} catch (DeliveryException de) {
 			throw de;
@@ -200,7 +219,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param id
 	 * @return el pedido con el id provisto
 	 */
-
+	@Override
+	@Transactional
 	public Optional<Order> getOrderById(Long id) {
 		return delivery_repo.getOptionalById("id_order", id, Order.class);
 	}
@@ -211,6 +231,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param description descripcion del tipo de producto
 	 * @return el nuevo tipo de producto
 	 **/
+	@Override
+	@Transactional
 	public ProductType createProductType(String name, String description) throws DeliveryException{
 		ProductType newProductType = new ProductType(name, description);
 		try {
@@ -231,11 +253,11 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param types listado de los tipos del producto
 	 * @return el producto creado
 	 **/
-
+	@Override
+	@Transactional
 	public Product createProduct(String name, float price, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException {
 		Calendar calendar = Calendar.getInstance();
 		Product newProduct = new Product(name, price, calendar.getTime(), weight, description, supplier, types);
-		// populate product_types
 		for (ProductType type : types) {
 			type.addProducts(newProduct);
 		}
@@ -258,7 +280,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param types listado de los tipos del producto
 	 * @return el producto creado
 	 **/
-
+	@Override
+	@Transactional
 	public Product createProduct(String name, float price, Date lastPriceUpdateDate, float weight, String description, Supplier supplier, List<ProductType> types) throws DeliveryException{
 		Product newProduct = new Product(name, price, lastPriceUpdateDate, weight, description, supplier, types);
 		for (ProductType type : types) {
@@ -277,6 +300,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param id
 	 * @return el producto con el id provisto
 	 **/
+	@Override
+	@Transactional
 	public Optional<Product> getProductById(Long id) {
 		return delivery_repo.getOptionalById("id_product", id, Product.class);
 	}
@@ -286,6 +311,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param name string a buscar
 	 * @return Lista de productos
 	 **/
+	@Override
+	@Transactional
 	public List<Product> getProductByName(String name) {
 		return delivery_repo.getClassListByProperty("name", name, Product.class);
 	}
@@ -295,6 +322,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param type nombre del tipo
 	 * @return Lista de productos
 	 **/
+	@Override
+	@Transactional
 	public List<Product> getProductsByType(String type) throws DeliveryException {
 		List<Product> typeList = delivery_repo.getProductsByType(type);
 		if (typeList.size() != 0) {
@@ -313,6 +342,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @throws DeliveryException en caso de que no exista el producto para el id dado
 	 *
 	 */
+	@Override
+	@Transactional
 	public Product updateProductPrice(Long id, float price) throws DeliveryException{
 		Product aProduct = delivery_repo.getClassByProperty("id_product", id, Product.class);
 		if (aProduct != null){
@@ -335,7 +366,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @throws DeliveryException en caso de no existir el numero de orden
 	 *
 	 */
-
+	@Override
+	@Transactional
 	public boolean addDeliveryManToOrder(Long order, DeliveryMan deliveryMan) throws DeliveryException{
 		Order anOrder = delivery_repo.getClassByProperty("id_order", order, Order.class);
 		if (anOrder != null){
@@ -360,6 +392,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return retorno si se pudo actualizar la orden
 	 * @throws DeliveryException en caso de no existir el numero de orden
 	 */
+	@Override
+	@Transactional
 	public boolean setOrderAsDelivered(Long order) throws DeliveryException {
 		Order anOrder = delivery_repo.getClassByProperty("id_order", order, Order.class);
 		if (anOrder != null){
@@ -392,6 +426,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return la nueva reseña
 	 * @throws DeliveryException en caso de no existir el numero de orden
 	 **/
+	@Override
+	@Transactional
 	public Qualification addQualificatioToOrder(Long order, String commentary) throws DeliveryException {
 		Order anOrder = delivery_repo.getClassByProperty("id_order", order, Order.class);
 		if (anOrder != null){
@@ -417,6 +453,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return el pedido con el nuevo producto
 	 * @throws DeliveryException en caso de no existir el pedido
 	 */
+	@Override
+	@Transactional
 	public Item addItemToOrder( Long order, Product product,  int quantity, String description ) throws DeliveryException{
 		Order anOrder = delivery_repo.getClassByProperty("id_order", order, Order.class);
 		if (anOrder != null){
@@ -433,6 +471,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	}
 
 	//--------------------------------------------------------TP2----------------------------------------------------------------
+	@Override
+	@Transactional
 	public User updateUser(User newUser) throws DeliveryException {
 		try{
 			delivery_repo.updateClass(newUser);
@@ -442,6 +482,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 		}
 	}
 
+	@Override
+	@Transactional
 	public Qualification updateQualification(Qualification newQualification) throws DeliveryException {
 		try{
 			delivery_repo.updateClass(newQualification);
@@ -451,11 +493,15 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 		}
 	}
 
+	// TP2
+
 	/**
 	 * Obtiene los N usuarios que poseen mayor puntaje
 	 * @param n cantidad de usuarios
 	 * @return una lista con los usuarios
 	 */
+	@Override
+	@Transactional
 	public List<User> getTopNUserWithMoreScore(int n) {
 		return delivery_repo.getTopNUserWithMoreScore(n);
 	}
@@ -464,6 +510,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * Obtiene los 10 usuarios de tipo Delivery Man que mas ordenes completaron
 	 * @return el listado de Delivery Man
 	 *
+	@Override
+	@Transactional
 	public List<DeliveryMan> getTop10DeliveryManWithMoreOrders();
 
 	/**
@@ -471,6 +519,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param number monto de las ordenes
 	 * @return el listado de clientes
 	 *
+	@Override
+	@Transactional
 	public List<Client> getUsersSpentMoreThan(float number);
 
 	/**
@@ -478,12 +528,16 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param username nombre de usuario del cliente
 	 * @return la lista de ordenes
 	 *
+	@Override
+	@Transactional
 	public List<Order> getAllOrdersFromUser(String username);
 
 	/**
 	 * Obtiene el numero de ordenes que todavia no fueron completadas, es decir que no fueron entregadas por un Delivery Man
 	 * @return el numero de ordenes
 	 *
+	@Override
+	@Transactional
 	public Long getNumberOfOrderNoDelivered();
 
 	/**
@@ -492,6 +546,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param endDate fecha final del rango
 	 * @return el numero de ordenes
 	 *
+	@Override
+	@Transactional
 	public Long getNumberOfOrderDeliveredAndBetweenDates(Date startDate, Date endDate);
 
 	/**
@@ -499,12 +555,16 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param date el dia
 	 * @return la orden obtenida
 	 *
+	@Override
+	@Transactional
 	public Optional<Order> getOrderDeliveredMoreExpansiveInDate(Date date);
 
 	/**
 	 * Obtiene la lista de suppliers que no tienen productos agregados a su catalogo
 	 * @return la lista de suppliers
 	 *
+	@Override
+	@Transactional
 	public List<Supplier> getSuppliersWithoutProducts();
 
 	/**
@@ -512,42 +572,56 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param days cantidad de dias
 	 * @return el listado de productos
 	 *
+	@Override
+	@Transactional
 	public List<Product> getProductsWithPriceDateOlderThan(int days);
 
 	/**
 	 * Obtiene los 5 productos de mayor valor
 	 * @return el listado de productos
 	 *
+	@Override
+	@Transactional
 	public List<Product> getTop5MoreExpansiveProducts();
 
 	/**
 	 * Obtiene el producto más demandado, es decir, aquel que esta se incluyo más veces en ordenes (tener en cuenta la cantidad)
 	 * @return el producto obtenido
 	 *
+	@Override
+	@Transactional
 	public Product getMostDemandedProduct();
 
 	/**
 	 * Obtiene aquellos productos existentes que no fueron incluidos en ninguna orden
 	 * @return el listado de productos
 	 *
+	@Override
+	@Transactional
 	public List<Product> getProductsNoAddedToOrders();
 
 	/**
 	 * Obtiene los 3 tipos de productos que menos productos tienen asociados
 	 * @return el listado de tipos de producto
 	 *
+	@Override
+	@Transactional
 	public List<ProductType> getTop3ProductTypesWithLessProducts();
 
 	/**
 	 * Obtiene el supplier que más productos tiene asociado
 	 * @return el supplier resultante
 	 *
+	@Override
+	@Transactional
 	public Supplier getSupplierWithMoreProducts();
 
 	/**
 	 * Obtiene aquellos suppliers que tienen al menos una calificación de una estrella entre sus ordenes completadas
 	 * @return el listado de suppliers
 	 *
+	@Override
+	@Transactional
 	public List<Supplier> getSupplierWith1StarCalifications();	*/
 
 

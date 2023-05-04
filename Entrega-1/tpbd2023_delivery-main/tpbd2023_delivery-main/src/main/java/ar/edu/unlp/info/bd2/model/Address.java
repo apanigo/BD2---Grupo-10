@@ -55,7 +55,6 @@ public class Address {
 		this.coordY = coordY;
 		this.description = description;
 		this.client = client;
-		this.client.setNewAddress(this);
     }
 
 	public String getName() {
