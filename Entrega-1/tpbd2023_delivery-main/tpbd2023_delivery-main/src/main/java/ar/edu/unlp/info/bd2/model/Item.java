@@ -30,7 +30,6 @@ public class Item {
 		this.quantity = quantity;
 		this.description = description;
 		this.order = order;
-        this.order.addItem(this);
 		this.product = product;
 	}
 

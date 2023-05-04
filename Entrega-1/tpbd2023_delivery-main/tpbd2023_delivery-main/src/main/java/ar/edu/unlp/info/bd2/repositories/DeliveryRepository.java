@@ -72,12 +72,11 @@ public class DeliveryRepository {
 		return Optional.ofNullable(query.uniqueResult());
 	}
 
-	public <T> Optional<T> getOptionalById(Serializable id, Class<T> entityClass) {
-		String hql = "FROM " + entityClass.getName() + " WHERE id = :id";
+	public <T> Optional<T> getOptionalById(String idProperty, Serializable id, Class<T> entityClass) {
+		String hql = "FROM " + entityClass.getName() + " WHERE " + idProperty + " = :id";
 		Query<T> query = this.sessionFactory.getCurrentSession().createQuery(hql, entityClass);
 		query.setParameter("id", id);
-		T entity = query.getSingleResult();
-		return Optional.ofNullable(entity);
+		return Optional.ofNullable(query.uniqueResult());
 	}
 
 	public <T> List<T> getClassListByProperty(String property, Object value, Class<T> entityClass) {
@@ -108,7 +107,7 @@ public class DeliveryRepository {
 
 	public Product updateProductPrice(Long id, float price) throws DeliveryException {
 		try {
-			Product product = this.getClassByProperty("id", id, Product.class);
+			Product product = this.getClassByProperty("id_product", id, Product.class);
 			product.setPrice(price);
 			product.setLastPriceUpdateDate(new Date());
 			this.updateClass(product);
@@ -125,7 +124,7 @@ public class DeliveryRepository {
 
 	public boolean addDeliveryManToOrder(Long order, DeliveryMan deliveryMan) throws DeliveryException{
 		try {
-			Order anOrder = this.getClassByProperty("id", order, Order.class);
+			Order anOrder = this.getClassByProperty("id_order", order, Order.class);
 			//System.out.print(deliveryMan.isFree() +" , "+ anOrder.isDelivered() +" , "+ ((anOrder.getItems() == null)||(anOrder.getItems().isEmpty())));
 			if (deliveryMan.isFree() && !anOrder.isDelivered() && !anOrder.getItems().isEmpty()) {
 				anOrder.setDeliveryMan(deliveryMan);
@@ -149,7 +148,7 @@ public class DeliveryRepository {
 
 	public Item addItemToOrder(Long order, Product product, int quantity, String description) throws DeliveryException {
 		try {
-			Order anOrder = this.getClassByProperty("id", order, Order.class);
+			Order anOrder = this.getClassByProperty("id_order", order, Order.class);
 			Item newItem = new Item(quantity, description, anOrder, product);
 			this.saveClass(newItem);
 
@@ -169,7 +168,7 @@ public class DeliveryRepository {
 
 	public boolean setOrderAsDelivered(Long order) throws DeliveryException {
 		try {
-			Order anOrder = this.getClassByProperty("id", order, Order.class);
+			Order anOrder = this.getClassByProperty("id_order", order, Order.class);
 			if(anOrder.getDeliveryMan() != null){
 				anOrder.setDelivered(true);
 				this.updateClass(anOrder);
@@ -198,7 +197,7 @@ public class DeliveryRepository {
 
 	public Qualification addQualificatioToOrder(Long order, String commentary) throws DeliveryException {
 		try {
-			Order anOrder = this.getClassByProperty("id", order, Order.class);
+			Order anOrder = this.getClassByProperty("id_order", order, Order.class);
 
 			Qualification aQualification = new Qualification(5, commentary, anOrder);
 			this.saveClass(aQualification);

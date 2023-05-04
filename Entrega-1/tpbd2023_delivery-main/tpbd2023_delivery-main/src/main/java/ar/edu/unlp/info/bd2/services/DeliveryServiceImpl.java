@@ -67,7 +67,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 */
 
 	public Optional<User> getUserById(Long id){
-		return delivery_repo.getOptionalById(id, User.class);
+		return delivery_repo.getOptionalById("id_user", id, User.class);
 	}
 
 	/**
@@ -202,7 +202,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 */
 
 	public Optional<Order> getOrderById(Long id) {
-		return delivery_repo.getOptionalById(id, Order.class);
+		return delivery_repo.getOptionalById("id_order", id, Order.class);
 	}
 
 	/**
@@ -278,7 +278,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return el producto con el id provisto
 	 **/
 	public Optional<Product> getProductById(Long id) {
-		return delivery_repo.getOptionalById(id, Product.class);
+		return delivery_repo.getOptionalById("id_product", id, Product.class);
 	}
 
 	/**
