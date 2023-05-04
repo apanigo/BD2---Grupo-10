@@ -61,10 +61,12 @@ public class Client extends User{
     
     public void setNewAddress(Address newAddress) {
     	this.addresses.add(newAddress);
+        newAddress.setClient(this);
     }
 
     public void setNewOrder(Order newOrder) {
         this.orders.add(newOrder);
+        newOrder.setClient(this);
     }
 
 

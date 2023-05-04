@@ -152,7 +152,6 @@ public class DeliveryRepository {
 			Item newItem = new Item(quantity, description, anOrder, product);
 			this.saveClass(newItem);
 
-			anOrder.addItem(newItem);
 			anOrder.setTotalPrice(anOrder.getTotalPrice() + (product.getPrice() * quantity));
 			this.updateClass(anOrder);
 
