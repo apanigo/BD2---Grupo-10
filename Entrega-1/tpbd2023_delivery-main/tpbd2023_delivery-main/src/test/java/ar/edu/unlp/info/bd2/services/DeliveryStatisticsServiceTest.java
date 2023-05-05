@@ -156,30 +156,30 @@ public class DeliveryStatisticsServiceTest {
 //        assertEquals("Spaghetti Bolognese", product.getName());
 //    }
 //
-//    @Test
-//    void testGetProductsNoAddedToOrders() {
-//        List<Product> products = this.service.getProductsNoAddedToOrders();
-//        assertEquals(5, products.size());
-//        this.assertListEquality(products.stream().map(
-//                        (p) -> p.getName()).collect(Collectors.toList()),
-//                Arrays.asList("Galletitas de avena", "Sandwich de jamón y queso", "Ensalada César", "Muffin de arándanos", "Empanada de carne"));
-//    }
-//
-//    @Test
-//    void testGetTop3ProductTypesWithLessProducts() {
-//        List<ProductType> types = this.service.getTop3ProductTypesWithLessProducts();
-//        assertEquals(3, types.size());
-//        this.assertListEquality(types.stream().map(
-//                        (t) -> t.getName()).collect(Collectors.toList()),
-//                Arrays.asList("Pastas", "Sandwiches", "Ensaladas"));
-//    }
-//
-//    @Test
-//    void testGetSupplierWithMoreProducts() {
-//        Supplier supplier = this.service.getSupplierWithMoreProducts();
-//        assertEquals("Supplier 4", supplier.getName());
-//    }
-//
+    @Test
+    void testGetProductsNoAddedToOrders() {
+        List<Product> products = this.service.getProductsNoAddedToOrders();
+        assertEquals(5, products.size());
+        this.assertListEquality(products.stream().map(
+                        (p) -> p.getName()).collect(Collectors.toList()),
+                Arrays.asList("Galletitas de avena", "Sandwich de jamón y queso", "Ensalada César", "Muffin de arándanos", "Empanada de carne"));
+    }
+
+    @Test
+    void testGetTop3ProductTypesWithLessProducts() {
+        List<ProductType> types = this.service.getTop3ProductTypesWithLessProducts();
+        assertEquals(3, types.size());
+        this.assertListEquality(types.stream().map(
+                        (t) -> t.getName()).collect(Collectors.toList()),
+                Arrays.asList("Pastas", "Sandwiches", "Ensaladas"));
+    }
+
+    @Test
+    void testGetSupplierWithMoreProducts() {
+        Supplier supplier = this.service.getSupplierWithMoreProducts();
+        assertEquals("Supplier 4", supplier.getName());
+    }
+
 //    @Test
 //    void testGetSupplierWith1StarCalifications() {
 //        List<Supplier> suppliers = this.service.getSupplierWith1StarCalifications();

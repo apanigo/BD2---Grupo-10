@@ -596,34 +596,42 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	/**
 	 * Obtiene aquellos productos existentes que no fueron incluidos en ninguna orden
 	 * @return el listado de productos
-	 *
+	 */
 	@Override
 	@Transactional
-	public List<Product> getProductsNoAddedToOrders();
+	public List<Product> getProductsNoAddedToOrders(){
+		return delivery_repo.getProductsNoAddedToOrders();
+	}
 
 	/**
 	 * Obtiene los 3 tipos de productos que menos productos tienen asociados
 	 * @return el listado de tipos de producto
-	 *
+	 */
 	@Override
 	@Transactional
-	public List<ProductType> getTop3ProductTypesWithLessProducts();
+	public List<ProductType> getTop3ProductTypesWithLessProducts(){
+		return delivery_repo.getTop3ProductTypesWithLessProducts();
+	}
 
 	/**
 	 * Obtiene el supplier que más productos tiene asociado
 	 * @return el supplier resultante
-	 *
+	 */
 	@Override
 	@Transactional
-	public Supplier getSupplierWithMoreProducts();
+	public Supplier getSupplierWithMoreProducts(){
+		return delivery_repo.getSupplierWithMoreProducts();
+	}
 
 	/**
 	 * Obtiene aquellos suppliers que tienen al menos una calificación de una estrella entre sus ordenes completadas
 	 * @return el listado de suppliers
-	 *
+	 */
 	@Override
 	@Transactional
-	public List<Supplier> getSupplierWith1StarCalifications();	*/
+	public List<Supplier> getSupplierWith1StarCalifications(){
+		return delivery_repo.getSupplierWith1StarCalifications();
+	}
 
 
 }
