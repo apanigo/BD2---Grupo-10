@@ -1,5 +1,6 @@
 package ar.edu.unlp.info.bd2.model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.*;
@@ -25,14 +26,16 @@ public class DeliveryMan extends User{
     public DeliveryMan(String name, String username, String password, String email, Date dateOfBirth, int score) {
         super(name, username, password, email, dateOfBirth, score);
         this.numberOfSuccessOrders = 0;
-        this.dateOfAdmission = new Date();
+        Calendar calendar = Calendar.getInstance();
+        this.dateOfAdmission = calendar.getTime();
         this.free = true;
     }
     
     public DeliveryMan(String name, String username, String password, String email, Date dateOfBirth) {
     	super(name, username, password, email, dateOfBirth);
         this.numberOfSuccessOrders = 0;
-    	this.dateOfAdmission = new Date();
+        Calendar calendar = Calendar.getInstance();
+        this.dateOfAdmission = calendar.getTime();
     	this.free = true;
     }
      
@@ -58,5 +61,9 @@ public class DeliveryMan extends User{
 
     public void setFree(boolean free) {
         this.free = free;
+    }
+
+    public void incrementNumberOfSuccessOrders() {
+        this.numberOfSuccessOrders = this.numberOfSuccessOrders + 1;
     }
 }
