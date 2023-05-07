@@ -589,10 +589,12 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	/**
 	 * Obtiene los 5 productos de mayor valor
 	 * @return el listado de productos
-	 *
+	 */
 	@Override
 	@Transactional
-	public List<Product> getTop5MoreExpansiveProducts();
+	public List<Product> getTop5MoreExpansiveProducts(){
+		return delivery_repo.getTop5MoreExpansiveProducts();
+	}
 
 	/**
 	 * Obtiene el producto más demandado, es decir, aquel que esta se incluyo más veces en ordenes (tener en cuenta la cantidad)

@@ -75,7 +75,7 @@ public interface DeliveryStatisticsService {
     /**
      * Obtiene los 5 productos de mayor valor
      * @return el listado de productos
-     *
+     */
     public List<Product> getTop5MoreExpansiveProducts();
 
     /**

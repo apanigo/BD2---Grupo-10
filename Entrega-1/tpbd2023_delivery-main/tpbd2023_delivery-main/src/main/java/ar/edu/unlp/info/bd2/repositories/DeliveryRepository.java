@@ -126,18 +126,26 @@ public class DeliveryRepository {
 		return Optional.ofNullable(query.uniqueResult());
 	}
 	
+	// metodos para DeliveryStatisticsServiceTest
 	public List<Supplier> getSuppliersWithoutProducts(){
 		String hql = "FROM Supplier s WHERE NOT EXISTS (SELECT p FROM Product p WHERE p.supplier = s.id)";
 		Query<Supplier> query = this.sessionFactory.getCurrentSession().createQuery(hql, Supplier.class);
 		return query.list();
 	}
 	
+	// metodos para DeliveryStatisticsServiceTest
 	public List<Product> getProductsWithPriceDateOlderThan(int days){
 		Date queryDate = java.sql.Date.valueOf(LocalDate.now().minusDays(days));
 		String hql = "FROM Product p WHERE lastPriceUpdateDate <= :queryDate";
-		Query<Product> query = this.sessionFactory.getCurrentSession().createQuery(hql, Product .class);
+		Query<Product> query = this.sessionFactory.getCurrentSession().createQuery(hql, Product.class);
 		query.setParameter("queryDate", queryDate);
 		return query.getResultList();
 	}
 
+	// metodos para DeliveryStatisticsServiceTest
+	public List<Product> getTop5MoreExpansiveProducts(){
+		String hql = "FROM Product p ORDER BY p.price DESC";
+		Query<Product> query = this.sessionFactory.getCurrentSession().createQuery(hql, Product.class);
+		return query.setMaxResults(5).getResultList();
+	}
 }

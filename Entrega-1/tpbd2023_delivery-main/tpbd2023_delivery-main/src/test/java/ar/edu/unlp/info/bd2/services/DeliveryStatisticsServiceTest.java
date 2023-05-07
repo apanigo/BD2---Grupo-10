@@ -140,15 +140,15 @@ public class DeliveryStatisticsServiceTest {
         List<Product> products3 = this.service.getProductsWithPriceDateOlderThan(10);
         assertEquals(11, products3.size());
     }
-//
-//    @Test
-//    void testGetTop5MoreExpansiveProducts() {
-//        List<Product> products = this.service.getTop5MoreExpansiveProducts();
-//        assertEquals(5, products.size());
-//        this.assertListEquality(products.stream().map(
-//                        (p -> p.getName())).collect(Collectors.toList()),
-//                Arrays.asList("Pollo Asado", "Sushi Roll", "Hamburguesa", "Spaghetti Bolognese", "Pizza Margarita"));
-//    }
+
+    @Test
+    void testGetTop5MoreExpansiveProducts() {
+        List<Product> products = this.service.getTop5MoreExpansiveProducts();
+        assertEquals(5, products.size());
+        this.assertListEquality(products.stream().map(
+                        (p -> p.getName())).collect(Collectors.toList()),
+                Arrays.asList("Pollo Asado", "Sushi Roll", "Hamburguesa", "Spaghetti Bolognese", "Pizza Margarita"));
+    }
 //
 //    @Test
 //    void testGetMostDemandedProduct() {
