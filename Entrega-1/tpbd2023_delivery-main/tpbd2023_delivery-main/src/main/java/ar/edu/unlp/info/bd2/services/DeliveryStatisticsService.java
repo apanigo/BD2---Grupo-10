@@ -49,7 +49,7 @@ public interface DeliveryStatisticsService {
      * @param startDate fecha de incio del rango
      * @param endDate fecha final del rango
      * @return el numero de ordenes
-     *
+     */
     public Long getNumberOfOrderDeliveredAndBetweenDates(Date startDate, Date endDate);
 
     /**

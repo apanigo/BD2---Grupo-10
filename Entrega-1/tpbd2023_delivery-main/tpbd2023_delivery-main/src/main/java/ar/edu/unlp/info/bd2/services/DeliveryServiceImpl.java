@@ -545,10 +545,13 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @param startDate fecha de incio del rango
 	 * @param endDate fecha final del rango
 	 * @return el numero de ordenes
-	 *
+	 */
+	
 	@Override
 	@Transactional
-	public Long getNumberOfOrderDeliveredAndBetweenDates(Date startDate, Date endDate);
+	public Long getNumberOfOrderDeliveredAndBetweenDates(Date startDate, Date endDate) {
+		return delivery_repo.getNumberOfOrderDeliveredAndBetweenDates(startDate, endDate); 
+	};
 
 	/**
 	 * Obtiene la orden completada, es decir entregada por el repartidor, de mayor valor total en un dia dado

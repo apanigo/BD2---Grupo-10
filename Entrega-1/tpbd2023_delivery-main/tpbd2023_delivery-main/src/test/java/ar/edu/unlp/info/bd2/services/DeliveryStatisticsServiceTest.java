@@ -98,18 +98,18 @@ public class DeliveryStatisticsServiceTest {
 //        assertEquals(20, number);
 //    }
 //
-//    @Test
-//    void testGetNumberOfOrderDeliveredAndBetweenDates() {
-//        LocalDate today = LocalDate.now();
-//        long number1 = this.service.getNumberOfOrderDeliveredAndBetweenDates(
-//                java.sql.Date.valueOf(today.minusDays(30)),
-//                java.sql.Date.valueOf(today.minusDays(20)));
-//        assertEquals(1, number1);
-//        long number2 = this.service.getNumberOfOrderDeliveredAndBetweenDates(
-//                java.sql.Date.valueOf(today.minusDays(10)),
-//                java.sql.Date.valueOf(today.minusDays(4)));
-//        assertEquals(5, number2);
-//    }
+    @Test
+    void testGetNumberOfOrderDeliveredAndBetweenDates() {
+        LocalDate today = LocalDate.now();
+        long number1 = this.service.getNumberOfOrderDeliveredAndBetweenDates(
+                java.sql.Date.valueOf(today.minusDays(30)),
+                java.sql.Date.valueOf(today.minusDays(20)));
+        assertEquals(1, number1);
+        long number2 = this.service.getNumberOfOrderDeliveredAndBetweenDates(
+                java.sql.Date.valueOf(today.minusDays(10)),
+                java.sql.Date.valueOf(today.minusDays(4)));
+        assertEquals(5, number2);
+    }
 //
 //    @Test
 //    void testGetOrderDeliveredMoreExpansiveInDate() {

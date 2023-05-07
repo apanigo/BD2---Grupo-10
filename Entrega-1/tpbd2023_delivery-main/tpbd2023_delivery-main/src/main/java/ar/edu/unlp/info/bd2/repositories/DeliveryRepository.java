@@ -107,5 +107,19 @@ public class DeliveryRepository {
 		Query<User> query = this.sessionFactory.getCurrentSession().createQuery(hql, User.class);
 		return query.setMaxResults(n).getResultList();
 	}
+	
+	// metodos para DeliveryStatisticsServiceTest
+	public Long getNumberOfOrderDeliveredAndBetweenDates(Date startDate, Date endDate) {
+		System.out.print(startDate);
+		System.out.print(endDate);
+		String hql = "SELECT COUNT(o.id) FROM Order o WHERE o.dateOfOrder BETWEEN :startDate AND :endDate AND o.delivered IS TRUE";
+		Query<Long> query = this.sessionFactory.getCurrentSession().createQuery(hql, Long.class);
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+		return query.uniqueResult().longValue();
+	}
+	
+	
+	
 
 }
