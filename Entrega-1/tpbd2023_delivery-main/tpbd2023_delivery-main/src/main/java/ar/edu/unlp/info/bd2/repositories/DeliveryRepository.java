@@ -110,8 +110,6 @@ public class DeliveryRepository {
 	
 	// metodos para DeliveryStatisticsServiceTest
 	public Long getNumberOfOrderDeliveredAndBetweenDates(Date startDate, Date endDate) {
-		System.out.print(startDate);
-		System.out.print(endDate);
 		String hql = "SELECT COUNT(o.id) FROM Order o WHERE o.dateOfOrder BETWEEN :startDate AND :endDate AND o.delivered IS TRUE";
 		Query<Long> query = this.sessionFactory.getCurrentSession().createQuery(hql, Long.class);
 		query.setParameter("startDate", startDate);
@@ -119,7 +117,12 @@ public class DeliveryRepository {
 		return query.uniqueResult().longValue();
 	}
 	
-	
-	
+	// metodos para DeliveryStatisticsServiceTest
+	public Optional<Order> getOrderDeliveredMoreExpansiveInDate(Date aDate){
+		String hql = "FROM Order o WHERE o.delivered IS TRUE AND o.dateOfOrder = :aDate AND o.totalPrice = (SELECT MAX(oo.totalPrice) from Order oo WHERE oo.delivered IS TRUE AND oo.dateOfOrder LIKE :aDate)";
+		Query<Order> query = this.sessionFactory.getCurrentSession().createQuery(hql, Order.class);
+		query.setParameter("aDate", aDate);
+		return Optional.ofNullable(query.uniqueResult());
+	}
 
 }

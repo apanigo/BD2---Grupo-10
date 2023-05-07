@@ -26,7 +26,7 @@ public class Order {
 	@Column(name = "comments", nullable = true, length = 30, unique = false, updatable = false)
     private String comments;
 
-	@Column(name = "total_price", nullable = false, unique = false, updatable = false)
+	@Column(name = "total_price", nullable = false, unique = false, updatable = true)
     private float totalPrice;
 
 	@Column(name = "delivered", nullable = false, unique = false, updatable = true)

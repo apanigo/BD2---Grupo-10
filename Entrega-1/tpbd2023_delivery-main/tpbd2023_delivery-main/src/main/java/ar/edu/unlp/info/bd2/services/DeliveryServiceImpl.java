@@ -557,10 +557,12 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * Obtiene la orden completada, es decir entregada por el repartidor, de mayor valor total en un dia dado
 	 * @param date el dia
 	 * @return la orden obtenida
-	 *
+	 */
 	@Override
 	@Transactional
-	public Optional<Order> getOrderDeliveredMoreExpansiveInDate(Date date);
+	public Optional<Order> getOrderDeliveredMoreExpansiveInDate(Date date){
+		return delivery_repo.getOrderDeliveredMoreExpansiveInDate(date);
+	};
 
 	/**
 	 * Obtiene la lista de suppliers que no tienen productos agregados a su catalogo

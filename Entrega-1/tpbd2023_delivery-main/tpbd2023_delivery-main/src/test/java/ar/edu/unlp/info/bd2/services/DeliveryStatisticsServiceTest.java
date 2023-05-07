@@ -110,19 +110,19 @@ public class DeliveryStatisticsServiceTest {
                 java.sql.Date.valueOf(today.minusDays(4)));
         assertEquals(5, number2);
     }
-//
-//    @Test
-//    void testGetOrderDeliveredMoreExpansiveInDate() {
-//        LocalDate today = LocalDate.now();
-//        Optional<Order> order1 = this.service.getOrderDeliveredMoreExpansiveInDate(java.sql.Date.valueOf(today.minusDays(10)));
-//        assertTrue(order1.isPresent());
-//        assertEquals(9, order1.get().getNumber());
-//        Optional<Order> order2 = this.service.getOrderDeliveredMoreExpansiveInDate(java.sql.Date.valueOf(today));
-//        assertTrue(order2.isPresent());
-//        assertEquals(2, order2.get().getNumber());
-//        Optional<Order> order3 = this.service.getOrderDeliveredMoreExpansiveInDate(java.sql.Date.valueOf(today.minusDays(20)));
-//        assertFalse(order3.isPresent());
-//    }
+
+    @Test
+    void testGetOrderDeliveredMoreExpansiveInDate() {
+        LocalDate today = LocalDate.now();
+        Optional<Order> order1 = this.service.getOrderDeliveredMoreExpansiveInDate(java.sql.Date.valueOf(today.minusDays(10)));
+        assertTrue(order1.isPresent());
+        assertEquals(9, order1.get().getNumber());
+        Optional<Order> order2 = this.service.getOrderDeliveredMoreExpansiveInDate(java.sql.Date.valueOf(today));
+        assertTrue(order2.isPresent());
+        assertEquals(2, order2.get().getNumber());
+        Optional<Order> order3 = this.service.getOrderDeliveredMoreExpansiveInDate(java.sql.Date.valueOf(today.minusDays(20)));
+        assertFalse(order3.isPresent());
+    }
 //
 //    @Test
 //    void testGetSuppliersWithoutProducts() {

@@ -56,7 +56,7 @@ public interface DeliveryStatisticsService {
      * Obtiene la orden completada, es decir entregada por el repartidor, de mayor valor total en un dia dado
      * @param date el dia
      * @return la orden obtenida
-     *
+     */
     public Optional<Order> getOrderDeliveredMoreExpansiveInDate(Date date);
 
     /**
