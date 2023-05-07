@@ -62,7 +62,7 @@ public interface DeliveryStatisticsService {
     /**
      * Obtiene la lista de suppliers que no tienen productos agregados a su catalogo
      * @return la lista de suppliers
-     *
+     */
     public List<Supplier> getSuppliersWithoutProducts();
 
     /**

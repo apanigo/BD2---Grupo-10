@@ -567,10 +567,12 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	/**
 	 * Obtiene la lista de suppliers que no tienen productos agregados a su catalogo
 	 * @return la lista de suppliers
-	 *
+	 */
 	@Override
 	@Transactional
-	public List<Supplier> getSuppliersWithoutProducts();
+	public List<Supplier> getSuppliersWithoutProducts(){
+		return delivery_repo.getSuppliersWithoutProducts();
+	};
 
 	/**
 	 * Obtiene los productos que no han actualizado su precio en los ultimos N dias

@@ -123,13 +123,13 @@ public class DeliveryStatisticsServiceTest {
         Optional<Order> order3 = this.service.getOrderDeliveredMoreExpansiveInDate(java.sql.Date.valueOf(today.minusDays(20)));
         assertFalse(order3.isPresent());
     }
-//
-//    @Test
-//    void testGetSuppliersWithoutProducts() {
-//        List<Supplier> suppliers = this.service.getSuppliersWithoutProducts();
-//        assertEquals(1, suppliers.size());
-//        assertEquals("Supplier 11", suppliers.get(0).getName());
-//    }
+
+    @Test
+    void testGetSuppliersWithoutProducts() {
+        List<Supplier> suppliers = this.service.getSuppliersWithoutProducts();
+        assertEquals(1, suppliers.size());
+        assertEquals("Supplier 11", suppliers.get(0).getName());
+    }
 //
 //    @Test
 //    void testGetProductsWithPriceDateOlderThan() {

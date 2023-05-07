@@ -124,5 +124,11 @@ public class DeliveryRepository {
 		query.setParameter("aDate", aDate);
 		return Optional.ofNullable(query.uniqueResult());
 	}
+	
+	public List<Supplier> getSuppliersWithoutProducts(){
+		String hql = "FROM Supplier s WHERE NOT EXISTS (SELECT p FROM Product p WHERE p.supplier = s.id)";
+		Query<Supplier> query = this.sessionFactory.getCurrentSession().createQuery(hql, Supplier.class);
+		return query.list();
+	}
 
 }
