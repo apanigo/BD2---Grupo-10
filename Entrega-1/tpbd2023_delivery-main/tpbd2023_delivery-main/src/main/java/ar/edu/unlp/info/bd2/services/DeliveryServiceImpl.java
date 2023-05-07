@@ -578,10 +578,13 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * Obtiene los productos que no han actualizado su precio en los ultimos N dias
 	 * @param days cantidad de dias
 	 * @return el listado de productos
-	 *
+	 */
+	
 	@Override
 	@Transactional
-	public List<Product> getProductsWithPriceDateOlderThan(int days);
+	public List<Product> getProductsWithPriceDateOlderThan(int days){
+		return delivery_repo.getProductsWithPriceDateOlderThan(days);
+	};
 
 	/**
 	 * Obtiene los 5 productos de mayor valor

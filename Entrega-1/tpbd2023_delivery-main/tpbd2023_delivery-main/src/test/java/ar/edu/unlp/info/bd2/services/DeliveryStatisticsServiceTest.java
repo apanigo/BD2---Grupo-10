@@ -130,16 +130,16 @@ public class DeliveryStatisticsServiceTest {
         assertEquals(1, suppliers.size());
         assertEquals("Supplier 11", suppliers.get(0).getName());
     }
-//
-//    @Test
-//    void testGetProductsWithPriceDateOlderThan() {
-//        List<Product> products1 = this.service.getProductsWithPriceDateOlderThan(50);
-//        assertEquals(1, products1.size());
-//        List<Product> products2 = this.service.getProductsWithPriceDateOlderThan(20);
-//        assertEquals(4, products2.size());
-//        List<Product> products3 = this.service.getProductsWithPriceDateOlderThan(10);
-//        assertEquals(11, products3.size());
-//    }
+
+    @Test
+    void testGetProductsWithPriceDateOlderThan() {
+        List<Product> products1 = this.service.getProductsWithPriceDateOlderThan(50);
+        assertEquals(1, products1.size());
+        List<Product> products2 = this.service.getProductsWithPriceDateOlderThan(20);
+        assertEquals(4, products2.size());
+        List<Product> products3 = this.service.getProductsWithPriceDateOlderThan(10);
+        assertEquals(11, products3.size());
+    }
 //
 //    @Test
 //    void testGetTop5MoreExpansiveProducts() {

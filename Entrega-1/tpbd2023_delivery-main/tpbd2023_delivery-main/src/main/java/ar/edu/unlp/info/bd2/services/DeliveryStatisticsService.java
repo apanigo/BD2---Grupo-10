@@ -69,7 +69,7 @@ public interface DeliveryStatisticsService {
      * Obtiene los productos que no han actualizado su precio en los ultimos N dias
      * @param days cantidad de dias
      * @return el listado de productos
-     *
+     */
     public List<Product> getProductsWithPriceDateOlderThan(int days);
 
     /**

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.*;
 
 import javax.persistence.*;
@@ -129,6 +130,14 @@ public class DeliveryRepository {
 		String hql = "FROM Supplier s WHERE NOT EXISTS (SELECT p FROM Product p WHERE p.supplier = s.id)";
 		Query<Supplier> query = this.sessionFactory.getCurrentSession().createQuery(hql, Supplier.class);
 		return query.list();
+	}
+	
+	public List<Product> getProductsWithPriceDateOlderThan(int days){
+		Date queryDate = java.sql.Date.valueOf(LocalDate.now().minusDays(days));
+		String hql = "FROM Product p WHERE lastPriceUpdateDate <= :queryDate";
+		Query<Product> query = this.sessionFactory.getCurrentSession().createQuery(hql, Product .class);
+		query.setParameter("queryDate", queryDate);
+		return query.getResultList();
 	}
 
 }
