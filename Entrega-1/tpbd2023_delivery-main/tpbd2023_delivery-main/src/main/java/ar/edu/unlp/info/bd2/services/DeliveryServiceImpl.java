@@ -432,7 +432,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	public Qualification addQualificatioToOrder(Long order, String commentary) throws DeliveryException {
 		Order anOrder = delivery_repo.getClassByProperty("id_order", order, Order.class);
 		if (anOrder != null){
-			Qualification newQualification = new Qualification(5, commentary, anOrder);
+			Qualification newQualification = new Qualification(commentary, anOrder);
 
 			anOrder.setQualification(newQualification);
 

@@ -127,7 +127,16 @@ public class DeliveryRepository {
 	}
 
 	public List<Supplier> getSupplierWith1StarCalifications() {
-		String hql = "";
+		String hql = "SELECT DISTINCT s " +
+				"FROM Supplier s " +
+				"JOIN s.products p " +
+				"WHERE p.id IN (" +
+				"    SELECT i.product.id " +
+				"    FROM Item i " +
+				"    JOIN i.order o " +
+				"    JOIN o.qualification q " +
+				"    WHERE q.score = 1" +
+				")";
 		Query<Supplier> query = this.sessionFactory.getCurrentSession().createQuery(hql, Supplier.class);
 		return query.getResultList();
 	}

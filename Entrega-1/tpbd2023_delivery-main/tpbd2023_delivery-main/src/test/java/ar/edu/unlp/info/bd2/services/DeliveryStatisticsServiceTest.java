@@ -180,14 +180,14 @@ public class DeliveryStatisticsServiceTest {
         assertEquals("Supplier 4", supplier.getName());
     }
 
-//    @Test
-//    void testGetSupplierWith1StarCalifications() {
-//        List<Supplier> suppliers = this.service.getSupplierWith1StarCalifications();
-//        assertEquals(4, suppliers.size());
-//        this.assertListEquality(suppliers.stream().map(
-//                        (s) -> s.getName()).collect(Collectors.toList()),
-//                Arrays.asList("Supplier 1", "Supplier 3", "Supplier 4", "Supplier 5"));
-//    }
+    @Test
+    void testGetSupplierWith1StarCalifications() {
+        List<Supplier> suppliers = this.service.getSupplierWith1StarCalifications();
+        assertEquals(4, suppliers.size());
+        this.assertListEquality(suppliers.stream().map(
+                        (s) -> s.getName()).collect(Collectors.toList()),
+                Arrays.asList("Supplier 1", "Supplier 3", "Supplier 4", "Supplier 5"));
+    }
 
     private <T> void assertListEquality(List<T> list1, List<T> list2) {
         if (list1.size() != list2.size()) {
