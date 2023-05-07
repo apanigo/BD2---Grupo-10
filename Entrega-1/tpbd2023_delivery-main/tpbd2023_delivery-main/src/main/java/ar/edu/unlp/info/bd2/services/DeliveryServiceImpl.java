@@ -598,7 +598,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return el listado de productos
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<Product> getProductsNoAddedToOrders(){
 		return delivery_repo.getProductsNoAddedToOrders();
 	}
@@ -608,7 +608,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return el listado de tipos de producto
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<ProductType> getTop3ProductTypesWithLessProducts(){
 		return delivery_repo.getTop3ProductTypesWithLessProducts();
 	}
@@ -618,7 +618,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return el supplier resultante
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public Supplier getSupplierWithMoreProducts(){
 		return delivery_repo.getSupplierWithMoreProducts();
 	}
@@ -628,7 +628,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return el listado de suppliers
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<Supplier> getSupplierWith1StarCalifications(){
 		return delivery_repo.getSupplierWith1StarCalifications();
 	}

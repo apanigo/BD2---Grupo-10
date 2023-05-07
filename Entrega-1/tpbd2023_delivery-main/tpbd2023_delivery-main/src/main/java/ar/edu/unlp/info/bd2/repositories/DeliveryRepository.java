@@ -109,19 +109,33 @@ public class DeliveryRepository {
 	}
 
     public List<Product> getProductsNoAddedToOrders() {
-		String hql = "SELECT p FROM Product p WHERE p NOT IN (SELECT DISTINCT pi.id FROM Item i JOIN i.product pi)";
+		String hql= "SELECT p " +
+					"FROM Product p " +
+					"WHERE p NOT IN (" +
+					"    SELECT DISTINCT pi.id " +
+					"    FROM Item i " +
+					"    JOIN i.product pi" +
+					")";
 		Query<Product> query = this.sessionFactory.getCurrentSession().createQuery(hql, Product.class);
 		return query.list();
     }
 
 	public List<ProductType> getTop3ProductTypesWithLessProducts() {
-		String hql = "SELECT pt FROM ProductType pt LEFT JOIN pt.products p GROUP BY pt.id ORDER BY COUNT(p) ASC";
+		String hql= "SELECT pt " +
+					"FROM ProductType pt " +
+					"LEFT JOIN pt.products p " +
+					"GROUP BY pt.id " +
+					"ORDER BY COUNT(p) ASC";
 		Query<ProductType> query = this.sessionFactory.getCurrentSession().createQuery(hql, ProductType.class);
 		return query.setMaxResults(3).getResultList();
 	}
 
 	public Supplier getSupplierWithMoreProducts() {
-		String hql = "SELECT s FROM Supplier s JOIN s.products p GROUP BY s.id ORDER BY COUNT(p) DESC";
+		String hql= "SELECT s " +
+					"FROM Supplier s " +
+					"JOIN s.products p " +
+					"GROUP BY s.id " +
+					"ORDER BY COUNT(p) DESC";
 		Query<Supplier> query = this.sessionFactory.getCurrentSession().createQuery(hql, Supplier.class);
 		return query.setMaxResults(1).uniqueResult();
 	}
