@@ -60,23 +60,23 @@ public class DeliveryStatisticsServiceTest {
         this.assertListEquality(users2.stream().map(user -> user.getUsername()).collect(Collectors.toList()), Arrays.asList("miguelgomez", "isabelcastro", "danielsanchez" ));
     }
 
-//    @Test
-//    void testGetTop10DeliveryManWithMoreOrders() {
-//        List<DeliveryMan> deliveryManList = this.service.getTop10DeliveryManWithMoreOrders();
-//        assertEquals(10, deliveryManList.size());
-//        this.assertListEquality(deliveryManList.stream().map(
-//                        dm -> dm.getUsername()).collect(Collectors.toList()),
-//                Arrays.asList( "maurito", "carlitos","juanito", "sofi","danielsanchez","anaromero","javiermartin","luisagarcia","marinaperez", "eduardolopez"));
-//    }
-//
-//    @Test
-//    void testGetUsersSpentMoreThan() {
-//        List<Client> clients = this.service.getUsersSpentMoreThan(25);
-//        assertEquals(5, clients.size());
-//        this.assertListEquality(clients.stream().map(
-//                        client -> client.getUsername()).collect(Collectors.toList()),
-//                Arrays.asList("juanperez", "mariagarcia", "pedrolopez", "luciarodriguez", "miguelgomez"));
-//    }
+    @Test
+    void testGetTop10DeliveryManWithMoreOrders() {
+        List<DeliveryMan> deliveryManList = this.service.getTop10DeliveryManWithMoreOrders();
+        assertEquals(10, deliveryManList.size());
+        this.assertListEquality(deliveryManList.stream().map(
+                        dm -> dm.getUsername()).collect(Collectors.toList()),
+                Arrays.asList( "maurito", "carlitos","juanito", "sofi","danielsanchez","anaromero","javiermartin","luisagarcia","marinaperez", "eduardolopez"));
+    }
+
+    @Test
+    void testGetUsersSpentMoreThan() {
+        List<Client> clients = this.service.getUsersSpentMoreThan(25);
+        assertEquals(5, clients.size());
+        this.assertListEquality(clients.stream().map(
+                        client -> client.getUsername()).collect(Collectors.toList()),
+                Arrays.asList("juanperez", "mariagarcia", "pedrolopez", "luciarodriguez", "miguelgomez"));
+    }
 //
 //    @Test
 //    void testGetAllOrdersFromUser() {

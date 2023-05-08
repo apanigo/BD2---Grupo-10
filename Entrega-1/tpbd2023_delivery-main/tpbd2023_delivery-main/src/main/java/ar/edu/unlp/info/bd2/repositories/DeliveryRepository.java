@@ -38,6 +38,7 @@ public class DeliveryRepository {
 				throw new DeliveryException("Constraint Violation");
 			} else {
 				throw new DeliveryException("Hubo un error");
+				
 			}
 		}
 	}
@@ -106,6 +107,19 @@ public class DeliveryRepository {
 		String hql = "FROM User u ORDER BY u.score DESC";
 		Query<User> query = this.sessionFactory.getCurrentSession().createQuery(hql, User.class);
 		return query.setMaxResults(n).getResultList();
+	}
+	
+	public List<DeliveryMan> getTop10DeliveryManWithMoreOrders() {
+		String hql = "FROM DeliveryMan dm ORDER BY dm.numberOfSuccessOrders DESC";
+		Query<DeliveryMan> query = this.sessionFactory.getCurrentSession().createQuery(hql, DeliveryMan.class);
+		return query.setMaxResults(10).getResultList();
+	}
+	
+	public List<Client> getUsersSpentMoreThan(float number) {
+		String hql = "";
+		Query<Client> query = this.sessionFactory.getCurrentSession().createQuery(hql, Client.class);
+		query.setParameter("number", number);
+		return query.getResultList();
 	}
 
 }

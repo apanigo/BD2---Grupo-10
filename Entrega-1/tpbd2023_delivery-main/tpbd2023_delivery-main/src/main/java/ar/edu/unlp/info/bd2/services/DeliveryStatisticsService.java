@@ -21,14 +21,14 @@ public interface DeliveryStatisticsService {
     /**
      * Obtiene los 10 usuarios de tipo Delivery Man que mas ordenes completaron
      * @return el listado de Delivery Man
-     *
+     */
     public List<DeliveryMan> getTop10DeliveryManWithMoreOrders();
 
     /**
      * Obtiene una lista de usuarios de tipo Cliente que hicieron al menos una orden con un monto total igual o superior a un valor
      * @param number monto de las ordenes
      * @return el listado de clientes
-     *
+     */
     public List<Client> getUsersSpentMoreThan(float number);
 
     /**

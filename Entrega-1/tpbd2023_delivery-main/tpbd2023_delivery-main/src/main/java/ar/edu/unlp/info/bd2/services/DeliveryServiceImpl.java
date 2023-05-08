@@ -509,19 +509,25 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	/**
 	 * Obtiene los 10 usuarios de tipo Delivery Man que mas ordenes completaron
 	 * @return el listado de Delivery Man
-	 *
+	 */
 	@Override
 	@Transactional
-	public List<DeliveryMan> getTop10DeliveryManWithMoreOrders();
+	public List<DeliveryMan> getTop10DeliveryManWithMoreOrders() {
+		List<DeliveryMan> dm = delivery_repo.getTop10DeliveryManWithMoreOrders();
+		return dm;
+	}
 
 	/**
 	 * Obtiene una lista de usuarios de tipo Cliente que hicieron al menos una orden con un monto total igual o superior a un valor
 	 * @param number monto de las ordenes
 	 * @return el listado de clientes
-	 *
+	 */
 	@Override
 	@Transactional
-	public List<Client> getUsersSpentMoreThan(float number);
+	public List<Client> getUsersSpentMoreThan(float number) {
+		List<Client> clientes = delivery_repo.getUsersSpentMoreThan(number);
+		return clientes;
+	}
 
 	/**
 	 * Obtiene el listado de ordenes realizadas por un cliente
