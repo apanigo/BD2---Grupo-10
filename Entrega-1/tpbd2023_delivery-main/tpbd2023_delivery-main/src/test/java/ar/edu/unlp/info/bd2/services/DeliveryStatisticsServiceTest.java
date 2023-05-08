@@ -98,57 +98,57 @@ public class DeliveryStatisticsServiceTest {
 //        assertEquals(20, number);
 //    }
 //
-//    @Test
-//    void testGetNumberOfOrderDeliveredAndBetweenDates() {
-//        LocalDate today = LocalDate.now();
-//        long number1 = this.service.getNumberOfOrderDeliveredAndBetweenDates(
-//                java.sql.Date.valueOf(today.minusDays(30)),
-//                java.sql.Date.valueOf(today.minusDays(20)));
-//        assertEquals(1, number1);
-//        long number2 = this.service.getNumberOfOrderDeliveredAndBetweenDates(
-//                java.sql.Date.valueOf(today.minusDays(10)),
-//                java.sql.Date.valueOf(today.minusDays(4)));
-//        assertEquals(5, number2);
-//    }
-//
-//    @Test
-//    void testGetOrderDeliveredMoreExpansiveInDate() {
-//        LocalDate today = LocalDate.now();
-//        Optional<Order> order1 = this.service.getOrderDeliveredMoreExpansiveInDate(java.sql.Date.valueOf(today.minusDays(10)));
-//        assertTrue(order1.isPresent());
-//        assertEquals(9, order1.get().getNumber());
-//        Optional<Order> order2 = this.service.getOrderDeliveredMoreExpansiveInDate(java.sql.Date.valueOf(today));
-//        assertTrue(order2.isPresent());
-//        assertEquals(2, order2.get().getNumber());
-//        Optional<Order> order3 = this.service.getOrderDeliveredMoreExpansiveInDate(java.sql.Date.valueOf(today.minusDays(20)));
-//        assertFalse(order3.isPresent());
-//    }
-//
-//    @Test
-//    void testGetSuppliersWithoutProducts() {
-//        List<Supplier> suppliers = this.service.getSuppliersWithoutProducts();
-//        assertEquals(1, suppliers.size());
-//        assertEquals("Supplier 11", suppliers.get(0).getName());
-//    }
-//
-//    @Test
-//    void testGetProductsWithPriceDateOlderThan() {
-//        List<Product> products1 = this.service.getProductsWithPriceDateOlderThan(50);
-//        assertEquals(1, products1.size());
-//        List<Product> products2 = this.service.getProductsWithPriceDateOlderThan(20);
-//        assertEquals(4, products2.size());
-//        List<Product> products3 = this.service.getProductsWithPriceDateOlderThan(10);
-//        assertEquals(11, products3.size());
-//    }
-//
-//    @Test
-//    void testGetTop5MoreExpansiveProducts() {
-//        List<Product> products = this.service.getTop5MoreExpansiveProducts();
-//        assertEquals(5, products.size());
-//        this.assertListEquality(products.stream().map(
-//                        (p -> p.getName())).collect(Collectors.toList()),
-//                Arrays.asList("Pollo Asado", "Sushi Roll", "Hamburguesa", "Spaghetti Bolognese", "Pizza Margarita"));
-//    }
+    @Test
+    void testGetNumberOfOrderDeliveredAndBetweenDates() {
+        LocalDate today = LocalDate.now();
+        long number1 = this.service.getNumberOfOrderDeliveredAndBetweenDates(
+                java.sql.Date.valueOf(today.minusDays(30)),
+                java.sql.Date.valueOf(today.minusDays(20)));
+        assertEquals(1, number1);
+        long number2 = this.service.getNumberOfOrderDeliveredAndBetweenDates(
+                java.sql.Date.valueOf(today.minusDays(10)),
+                java.sql.Date.valueOf(today.minusDays(4)));
+        assertEquals(5, number2);
+    }
+
+    @Test
+    void testGetOrderDeliveredMoreExpansiveInDate() {
+        LocalDate today = LocalDate.now();
+        Optional<Order> order1 = this.service.getOrderDeliveredMoreExpansiveInDate(java.sql.Date.valueOf(today.minusDays(10)));
+        assertTrue(order1.isPresent());
+        assertEquals(9, order1.get().getNumber());
+        Optional<Order> order2 = this.service.getOrderDeliveredMoreExpansiveInDate(java.sql.Date.valueOf(today));
+        assertTrue(order2.isPresent());
+        assertEquals(2, order2.get().getNumber());
+        Optional<Order> order3 = this.service.getOrderDeliveredMoreExpansiveInDate(java.sql.Date.valueOf(today.minusDays(20)));
+        assertFalse(order3.isPresent());
+    }
+
+    @Test
+    void testGetSuppliersWithoutProducts() {
+        List<Supplier> suppliers = this.service.getSuppliersWithoutProducts();
+        assertEquals(1, suppliers.size());
+        assertEquals("Supplier 11", suppliers.get(0).getName());
+    }
+
+    @Test
+    void testGetProductsWithPriceDateOlderThan() {
+        List<Product> products1 = this.service.getProductsWithPriceDateOlderThan(50);
+        assertEquals(1, products1.size());
+        List<Product> products2 = this.service.getProductsWithPriceDateOlderThan(20);
+        assertEquals(4, products2.size());
+        List<Product> products3 = this.service.getProductsWithPriceDateOlderThan(10);
+        assertEquals(11, products3.size());
+    }
+
+    @Test
+    void testGetTop5MoreExpansiveProducts() {
+        List<Product> products = this.service.getTop5MoreExpansiveProducts();
+        assertEquals(5, products.size());
+        this.assertListEquality(products.stream().map(
+                        (p -> p.getName())).collect(Collectors.toList()),
+                Arrays.asList("Pollo Asado", "Sushi Roll", "Hamburguesa", "Spaghetti Bolognese", "Pizza Margarita"));
+    }
 //
 //    @Test
 //    void testGetMostDemandedProduct() {
@@ -156,38 +156,38 @@ public class DeliveryStatisticsServiceTest {
 //        assertEquals("Spaghetti Bolognese", product.getName());
 //    }
 //
-//    @Test
-//    void testGetProductsNoAddedToOrders() {
-//        List<Product> products = this.service.getProductsNoAddedToOrders();
-//        assertEquals(5, products.size());
-//        this.assertListEquality(products.stream().map(
-//                        (p) -> p.getName()).collect(Collectors.toList()),
-//                Arrays.asList("Galletitas de avena", "Sandwich de jamón y queso", "Ensalada César", "Muffin de arándanos", "Empanada de carne"));
-//    }
-//
-//    @Test
-//    void testGetTop3ProductTypesWithLessProducts() {
-//        List<ProductType> types = this.service.getTop3ProductTypesWithLessProducts();
-//        assertEquals(3, types.size());
-//        this.assertListEquality(types.stream().map(
-//                        (t) -> t.getName()).collect(Collectors.toList()),
-//                Arrays.asList("Pastas", "Sandwiches", "Ensaladas"));
-//    }
-//
-//    @Test
-//    void testGetSupplierWithMoreProducts() {
-//        Supplier supplier = this.service.getSupplierWithMoreProducts();
-//        assertEquals("Supplier 4", supplier.getName());
-//    }
-//
-//    @Test
-//    void testGetSupplierWith1StarCalifications() {
-//        List<Supplier> suppliers = this.service.getSupplierWith1StarCalifications();
-//        assertEquals(4, suppliers.size());
-//        this.assertListEquality(suppliers.stream().map(
-//                        (s) -> s.getName()).collect(Collectors.toList()),
-//                Arrays.asList("Supplier 1", "Supplier 3", "Supplier 4", "Supplier 5"));
-//    }
+    @Test
+    void testGetProductsNoAddedToOrders() {
+        List<Product> products = this.service.getProductsNoAddedToOrders();
+        assertEquals(5, products.size());
+        this.assertListEquality(products.stream().map(
+                        (p) -> p.getName()).collect(Collectors.toList()),
+                Arrays.asList("Galletitas de avena", "Sandwich de jamón y queso", "Ensalada César", "Muffin de arándanos", "Empanada de carne"));
+    }
+
+    @Test
+    void testGetTop3ProductTypesWithLessProducts() {
+        List<ProductType> types = this.service.getTop3ProductTypesWithLessProducts();
+        assertEquals(3, types.size());
+        this.assertListEquality(types.stream().map(
+                        (t) -> t.getName()).collect(Collectors.toList()),
+                Arrays.asList("Pastas", "Sandwiches", "Ensaladas"));
+    }
+
+    @Test
+    void testGetSupplierWithMoreProducts() {
+        Supplier supplier = this.service.getSupplierWithMoreProducts();
+        assertEquals("Supplier 4", supplier.getName());
+    }
+
+    @Test
+    void testGetSupplierWith1StarCalifications() {
+        List<Supplier> suppliers = this.service.getSupplierWith1StarCalifications();
+        assertEquals(4, suppliers.size());
+        this.assertListEquality(suppliers.stream().map(
+                        (s) -> s.getName()).collect(Collectors.toList()),
+                Arrays.asList("Supplier 1", "Supplier 3", "Supplier 4", "Supplier 5"));
+    }
 
     private <T> void assertListEquality(List<T> list1, List<T> list2) {
         if (list1.size() != list2.size()) {

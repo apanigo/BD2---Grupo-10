@@ -49,33 +49,33 @@ public interface DeliveryStatisticsService {
      * @param startDate fecha de incio del rango
      * @param endDate fecha final del rango
      * @return el numero de ordenes
-     *
+     */
     public Long getNumberOfOrderDeliveredAndBetweenDates(Date startDate, Date endDate);
 
     /**
      * Obtiene la orden completada, es decir entregada por el repartidor, de mayor valor total en un dia dado
      * @param date el dia
      * @return la orden obtenida
-     *
+     */
     public Optional<Order> getOrderDeliveredMoreExpansiveInDate(Date date);
 
     /**
      * Obtiene la lista de suppliers que no tienen productos agregados a su catalogo
      * @return la lista de suppliers
-     *
+     */
     public List<Supplier> getSuppliersWithoutProducts();
 
     /**
      * Obtiene los productos que no han actualizado su precio en los ultimos N dias
      * @param days cantidad de dias
      * @return el listado de productos
-     *
+     */
     public List<Product> getProductsWithPriceDateOlderThan(int days);
 
     /**
      * Obtiene los 5 productos de mayor valor
      * @return el listado de productos
-     *
+     */
     public List<Product> getTop5MoreExpansiveProducts();
 
     /**
@@ -87,25 +87,25 @@ public interface DeliveryStatisticsService {
     /**
      * Obtiene aquellos productos existentes que no fueron incluidos en ninguna orden
      * @return el listado de productos
-     *
+     */
     public List<Product> getProductsNoAddedToOrders();
 
     /**
      * Obtiene los 3 tipos de productos que menos productos tienen asociados
      * @return el listado de tipos de producto
-     *
+     */
     public List<ProductType> getTop3ProductTypesWithLessProducts();
 
     /**
      * Obtiene el supplier que más productos tiene asociado
      * @return el supplier resultante
-     *
+     */
     public Supplier getSupplierWithMoreProducts();
 
     /**
      * Obtiene aquellos suppliers que tienen al menos una calificación de una estrella entre sus ordenes completadas
      * @return el listado de suppliers
-     *
+     */
     public List<Supplier> getSupplierWith1StarCalifications();
-    */
+
 }

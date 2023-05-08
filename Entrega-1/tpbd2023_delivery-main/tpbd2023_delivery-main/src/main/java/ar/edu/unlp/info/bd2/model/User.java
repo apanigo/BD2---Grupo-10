@@ -109,4 +109,7 @@ public abstract class User {
         this.id = id;
     }
 
+    public void incrementScore() {
+        this.score = this.score + 1;
+    }
 }

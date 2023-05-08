@@ -45,7 +45,6 @@ public class Address {
 		this.coordY = coordY;
 		this.description = description;
 		this.client = client;
-		this.client.setNewAddress(this);
 	}
     
     public Address(String name, String address, float coordX, float coordY, String description, Client client) {
