@@ -94,7 +94,7 @@ public class DeliveryRepository {
 		return query.getResultList();
 	}
 
-	// metodos para DeliveryServiceTest
+	// métodos para DeliveryServiceTest
 	public List<Product> getProductsByType(String type) throws DeliveryException {
 		String hql = "SELECT p FROM Product p JOIN p.types t WHERE t.name = :type";
 		Query<Product> query = this.sessionFactory.getCurrentSession().createQuery(hql, Product.class);
@@ -102,14 +102,13 @@ public class DeliveryRepository {
 		return query.getResultList();
 	}
 
-	// metodos para DeliveryStatisticsServiceTest
+	// métodos para DeliveryStatisticsServiceTest
 	public List<User> getTopNUserWithMoreScore(int n) {
 		String hql = "FROM User u ORDER BY u.score DESC";
 		Query<User> query = this.sessionFactory.getCurrentSession().createQuery(hql, User.class);
 		return query.setMaxResults(n).getResultList();
 	}
-	
-	// metodos para DeliveryStatisticsServiceTest
+
 	public Long getNumberOfOrderDeliveredAndBetweenDates(Date startDate, Date endDate) {
 		String hql = "SELECT COUNT(o.id) FROM Order o WHERE o.dateOfOrder BETWEEN :startDate AND :endDate AND o.delivered IS TRUE";
 		Query<Long> query = this.sessionFactory.getCurrentSession().createQuery(hql, Long.class);
@@ -117,23 +116,20 @@ public class DeliveryRepository {
 		query.setParameter("endDate", endDate);
 		return query.uniqueResult().longValue();
 	}
-	
-	// metodos para DeliveryStatisticsServiceTest
+
 	public Optional<Order> getOrderDeliveredMoreExpansiveInDate(Date aDate){
 		String hql = "FROM Order o WHERE o.delivered IS TRUE AND o.dateOfOrder = :aDate AND o.totalPrice = (SELECT MAX(oo.totalPrice) from Order oo WHERE oo.delivered IS TRUE AND oo.dateOfOrder LIKE :aDate)";
 		Query<Order> query = this.sessionFactory.getCurrentSession().createQuery(hql, Order.class);
 		query.setParameter("aDate", aDate);
 		return Optional.ofNullable(query.uniqueResult());
 	}
-	
-	// metodos para DeliveryStatisticsServiceTest
+
 	public List<Supplier> getSuppliersWithoutProducts(){
 		String hql = "FROM Supplier s WHERE NOT EXISTS (SELECT p FROM Product p WHERE p.supplier = s.id)";
 		Query<Supplier> query = this.sessionFactory.getCurrentSession().createQuery(hql, Supplier.class);
 		return query.list();
 	}
-	
-	// metodos para DeliveryStatisticsServiceTest
+
 	public List<Product> getProductsWithPriceDateOlderThan(int days){
 		Date queryDate = java.sql.Date.valueOf(LocalDate.now().minusDays(days));
 		String hql = "FROM Product p WHERE lastPriceUpdateDate <= :queryDate";
@@ -142,10 +138,56 @@ public class DeliveryRepository {
 		return query.getResultList();
 	}
 
-	// metodos para DeliveryStatisticsServiceTest
-	public List<Product> getTop5MoreExpansiveProducts(){
+	public List<Product> getTop5MoreExpansiveProducts() {
 		String hql = "FROM Product p ORDER BY p.price DESC";
 		Query<Product> query = this.sessionFactory.getCurrentSession().createQuery(hql, Product.class);
 		return query.setMaxResults(5).getResultList();
+	}
+
+    public List<Product> getProductsNoAddedToOrders() {
+		String hql= "SELECT p " +
+					"FROM Product p " +
+					"WHERE p NOT IN (" +
+					"    SELECT DISTINCT pi.id " +
+					"    FROM Item i " +
+					"    JOIN i.product pi" +
+					")";
+		Query<Product> query = this.sessionFactory.getCurrentSession().createQuery(hql, Product.class);
+		return query.list();
+    }
+
+	public List<ProductType> getTop3ProductTypesWithLessProducts() {
+		String hql= "SELECT pt " +
+					"FROM ProductType pt " +
+					"LEFT JOIN pt.products p " +
+					"GROUP BY pt.id " +
+					"ORDER BY COUNT(p) ASC";
+		Query<ProductType> query = this.sessionFactory.getCurrentSession().createQuery(hql, ProductType.class);
+		return query.setMaxResults(3).getResultList();
+	}
+
+	public Supplier getSupplierWithMoreProducts() {
+		String hql= "SELECT s " +
+					"FROM Supplier s " +
+					"JOIN s.products p " +
+					"GROUP BY s.id " +
+					"ORDER BY COUNT(p) DESC";
+		Query<Supplier> query = this.sessionFactory.getCurrentSession().createQuery(hql, Supplier.class);
+		return query.setMaxResults(1).uniqueResult();
+	}
+
+	public List<Supplier> getSupplierWith1StarCalifications() {
+		String hql = "SELECT DISTINCT s " +
+				"FROM Supplier s " +
+				"JOIN s.products p " +
+				"WHERE p.id IN (" +
+				"    SELECT i.product.id " +
+				"    FROM Item i " +
+				"    JOIN i.order o " +
+				"    JOIN o.qualification q " +
+				"    WHERE q.score = 1" +
+				")";
+		Query<Supplier> query = this.sessionFactory.getCurrentSession().createQuery(hql, Supplier.class);
+		return query.getResultList();
 	}
 }

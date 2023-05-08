@@ -72,7 +72,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return el usuario con el id provisto
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public Optional<User> getUserById(Long id){
 		return delivery_repo.getOptionalById("id_user", id, User.class);
 	}
@@ -83,7 +83,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return el usuario con el email provisto
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public Optional<User> getUserByEmail(String email){
 		return delivery_repo.getOptionalByProperty("email", email, User.class);
 	}
@@ -93,7 +93,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return el repartidor obtenido
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public Optional<DeliveryMan> getAFreeDeliveryMan(){
 		Boolean free = true;
 		return delivery_repo.getOptionalByProperty("free", free, DeliveryMan.class);
@@ -132,6 +132,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 		Address newAddress = new Address(name, address, apartment, coordX, coordY, description, client);
 		try {
 			delivery_repo.saveClass(newAddress);
+			client.setNewAddress(newAddress);
 			return newAddress;
 		} catch (DeliveryException de) {
 			throw de;
@@ -187,7 +188,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return listado de Suppliers
 	 **/
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<Supplier> getSupplierByName(String name) {
 		return delivery_repo.getClassListByProperty("name", name, Supplier.class);
 	}
@@ -220,7 +221,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return el pedido con el id provisto
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public Optional<Order> getOrderById(Long id) {
 		return delivery_repo.getOptionalById("id_order", id, Order.class);
 	}
@@ -301,7 +302,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return el producto con el id provisto
 	 **/
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public Optional<Product> getProductById(Long id) {
 		return delivery_repo.getOptionalById("id_product", id, Product.class);
 	}
@@ -312,7 +313,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return Lista de productos
 	 **/
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<Product> getProductByName(String name) {
 		return delivery_repo.getClassListByProperty("name", name, Product.class);
 	}
@@ -323,7 +324,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return Lista de productos
 	 **/
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<Product> getProductsByType(String type) throws DeliveryException {
 		List<Product> typeList = delivery_repo.getProductsByType(type);
 		if (typeList.size() != 0) {
@@ -402,13 +403,13 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 				delivery_repo.updateClass(anOrder);
 
 				DeliveryMan aDeliveryMan = anOrder.getDeliveryMan();
-				aDeliveryMan.setNumberOfSuccessOrders(aDeliveryMan.getNumberOfSuccessOrders() + 1);
-				aDeliveryMan.setScore(aDeliveryMan.getNumberOfSuccessOrders());
+				aDeliveryMan.incrementNumberOfSuccessOrders();
+				aDeliveryMan.incrementScore();
 				aDeliveryMan.setFree(true);
 				delivery_repo.updateClass(aDeliveryMan);
 
 				Client aClient = anOrder.getClient();
-				aClient.setScore(aClient.getScore() + 1);
+				aClient.incrementScore();
 				delivery_repo.updateClass(aClient);
 
 				return true;
@@ -431,7 +432,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	public Qualification addQualificatioToOrder(Long order, String commentary) throws DeliveryException {
 		Order anOrder = delivery_repo.getClassByProperty("id_order", order, Order.class);
 		if (anOrder != null){
-			Qualification newQualification = new Qualification(5, commentary, anOrder);
+			Qualification newQualification = new Qualification(commentary, anOrder);
 
 			anOrder.setQualification(newQualification);
 
@@ -607,34 +608,42 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	/**
 	 * Obtiene aquellos productos existentes que no fueron incluidos en ninguna orden
 	 * @return el listado de productos
-	 *
+	 */
 	@Override
-	@Transactional
-	public List<Product> getProductsNoAddedToOrders();
+	@Transactional(readOnly = true)
+	public List<Product> getProductsNoAddedToOrders(){
+		return delivery_repo.getProductsNoAddedToOrders();
+	}
 
 	/**
 	 * Obtiene los 3 tipos de productos que menos productos tienen asociados
 	 * @return el listado de tipos de producto
-	 *
+	 */
 	@Override
-	@Transactional
-	public List<ProductType> getTop3ProductTypesWithLessProducts();
+	@Transactional(readOnly = true)
+	public List<ProductType> getTop3ProductTypesWithLessProducts(){
+		return delivery_repo.getTop3ProductTypesWithLessProducts();
+	}
 
 	/**
 	 * Obtiene el supplier que más productos tiene asociado
 	 * @return el supplier resultante
-	 *
+	 */
 	@Override
-	@Transactional
-	public Supplier getSupplierWithMoreProducts();
+	@Transactional(readOnly = true)
+	public Supplier getSupplierWithMoreProducts(){
+		return delivery_repo.getSupplierWithMoreProducts();
+	}
 
 	/**
 	 * Obtiene aquellos suppliers que tienen al menos una calificación de una estrella entre sus ordenes completadas
 	 * @return el listado de suppliers
-	 *
+	 */
 	@Override
-	@Transactional
-	public List<Supplier> getSupplierWith1StarCalifications();	*/
+	@Transactional(readOnly = true)
+	public List<Supplier> getSupplierWith1StarCalifications(){
+		return delivery_repo.getSupplierWith1StarCalifications();
+	}
 
 
 }

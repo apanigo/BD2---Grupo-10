@@ -87,25 +87,25 @@ public interface DeliveryStatisticsService {
     /**
      * Obtiene aquellos productos existentes que no fueron incluidos en ninguna orden
      * @return el listado de productos
-     *
+     */
     public List<Product> getProductsNoAddedToOrders();
 
     /**
      * Obtiene los 3 tipos de productos que menos productos tienen asociados
      * @return el listado de tipos de producto
-     *
+     */
     public List<ProductType> getTop3ProductTypesWithLessProducts();
 
     /**
      * Obtiene el supplier que más productos tiene asociado
      * @return el supplier resultante
-     *
+     */
     public Supplier getSupplierWithMoreProducts();
 
     /**
      * Obtiene aquellos suppliers que tienen al menos una calificación de una estrella entre sus ordenes completadas
      * @return el listado de suppliers
-     *
+     */
     public List<Supplier> getSupplierWith1StarCalifications();
-    */
+
 }
