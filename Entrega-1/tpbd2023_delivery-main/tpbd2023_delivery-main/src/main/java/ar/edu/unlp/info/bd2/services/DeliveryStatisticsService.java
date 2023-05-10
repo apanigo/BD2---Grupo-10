@@ -35,13 +35,13 @@ public interface DeliveryStatisticsService {
      * Obtiene el listado de ordenes realizadas por un cliente
      * @param username nombre de usuario del cliente
      * @return la lista de ordenes
-     *
+     */
     public List<Order> getAllOrdersFromUser(String username);
 
     /**
      * Obtiene el numero de ordenes que todavia no fueron completadas, es decir que no fueron entregadas por un Delivery Man
      * @return el numero de ordenes
-     *
+     */
     public Long getNumberOfOrderNoDelivered();
 
     /**
@@ -81,7 +81,7 @@ public interface DeliveryStatisticsService {
     /**
      * Obtiene el producto más demandado, es decir, aquel que esta se incluyo más veces en ordenes (tener en cuenta la cantidad)
      * @return el producto obtenido
-     *
+     */
     public Product getMostDemandedProduct();
 
     /**

@@ -117,10 +117,29 @@ public class DeliveryRepository {
 	}
 	
 	public List<Client> getUsersSpentMoreThan(float number) {
-		String hql = "";
+		String hql = "FROM Client c "
+				+ "WHERE id IN ("
+				+ "		SELECT client.id "
+				+ "		FROM Order "
+				+ "		WHERE totalPrice >= :number)";
 		Query<Client> query = this.sessionFactory.getCurrentSession().createQuery(hql, Client.class);
 		query.setParameter("number", number);
 		return query.getResultList();
+	}
+	
+	public List<Order> getAllOrdersFromUser(String username) {
+		String hql = "FROM Order o WHERE o.client.username = :username";
+		Query<Order> query = this.sessionFactory.getCurrentSession().createQuery(hql, Order.class);
+		query.setParameter("username", username);
+		return query.getResultList();
+	}
+	
+	public Long getNumberOfOrderNoDelivered() {
+		String hql = "SELECT COUNT(*)"
+				+ "		FROM Order"
+				+ "		WHERE delivered = false";
+		Query<Long> query = this.sessionFactory.getCurrentSession().createQuery(hql, Long.class);
+		return query.getSingleResult();
 	}
 
 	public Long getNumberOfOrderDeliveredAndBetweenDates(Date startDate, Date endDate) {
@@ -156,6 +175,15 @@ public class DeliveryRepository {
 		String hql = "FROM Product p ORDER BY p.price DESC";
 		Query<Product> query = this.sessionFactory.getCurrentSession().createQuery(hql, Product.class);
 		return query.setMaxResults(5).getResultList();
+	}
+	
+	public Product getMostDemandedProduct() {
+		String hql = "SELECT i.product"
+				+ "		FROM Item i "
+				+ "		GROUP BY i.product.id"
+				+ "		ORDER BY SUM(quantity) DESC";
+		Query<Product> query = this.sessionFactory.getCurrentSession().createQuery(hql, Product.class);
+		return query.setMaxResults(1).getSingleResult();
 	}
 
     public List<Product> getProductsNoAddedToOrders() {

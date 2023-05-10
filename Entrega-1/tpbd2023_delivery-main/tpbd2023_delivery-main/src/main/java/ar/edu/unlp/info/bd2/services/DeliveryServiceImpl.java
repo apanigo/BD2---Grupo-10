@@ -526,26 +526,31 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	@Override
 	@Transactional
 	public List<Client> getUsersSpentMoreThan(float number) {
-		List<Client> clientes = delivery_repo.getUsersSpentMoreThan(number);
-		return clientes;
+		List<Client> clients = delivery_repo.getUsersSpentMoreThan(number);
+		return clients;
 	}
 
 	/**
 	 * Obtiene el listado de ordenes realizadas por un cliente
 	 * @param username nombre de usuario del cliente
 	 * @return la lista de ordenes
-	 *
+	 */
 	@Override
 	@Transactional
-	public List<Order> getAllOrdersFromUser(String username);
+	public List<Order> getAllOrdersFromUser(String username) {
+		List<Order> orders = delivery_repo.getAllOrdersFromUser(username);
+		return orders;
+	}
 
 	/**
 	 * Obtiene el numero de ordenes que todavia no fueron completadas, es decir que no fueron entregadas por un Delivery Man
 	 * @return el numero de ordenes
-	 *
+	 */
 	@Override
 	@Transactional
-	public Long getNumberOfOrderNoDelivered();
+	public Long getNumberOfOrderNoDelivered() {
+		return delivery_repo.getNumberOfOrderNoDelivered();
+	}
 
 	/**
 	 * Obtiene el numero de ordenes completadas, es decir entregadas, en un rango de fechas dadas
@@ -606,10 +611,12 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	/**
 	 * Obtiene el producto más demandado, es decir, aquel que esta se incluyo más veces en ordenes (tener en cuenta la cantidad)
 	 * @return el producto obtenido
-	 *
+	 */
 	@Override
 	@Transactional
-	public Product getMostDemandedProduct();
+	public Product getMostDemandedProduct() {
+		return delivery_repo.getMostDemandedProduct();
+	}
 
 	/**
 	 * Obtiene aquellos productos existentes que no fueron incluidos en ninguna orden
