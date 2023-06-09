@@ -1,6 +1,7 @@
 package ar.edu.unlp.info.bd2.config;
 
 import ar.edu.unlp.info.bd2.services.DeliveryService;
+import ar.edu.unlp.info.bd2.services.SpringDataDeliveryServiceImpl;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +34,7 @@ public class SpringDataConfiguration {
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/bd2_2023_grupo" + this.getGroupNumber()+"?useSSL=false");
         dataSource.setUsername("root");
-        dataSource.setPassword("root");
+        dataSource.setPassword("bbdd2");
         return dataSource;
     }
 
@@ -73,7 +74,7 @@ public class SpringDataConfiguration {
     }
 
     private Integer getGroupNumber() {
-        return 0;
+        return 10;
     }
 
 }

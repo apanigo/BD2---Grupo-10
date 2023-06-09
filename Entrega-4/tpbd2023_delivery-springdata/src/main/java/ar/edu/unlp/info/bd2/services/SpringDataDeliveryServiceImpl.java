@@ -2,7 +2,9 @@ package ar.edu.unlp.info.bd2.services;
 
 import ar.edu.unlp.info.bd2.DeliveryException;
 import ar.edu.unlp.info.bd2.model.*;
-import ar.edu.unlp.info.bd2.repositories.ClientRepository;
+import ar.edu.unlp.info.bd2.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 
 import java.util.Date;
 import java.util.List;
@@ -10,36 +12,64 @@ import java.util.Optional;
 
 public class SpringDataDeliveryServiceImpl implements DeliveryService, DeliveryStatisticsService {
 
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private ClientRepository clientRepository;
-    public SpringDataDeliveryServiceImpl(ClientRepository cli){
-        this.clientRepository = cli;
-    }
+    @Autowired
+    private DeliveryManRepository deliveryManRepository;
+    @Autowired
+    private AddressRepository addressRepository;
+    @Autowired
+    private ItemRepository itemRepository;
+    @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private ProductTypeRepository productTypeRepository;
+    @Autowired
+    private QualificationRepository qualificationRepository;
+    @Autowired
+    private SupplierRepository supplierRepository;
 
     @Override
     public Client createClient(String name, String username, String password, String email, Date dateOfBirth) throws DeliveryException {
-        Client newClient =  new Client(name, username, password, email, dateOfBirth);
-        this.clientRepository.save(newClient); // manejo de excepciones aca con try/catch
-        return newClient;
+        Client newClient = new Client(name, username, password, email, dateOfBirth);
+        try {
+            return this.clientRepository.save(newClient);
+        } catch (IllegalArgumentException e) {
+            throw new DeliveryException("");
+        } catch (OptimisticLockingFailureException e) {
+            throw new DeliveryException("");
+        }
     }
 
     @Override
     public DeliveryMan createDeliveryMan(String name, String username, String password, String email, Date dateOfBirth) throws DeliveryException {
-        return null;
+        DeliveryMan newDeliveryMan = new DeliveryMan(name, username, password, email, dateOfBirth);
+        try{
+            return this.deliveryManRepository.save(newDeliveryMan);
+        } catch (IllegalArgumentException e) {
+            throw new DeliveryException("");
+        } catch (OptimisticLockingFailureException e) {
+            throw new DeliveryException("");
+        }
     }
 
     @Override
     public Optional<User> getUserById(Long id) {
-        return Optional.empty();
+        return this.userRepository.findById(id);
     }
 
     @Override
     public Optional<User> getUserByEmail(String email) {
-        return Optional.empty();
+        return this.userRepository.getUserByEmail(email);
     }
 
     @Override
     public Optional<DeliveryMan> getAFreeDeliveryMan() {
-        return Optional.empty();
+        return this.deliveryManRepository.getAFreeDeliveryMan(true);
     }
 
     @Override
@@ -49,17 +79,44 @@ public class SpringDataDeliveryServiceImpl implements DeliveryService, DeliveryS
 
     @Override
     public Address createAddress(String name, String address, String apartment, float coordX, float coordY, String description, Client client) throws DeliveryException {
-        return null;
+        Address newAddress = new Address(name, address, apartment, coordX, coordY, description, client);
+        try{
+            Address newSavedAddress = this.addressRepository.save(newAddress);
+            client.setNewAddress(newSavedAddress);
+            return newSavedAddress;
+        } catch (IllegalArgumentException e) {
+            throw new DeliveryException("");
+        } catch (OptimisticLockingFailureException e) {
+            throw new DeliveryException("");
+        }
     }
 
     @Override
     public Address createAddress(String name, String address, float coordX, float coordY, String description, Client client) throws DeliveryException {
-        return null;
+        Address newAddress = new Address(name, address, coordX, coordY, description, client);
+        try{
+            Address newSavedAddress = this.addressRepository.save(newAddress);
+            client.setNewAddress(newSavedAddress);
+            return newSavedAddress;
+        } catch (IllegalArgumentException e) {
+            throw new DeliveryException("");
+        } catch (OptimisticLockingFailureException e) {
+            throw new DeliveryException("");
+        }
     }
 
     @Override
     public Order createOrder(int number, Date dateOfOrder, String comments, Client client, Address address) throws DeliveryException {
-        return null;
+        Order newOrder = new Order(number, dateOfOrder, comments, client, address);
+        try{
+            Order newSavedOrder = this.orderRepository.save(newOrder);
+            client.setNewOrder(newSavedOrder);
+            return newSavedOrder;
+        } catch (IllegalArgumentException e) {
+            throw new DeliveryException("");
+        } catch (OptimisticLockingFailureException e) {
+            throw new DeliveryException("");
+        }
     }
 
     @Override
