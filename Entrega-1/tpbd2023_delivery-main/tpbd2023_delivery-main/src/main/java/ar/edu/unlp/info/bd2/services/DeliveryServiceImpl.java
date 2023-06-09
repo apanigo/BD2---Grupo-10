@@ -37,12 +37,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	@Transactional
 	public Client createClient(String name, String username, String password, String email, Date dateOfBirth) throws DeliveryException{
 		Client newClient =  new Client(name, username, password, email, dateOfBirth);
-		try {
-			delivery_repo.saveClass(newClient);
-			return newClient;
-		} catch (DeliveryException de) {
-			throw de;
-		}
+		delivery_repo.saveClass(newClient);
+		return newClient;
 	}
 
 	/**
@@ -58,12 +54,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	@Transactional
 	public DeliveryMan createDeliveryMan(String name, String username, String password, String email, Date dateOfBirth) throws DeliveryException{
 		DeliveryMan newDeliveryMan = new DeliveryMan(name, username, password, email, dateOfBirth);
-		try {
-			delivery_repo.saveClass(newDeliveryMan);
-			return newDeliveryMan;
-		} catch (DeliveryException de) {
-			throw de;
-		}
+		delivery_repo.saveClass(newDeliveryMan);
+		return newDeliveryMan;
 	}
 
 	/**
@@ -107,12 +99,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	@Override
 	@Transactional
 	public DeliveryMan updateDeliveryMan(DeliveryMan newDeliveryMan) throws DeliveryException {
-		try{
-			delivery_repo.updateClass(newDeliveryMan);
-			return delivery_repo.getOptionalById("id_user", newDeliveryMan.getId(), DeliveryMan.class).orElse(null);
-		} catch(DeliveryException de) {
-			throw de;
-		}
+		delivery_repo.updateClass(newDeliveryMan);
+		return delivery_repo.getOptionalById("id_user", newDeliveryMan.getId(), DeliveryMan.class).orElse(null);
 	}
 
 	/**
@@ -130,13 +118,9 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	@Transactional
 	public Address createAddress(String name, String address, String apartment, float coordX, float coordY, String description, Client client) throws DeliveryException{
 		Address newAddress = new Address(name, address, apartment, coordX, coordY, description, client);
-		try {
-			delivery_repo.saveClass(newAddress);
-			client.setNewAddress(newAddress);
-			return newAddress;
-		} catch (DeliveryException de) {
-			throw de;
-		}
+		delivery_repo.saveClass(newAddress);
+		client.setNewAddress(newAddress);
+		return newAddress;
 	}
 
 	/**
@@ -152,13 +136,9 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	@Transactional
 	public Address createAddress(String name, String address, float coordX, float coordY, String description, Client client) throws DeliveryException {
 		Address newAddress = new Address(name, address, coordX, coordY, description, client);
-		try {
-			delivery_repo.saveClass(newAddress);
-			client.setNewAddress(newAddress);
-			return newAddress;
-		} catch (DeliveryException de) {
-			throw de;
-		}
+		delivery_repo.saveClass(newAddress);
+		client.setNewAddress(newAddress);
+		return newAddress;
 	}
 
 	/**
@@ -174,12 +154,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	@Transactional
 	public Supplier createSupplier(String name, String cuil, String address, float coordX, float coordY) throws DeliveryException {
 		Supplier newSupplier = new Supplier(name, cuil, address, coordX, coordY);
-		try {
-			delivery_repo.saveClass(newSupplier);
-			return newSupplier;
-		} catch (DeliveryException de) {
-			throw de;
-		}
+		delivery_repo.saveClass(newSupplier);
+		return newSupplier;
 	}
 
 	/**
@@ -206,13 +182,9 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	@Transactional
 	public Order createOrder(int number, Date dateOfOrder, String comments, Client client,  Address address) throws DeliveryException {
 		Order newOrder = new Order(number, dateOfOrder, comments, client, address);
-		try {
-			delivery_repo.saveClass(newOrder);
-			client.setNewOrder(newOrder);
-			return newOrder;
-		} catch (DeliveryException de) {
-			throw de;
-		}
+		delivery_repo.saveClass(newOrder);
+		client.setNewOrder(newOrder);
+		return newOrder;
 	}
 
 	/**
@@ -236,12 +208,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	@Transactional
 	public ProductType createProductType(String name, String description) throws DeliveryException{
 		ProductType newProductType = new ProductType(name, description);
-		try {
-			delivery_repo.saveClass(newProductType);
-			return newProductType;
-		} catch (DeliveryException de) {
-			throw de;
-		}
+		delivery_repo.saveClass(newProductType);
+		return newProductType;
 	}
 
 	/**
@@ -262,12 +230,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 		for (ProductType type : types) {
 			type.addProducts(newProduct);
 		}
-		try {
-			delivery_repo.saveClass(newProduct);
-			return newProduct;
-		} catch (DeliveryException de) {
-			throw de;
-		}
+		delivery_repo.saveClass(newProduct);
+		return newProduct;
 	}
 
 	/**
@@ -288,12 +252,8 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 		for (ProductType type : types) {
 			type.addProducts(newProduct);
 		}
-		try {
-			delivery_repo.saveClass(newProduct);
-			return newProduct;
-		} catch (DeliveryException de) {
-			throw de;
-		}
+		delivery_repo.saveClass(newProduct);
+		return newProduct;
 	}
 
 	/**
@@ -475,23 +435,15 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	@Override
 	@Transactional
 	public User updateUser(User newUser) throws DeliveryException {
-		try{
-			delivery_repo.updateClass(newUser);
-			return newUser;
-		} catch(DeliveryException de) {
-			throw de;
-		}
+		delivery_repo.updateClass(newUser);
+		return newUser;
 	}
 
 	@Override
 	@Transactional
 	public Qualification updateQualification(Qualification newQualification) throws DeliveryException {
-		try{
-			delivery_repo.updateClass(newQualification);
-			return newQualification;
-		} catch(DeliveryException de) {
-			throw de;
-		}
+		delivery_repo.updateClass(newQualification);
+		return newQualification;
 	}
 
 	// TP2
