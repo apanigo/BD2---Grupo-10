@@ -39,6 +39,7 @@ public class DeliveryRepository {
 				throw new DeliveryException("Constraint Violation");
 			} else {
 				throw new DeliveryException("Hubo un error");
+				
 			}
 		}
 	}
@@ -108,6 +109,38 @@ public class DeliveryRepository {
 		Query<User> query = this.sessionFactory.getCurrentSession().createQuery(hql, User.class);
 		return query.setMaxResults(n).getResultList();
 	}
+	
+	public List<DeliveryMan> getTop10DeliveryManWithMoreOrders() {
+		String hql = "FROM DeliveryMan dm ORDER BY dm.numberOfSuccessOrders DESC";
+		Query<DeliveryMan> query = this.sessionFactory.getCurrentSession().createQuery(hql, DeliveryMan.class);
+		return query.setMaxResults(10).getResultList();
+	}
+	
+	public List<Client> getUsersSpentMoreThan(float number) {
+		String hql = "FROM Client c "
+				+ "WHERE id IN ("
+				+ "		SELECT client.id "
+				+ "		FROM Order "
+				+ "		WHERE totalPrice >= :number)";
+		Query<Client> query = this.sessionFactory.getCurrentSession().createQuery(hql, Client.class);
+		query.setParameter("number", number);
+		return query.getResultList();
+	}
+	
+	public List<Order> getAllOrdersFromUser(String username) {
+		String hql = "FROM Order o WHERE o.client.username = :username";
+		Query<Order> query = this.sessionFactory.getCurrentSession().createQuery(hql, Order.class);
+		query.setParameter("username", username);
+		return query.getResultList();
+	}
+	
+	public Long getNumberOfOrderNoDelivered() {
+		String hql = "SELECT COUNT(*)"
+				+ "		FROM Order"
+				+ "		WHERE delivered = false";
+		Query<Long> query = this.sessionFactory.getCurrentSession().createQuery(hql, Long.class);
+		return query.getSingleResult();
+	}
 
 	public Long getNumberOfOrderDeliveredAndBetweenDates(Date startDate, Date endDate) {
 		String hql = "SELECT COUNT(o.id) FROM Order o WHERE o.dateOfOrder BETWEEN :startDate AND :endDate AND o.delivered IS TRUE";
@@ -143,49 +176,44 @@ public class DeliveryRepository {
 		Query<Product> query = this.sessionFactory.getCurrentSession().createQuery(hql, Product.class);
 		return query.setMaxResults(5).getResultList();
 	}
+	
+	public Product getMostDemandedProduct() {
+		String hql = "SELECT i.product"
+				+ "		FROM Item i "
+				+ "		GROUP BY i.product.id"
+				+ "		ORDER BY SUM(quantity) DESC";
+		Query<Product> query = this.sessionFactory.getCurrentSession().createQuery(hql, Product.class);
+		return query.setMaxResults(1).getSingleResult();
+	}
 
     public List<Product> getProductsNoAddedToOrders() {
-		String hql= "SELECT p " +
-					"FROM Product p " +
-					"WHERE p NOT IN (" +
-					"    SELECT DISTINCT pi.id " +
-					"    FROM Item i " +
-					"    JOIN i.product pi" +
-					")";
+		String hql = "SELECT p FROM Product p WHERE p NOT IN (SELECT DISTINCT i.product FROM Item i)";
 		Query<Product> query = this.sessionFactory.getCurrentSession().createQuery(hql, Product.class);
 		return query.list();
     }
 
 	public List<ProductType> getTop3ProductTypesWithLessProducts() {
-		String hql= "SELECT pt " +
-					"FROM ProductType pt " +
-					"LEFT JOIN pt.products p " +
-					"GROUP BY pt.id " +
-					"ORDER BY COUNT(p) ASC";
+		String hql= "SELECT pt FROM ProductType pt LEFT JOIN pt.products p GROUP BY pt.id ORDER BY COUNT(p) ASC";
 		Query<ProductType> query = this.sessionFactory.getCurrentSession().createQuery(hql, ProductType.class);
 		return query.setMaxResults(3).getResultList();
 	}
 
 	public Supplier getSupplierWithMoreProducts() {
-		String hql= "SELECT s " +
-					"FROM Supplier s " +
-					"JOIN s.products p " +
-					"GROUP BY s.id " +
-					"ORDER BY COUNT(p) DESC";
+		String hql= "SELECT s FROM Supplier s JOIN s.products p GROUP BY s.id ORDER BY COUNT(p) DESC";
 		Query<Supplier> query = this.sessionFactory.getCurrentSession().createQuery(hql, Supplier.class);
 		return query.setMaxResults(1).uniqueResult();
 	}
 
 	public List<Supplier> getSupplierWith1StarCalifications() {
-		String hql = "SELECT DISTINCT p.supplier " +
-				"FROM Product p " +
-				"WHERE p.id IN (" +
-				"    SELECT i.product.id " +
-				"    FROM Item i " +
-				"    JOIN i.order o " +
-				"    JOIN o.qualification q " +
-				"    WHERE q.score = 1" +
-				")";
+		String hql= "SELECT DISTINCT p.supplier " +
+					"FROM Product p " +
+					"WHERE p.id IN (" +
+					"    SELECT i.product.id " +
+					"    FROM Item i " +
+					"    JOIN i.order o " +
+					"    JOIN o.qualification q " +
+					"    WHERE q.score = 1" +
+					")";
 		Query<Supplier> query = this.sessionFactory.getCurrentSession().createQuery(hql, Supplier.class);
 		return query.getResultList();
 	}

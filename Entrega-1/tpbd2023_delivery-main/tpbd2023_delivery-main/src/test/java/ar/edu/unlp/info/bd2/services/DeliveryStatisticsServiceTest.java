@@ -60,44 +60,44 @@ public class DeliveryStatisticsServiceTest {
         this.assertListEquality(users2.stream().map(user -> user.getUsername()).collect(Collectors.toList()), Arrays.asList("miguelgomez", "isabelcastro", "danielsanchez" ));
     }
 
-//    @Test
-//    void testGetTop10DeliveryManWithMoreOrders() {
-//        List<DeliveryMan> deliveryManList = this.service.getTop10DeliveryManWithMoreOrders();
-//        assertEquals(10, deliveryManList.size());
-//        this.assertListEquality(deliveryManList.stream().map(
-//                        dm -> dm.getUsername()).collect(Collectors.toList()),
-//                Arrays.asList( "maurito", "carlitos","juanito", "sofi","danielsanchez","anaromero","javiermartin","luisagarcia","marinaperez", "eduardolopez"));
-//    }
-//
-//    @Test
-//    void testGetUsersSpentMoreThan() {
-//        List<Client> clients = this.service.getUsersSpentMoreThan(25);
-//        assertEquals(5, clients.size());
-//        this.assertListEquality(clients.stream().map(
-//                        client -> client.getUsername()).collect(Collectors.toList()),
-//                Arrays.asList("juanperez", "mariagarcia", "pedrolopez", "luciarodriguez", "miguelgomez"));
-//    }
-//
-//    @Test
-//    void testGetAllOrdersFromUser() {
-//        List<Order> orders1 = this.service.getAllOrdersFromUser("pedrolopez");
-//        assertEquals(5, orders1.size());
-//        this.assertListEquality(orders1.stream().map(
-//                        o -> o.getNumber()).collect(Collectors.toList()),
-//                Arrays.asList(7,8,9,13,23));
-//        List<Order> orders2 = this.service.getAllOrdersFromUser("isabelcastro");
-//        assertEquals(2, orders2.size());
-//        this.assertListEquality(orders2.stream().map(
-//                        o -> o.getNumber()).collect(Collectors.toList()),
-//                Arrays.asList(20,30));
-//    }
-//
-//    @Test
-//    void testGetNumberOfOrderNoDelivered() {
-//        long number = this.service.getNumberOfOrderNoDelivered();
-//        assertEquals(20, number);
-//    }
-//
+    @Test
+    void testGetTop10DeliveryManWithMoreOrders() {
+        List<DeliveryMan> deliveryManList = this.service.getTop10DeliveryManWithMoreOrders();
+        assertEquals(10, deliveryManList.size());
+        this.assertListEquality(deliveryManList.stream().map(
+                        dm -> dm.getUsername()).collect(Collectors.toList()),
+                Arrays.asList( "maurito", "carlitos","juanito", "sofi","danielsanchez","anaromero","javiermartin","luisagarcia","marinaperez", "eduardolopez"));
+    }
+
+    @Test
+    void testGetUsersSpentMoreThan() {
+        List<Client> clients = this.service.getUsersSpentMoreThan(25);
+        assertEquals(5, clients.size());
+        this.assertListEquality(clients.stream().map(
+                        client -> client.getUsername()).collect(Collectors.toList()),
+                Arrays.asList("juanperez", "mariagarcia", "pedrolopez", "luciarodriguez", "miguelgomez"));
+    }
+
+    @Test
+    void testGetAllOrdersFromUser() {
+        List<Order> orders1 = this.service.getAllOrdersFromUser("pedrolopez");
+        assertEquals(5, orders1.size());
+        this.assertListEquality(orders1.stream().map(
+                        o -> o.getNumber()).collect(Collectors.toList()),
+                Arrays.asList(7,8,9,13,23));
+        List<Order> orders2 = this.service.getAllOrdersFromUser("isabelcastro");
+        assertEquals(2, orders2.size());
+        this.assertListEquality(orders2.stream().map(
+                        o -> o.getNumber()).collect(Collectors.toList()),
+                Arrays.asList(20,30));
+    }
+
+    @Test
+    void testGetNumberOfOrderNoDelivered() {
+        long number = this.service.getNumberOfOrderNoDelivered();
+        assertEquals(20, number);
+    }
+
     @Test
     void testGetNumberOfOrderDeliveredAndBetweenDates() {
         LocalDate today = LocalDate.now();
@@ -149,13 +149,13 @@ public class DeliveryStatisticsServiceTest {
                         (p -> p.getName())).collect(Collectors.toList()),
                 Arrays.asList("Pollo Asado", "Sushi Roll", "Hamburguesa", "Spaghetti Bolognese", "Pizza Margarita"));
     }
-//
-//    @Test
-//    void testGetMostDemandedProduct() {
-//        Product product = this.service.getMostDemandedProduct();
-//        assertEquals("Spaghetti Bolognese", product.getName());
-//    }
-//
+
+    @Test
+    void testGetMostDemandedProduct() {
+        Product product = this.service.getMostDemandedProduct();
+        assertEquals("Spaghetti Bolognese", product.getName());
+    }
+
     @Test
     void testGetProductsNoAddedToOrders() {
         List<Product> products = this.service.getProductsNoAddedToOrders();

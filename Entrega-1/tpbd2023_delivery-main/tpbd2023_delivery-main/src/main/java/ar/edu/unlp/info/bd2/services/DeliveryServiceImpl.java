@@ -454,7 +454,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return una lista con los usuarios
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<User> getTopNUserWithMoreScore(int n) {
 		return delivery_repo.getTopNUserWithMoreScore(n);
 	}
@@ -462,36 +462,47 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	/**
 	 * Obtiene los 10 usuarios de tipo Delivery Man que mas ordenes completaron
 	 * @return el listado de Delivery Man
-	 *
+	 */
 	@Override
-	@Transactional
-	public List<DeliveryMan> getTop10DeliveryManWithMoreOrders();
+	@Transactional(readOnly = true)
+	public List<DeliveryMan> getTop10DeliveryManWithMoreOrders() {
+		List<DeliveryMan> dm = delivery_repo.getTop10DeliveryManWithMoreOrders();
+		return dm;
+	}
 
 	/**
 	 * Obtiene una lista de usuarios de tipo Cliente que hicieron al menos una orden con un monto total igual o superior a un valor
 	 * @param number monto de las ordenes
 	 * @return el listado de clientes
-	 *
+	 */
 	@Override
-	@Transactional
-	public List<Client> getUsersSpentMoreThan(float number);
+	@Transactional(readOnly = true)
+	public List<Client> getUsersSpentMoreThan(float number) {
+		List<Client> clients = delivery_repo.getUsersSpentMoreThan(number);
+		return clients;
+	}
 
 	/**
 	 * Obtiene el listado de ordenes realizadas por un cliente
 	 * @param username nombre de usuario del cliente
 	 * @return la lista de ordenes
-	 *
+	 */
 	@Override
-	@Transactional
-	public List<Order> getAllOrdersFromUser(String username);
+	@Transactional(readOnly = true)
+	public List<Order> getAllOrdersFromUser(String username) {
+		List<Order> orders = delivery_repo.getAllOrdersFromUser(username);
+		return orders;
+	}
 
 	/**
 	 * Obtiene el numero de ordenes que todavia no fueron completadas, es decir que no fueron entregadas por un Delivery Man
 	 * @return el numero de ordenes
-	 *
+	 */
 	@Override
-	@Transactional
-	public Long getNumberOfOrderNoDelivered();
+	@Transactional(readOnly = true)
+	public Long getNumberOfOrderNoDelivered() {
+		return delivery_repo.getNumberOfOrderNoDelivered();
+	}
 
 	/**
 	 * Obtiene el numero de ordenes completadas, es decir entregadas, en un rango de fechas dadas
@@ -501,7 +512,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 */
 	
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public Long getNumberOfOrderDeliveredAndBetweenDates(Date startDate, Date endDate) {
 		return delivery_repo.getNumberOfOrderDeliveredAndBetweenDates(startDate, endDate); 
 	};
@@ -512,7 +523,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return la orden obtenida
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public Optional<Order> getOrderDeliveredMoreExpansiveInDate(Date date){
 		return delivery_repo.getOrderDeliveredMoreExpansiveInDate(date);
 	};
@@ -522,7 +533,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return la lista de suppliers
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<Supplier> getSuppliersWithoutProducts(){
 		return delivery_repo.getSuppliersWithoutProducts();
 	};
@@ -534,7 +545,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 */
 	
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<Product> getProductsWithPriceDateOlderThan(int days){
 		return delivery_repo.getProductsWithPriceDateOlderThan(days);
 	};
@@ -544,7 +555,7 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	 * @return el listado de productos
 	 */
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<Product> getTop5MoreExpansiveProducts(){
 		return delivery_repo.getTop5MoreExpansiveProducts();
 	}
@@ -552,10 +563,12 @@ public class DeliveryServiceImpl implements DeliveryService, DeliveryStatisticsS
 	/**
 	 * Obtiene el producto más demandado, es decir, aquel que esta se incluyo más veces en ordenes (tener en cuenta la cantidad)
 	 * @return el producto obtenido
-	 *
+	 */
 	@Override
-	@Transactional
-	public Product getMostDemandedProduct();
+	@Transactional(readOnly = true)
+	public Product getMostDemandedProduct() {
+		return delivery_repo.getMostDemandedProduct();
+	}
 
 	/**
 	 * Obtiene aquellos productos existentes que no fueron incluidos en ninguna orden
