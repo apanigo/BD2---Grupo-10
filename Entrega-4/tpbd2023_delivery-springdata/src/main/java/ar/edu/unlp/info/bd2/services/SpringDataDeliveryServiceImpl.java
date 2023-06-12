@@ -192,7 +192,7 @@ public class SpringDataDeliveryServiceImpl implements DeliveryService, DeliveryS
     @Override
     @Transactional(readOnly = true)
     public List<Supplier> getSupplierByName(String name) {
-        return this.supplierRepository.findByName(name);
+        return this.supplierRepository.findByNameContaining(name);
     }
 
     @Override
@@ -264,7 +264,7 @@ public class SpringDataDeliveryServiceImpl implements DeliveryService, DeliveryS
     @Override
     @Transactional(readOnly = true)
     public List<Product> getProductByName(String name) {
-        return this.productRepository.findByName(name);
+        return this.productRepository.findByNameContaining(name);
     }
 
     @Override

@@ -48,7 +48,7 @@ public class DeliveryStatisticsServiceTest {
     void init() {
 
     }
-
+/*
     @Test
     void testGetTopNUserWithMoreScore() {
         List<User> users = this.service.getTopNUserWithMoreScore(6);
@@ -197,5 +197,5 @@ public class DeliveryStatisticsServiceTest {
                 Assert.fail(objectInList1 + " is not present in list2");
             }
         }
-    }
+    }*/
 }

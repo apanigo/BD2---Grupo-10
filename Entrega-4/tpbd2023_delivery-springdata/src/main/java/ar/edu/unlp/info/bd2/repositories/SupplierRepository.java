@@ -1,6 +1,7 @@
 package ar.edu.unlp.info.bd2.repositories;
 
 import ar.edu.unlp.info.bd2.model.DeliveryMan;
+import ar.edu.unlp.info.bd2.model.Product;
 import ar.edu.unlp.info.bd2.model.Supplier;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -13,6 +14,5 @@ import java.util.Optional;
 @Repository
 public interface SupplierRepository extends CrudRepository<Supplier, Long> {
 
-    @Query("SELECT s FROM Supplier s WHERE s.name LIKE %:name%")
-    List<Supplier> findByName(@Param("name") String name);
+    List<Supplier> findByNameContaining(String name);
 }

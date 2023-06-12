@@ -13,8 +13,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends CrudRepository<Product, Long> {
 
-    @Query("SELECT p FROM Product p WHERE p.name LIKE %:name%")
-    List<Product> findByName(@Param("name") String name);
+    List<Product> findByNameContaining(String name);
 
     @Query("SELECT p FROM Product p JOIN p.types pt WHERE pt.name = :type")
     List<Product> getProductsByType(@Param("type") String type);
