@@ -185,7 +185,7 @@ public class DeliveryStatisticsServiceTest {
         this.assertListEquality(suppliers.stream().map(
                         (s) -> s.getName()).collect(Collectors.toList()),
                 Arrays.asList("Supplier 1", "Supplier 3", "Supplier 4", "Supplier 5"));
-    }
+    }*/
 
     private <T> void assertListEquality(List<T> list1, List<T> list2) {
         if (list1.size() != list2.size()) {
@@ -197,5 +197,5 @@ public class DeliveryStatisticsServiceTest {
                 Assert.fail(objectInList1 + " is not present in list2");
             }
         }
-    }*/
+    }
 }

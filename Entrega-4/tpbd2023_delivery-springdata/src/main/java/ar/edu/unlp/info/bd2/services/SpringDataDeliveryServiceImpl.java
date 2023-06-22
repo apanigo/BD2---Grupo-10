@@ -270,7 +270,7 @@ public class SpringDataDeliveryServiceImpl implements DeliveryService, DeliveryS
     @Override
     @Transactional(readOnly = true)
     public List<Product> getProductsByType(String type) throws DeliveryException {
-        List<Product> typeList = this.productRepository.getProductsByType(type);
+        List<Product> typeList = this.productRepository.findByTypesName(type);
         if (typeList.size() != 0) {
             return typeList;
         } else {

@@ -15,6 +15,5 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
     List<Product> findByNameContaining(String name);
 
-    @Query("SELECT p FROM Product p JOIN p.types pt WHERE pt.name = :type")
-    List<Product> getProductsByType(@Param("type") String type);
+    List<Product> findByTypesName(String type);
 }
