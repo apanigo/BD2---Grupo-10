@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @ContextConfiguration(classes = {SpringDataConfiguration.class, DBInitializerConfig.class }, loader = AnnotationConfigContextLoader.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @Transactional
-@Rollback(true)
+@Rollback(false)
 public class DeliveryStatisticsServiceTest {
 
     @Autowired
@@ -128,7 +128,7 @@ public class DeliveryStatisticsServiceTest {
         assertEquals(1, suppliers.size());
         assertEquals("Supplier 11", suppliers.get(0).getName());
     }
-
+*/
     @Test
     void testGetProductsWithPriceDateOlderThan() {
         List<Product> products1 = this.service.getProductsWithPriceDateOlderThan(50);
@@ -171,7 +171,7 @@ public class DeliveryStatisticsServiceTest {
                         (t) -> t.getName()).collect(Collectors.toList()),
                 Arrays.asList("Pastas", "Sandwiches", "Ensaladas"));
     }
-
+/*
     @Test
     void testGetSupplierWithMoreProducts() {
         Supplier supplier = this.service.getSupplierWithMoreProducts();
@@ -185,8 +185,8 @@ public class DeliveryStatisticsServiceTest {
         this.assertListEquality(suppliers.stream().map(
                         (s) -> s.getName()).collect(Collectors.toList()),
                 Arrays.asList("Supplier 1", "Supplier 3", "Supplier 4", "Supplier 5"));
-    }*/
-
+    }
+*/
     private <T> void assertListEquality(List<T> list1, List<T> list2) {
         if (list1.size() != list2.size()) {
             Assert.fail("Lists have different size");

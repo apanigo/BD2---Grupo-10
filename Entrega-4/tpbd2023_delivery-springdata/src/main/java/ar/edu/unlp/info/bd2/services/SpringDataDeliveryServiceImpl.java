@@ -12,16 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 
 @Service
 public class SpringDataDeliveryServiceImpl implements DeliveryService, DeliveryStatisticsService {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userRepository; // CONSULTA: deberían tener final?
     @Autowired
     private ClientRepository clientRepository;
     @Autowired
@@ -441,31 +440,33 @@ public class SpringDataDeliveryServiceImpl implements DeliveryService, DeliveryS
     @Override
     @Transactional(readOnly = true)
     public List<Product> getProductsWithPriceDateOlderThan(int days) {
-        return null;
+        Date queryDate = java.sql.Date.valueOf(LocalDate.now().minusDays(days));
+
+        return this.productRepository.findByLastPriceUpdateDateLessThanEqual(queryDate);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Product> getTop5MoreExpansiveProducts() {
-        return null;
+        return this.productRepository.findTop5ByOrderByPriceDesc();
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true) //CONSULTA: no me gusta como resolví esto, no encontré manera de manejar el SUM con JPA
     public Product getMostDemandedProduct() {
-        return null;
+        return this.itemRepository.findMostDemandedProducts().get(0);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true) //CONSULTA: me vi obligada a usar query - se podría resolver con un for?
     public List<Product> getProductsNoAddedToOrders() {
-        return null;
+        return this.productRepository.findProductsNotInItems();
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true) //CONSULTA: AAAAAAAAAAAAAAAAAA
     public List<ProductType> getTop3ProductTypesWithLessProducts() {
-        return null;
+        return this.productTypeRepository.findTop3ProductTypesWithLessProducts().subList(0, 3);
     }
 
     @Override
