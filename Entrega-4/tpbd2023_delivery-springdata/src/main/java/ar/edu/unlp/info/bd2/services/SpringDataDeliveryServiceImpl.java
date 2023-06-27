@@ -9,6 +9,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -452,32 +454,32 @@ public class SpringDataDeliveryServiceImpl implements DeliveryService, DeliveryS
     }
 
     @Override
-    @Transactional(readOnly = true) //CONSULTA: no me gusta como resolví esto, no encontré manera de manejar el SUM con JPA
+    @Transactional(readOnly = true)
     public Product getMostDemandedProduct() {
-        return this.itemRepository.findMostDemandedProducts().get(0);
+        return this.itemRepository.findMostDemandedProduct().stream().findFirst().orElse(null);
     }
 
     @Override
     @Transactional(readOnly = true) //CONSULTA: me vi obligada a usar query - se podría resolver con un for?
     public List<Product> getProductsNoAddedToOrders() {
-        return this.productRepository.findProductsNotInItems();
+        return this.productRepository.getProductsNoAddedToOrders();
     }
 
     @Override
-    @Transactional(readOnly = true) //CONSULTA: AAAAAAAAAAAAAAAAAA
+    @Transactional(readOnly = true) //CONSULTA: query usado AAAAAAAAAAAAAAAAAA
     public List<ProductType> getTop3ProductTypesWithLessProducts() {
-        return this.productTypeRepository.findTop3ProductTypesWithLessProducts().subList(0, 3);
+        return this.productTypeRepository.getTop3ProductTypesWithLessProducts(PageRequest.of(0, 3));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Supplier getSupplierWithMoreProducts() {
-        return null;
+    public Supplier getSupplierWithMoreProducts() { //CONSULTA: query usado
+        return this.supplierRepository.getSupplierWithMoreProducts().stream().findFirst().orElse(null);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Supplier> getSupplierWith1StarCalifications() {
-        return null;
+    public List<Supplier> getSupplierWith1StarCalifications() { //CONSULTA: query usado
+        return this.supplierRepository.getSupplierWith1StarCalifications();
     }
 }

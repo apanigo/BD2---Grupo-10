@@ -19,6 +19,6 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
     List<Product> findTop5ByOrderByPriceDesc();
 
-    @Query("SELECT p FROM Product p WHERE p NOT IN (SELECT DISTINCT i.product FROM Item i)")
-    List<Product> findProductsNotInItems(); //probé findProductsNotInItems - findProductsNotInAnyItem - findByItemsIsNull - findByNotInItems -
+    @Query("FROM Product WHERE id NOT IN (SELECT i.product.id FROM Item i)")
+    List<Product> getProductsNoAddedToOrders(); //probé findProductsNotInItems - findProductsNotInAnyItem - findByItemsIsNull - findByNotInItems -
 }

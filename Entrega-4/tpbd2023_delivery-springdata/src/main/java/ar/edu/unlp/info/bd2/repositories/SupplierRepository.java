@@ -15,4 +15,10 @@ import java.util.Optional;
 public interface SupplierRepository extends CrudRepository<Supplier, Long> {
 
     List<Supplier> findByNameContaining(String name);
+
+    @Query("SELECT s FROM Supplier s JOIN s.products p GROUP BY s.id ORDER BY COUNT(p) DESC")
+    List<Supplier> getSupplierWithMoreProducts();
+
+    @Query("SELECT DISTINCT p.supplier FROM Product p WHERE p.id IN (SELECT i.product.id FROM Item i JOIN i.order o JOIN o.qualification q WHERE q.score = 1)")
+    List<Supplier> getSupplierWith1StarCalifications();
 }
