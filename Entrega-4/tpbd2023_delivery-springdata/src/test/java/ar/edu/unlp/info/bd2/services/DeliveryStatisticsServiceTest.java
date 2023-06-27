@@ -171,7 +171,7 @@ public class DeliveryStatisticsServiceTest {
                         (t) -> t.getName()).collect(Collectors.toList()),
                 Arrays.asList("Pastas", "Sandwiches", "Ensaladas"));
     }
-/*
+
     @Test
     void testGetSupplierWithMoreProducts() {
         Supplier supplier = this.service.getSupplierWithMoreProducts();
@@ -186,7 +186,7 @@ public class DeliveryStatisticsServiceTest {
                         (s) -> s.getName()).collect(Collectors.toList()),
                 Arrays.asList("Supplier 1", "Supplier 3", "Supplier 4", "Supplier 5"));
     }
-*/
+
     private <T> void assertListEquality(List<T> list1, List<T> list2) {
         if (list1.size() != list2.size()) {
             Assert.fail("Lists have different size");
