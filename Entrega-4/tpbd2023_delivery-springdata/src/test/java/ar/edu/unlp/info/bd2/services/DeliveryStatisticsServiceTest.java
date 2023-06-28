@@ -48,7 +48,7 @@ public class DeliveryStatisticsServiceTest {
     void init() {
 
     }
-/*
+
     @Test
     void testGetTopNUserWithMoreScore() {
         List<User> users = this.service.getTopNUserWithMoreScore(6);
@@ -128,7 +128,7 @@ public class DeliveryStatisticsServiceTest {
         assertEquals(1, suppliers.size());
         assertEquals("Supplier 11", suppliers.get(0).getName());
     }
-*/
+
     @Test
     void testGetProductsWithPriceDateOlderThan() {
         List<Product> products1 = this.service.getProductsWithPriceDateOlderThan(50);

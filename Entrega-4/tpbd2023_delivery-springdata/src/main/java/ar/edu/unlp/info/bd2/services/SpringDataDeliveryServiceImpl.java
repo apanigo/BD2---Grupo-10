@@ -1,19 +1,44 @@
 package ar.edu.unlp.info.bd2.services;
 
-import ar.edu.unlp.info.bd2.DeliveryException;
-import ar.edu.unlp.info.bd2.model.*;
-import ar.edu.unlp.info.bd2.repositories.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import ar.edu.unlp.info.bd2.DeliveryException;
+import ar.edu.unlp.info.bd2.model.Address;
+import ar.edu.unlp.info.bd2.model.Client;
+import ar.edu.unlp.info.bd2.model.DeliveryMan;
+import ar.edu.unlp.info.bd2.model.Item;
+import ar.edu.unlp.info.bd2.model.Order;
+import ar.edu.unlp.info.bd2.model.Product;
+import ar.edu.unlp.info.bd2.model.ProductType;
+import ar.edu.unlp.info.bd2.model.Qualification;
+import ar.edu.unlp.info.bd2.model.Supplier;
+import ar.edu.unlp.info.bd2.model.User;
+import ar.edu.unlp.info.bd2.repositories.AddressRepository;
+import ar.edu.unlp.info.bd2.repositories.ClientRepository;
+import ar.edu.unlp.info.bd2.repositories.DeliveryManRepository;
+import ar.edu.unlp.info.bd2.repositories.ItemRepository;
+import ar.edu.unlp.info.bd2.repositories.OrderRepository;
+import ar.edu.unlp.info.bd2.repositories.ProductRepository;
+import ar.edu.unlp.info.bd2.repositories.ProductTypeRepository;
+import ar.edu.unlp.info.bd2.repositories.QualificationRepository;
+import ar.edu.unlp.info.bd2.repositories.SupplierRepository;
+import ar.edu.unlp.info.bd2.repositories.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -395,49 +420,58 @@ public class SpringDataDeliveryServiceImpl implements DeliveryService, DeliveryS
     @Override
     @Transactional(readOnly = true)
     public List<User> getTopNUserWithMoreScore(int n) {
-        return null;
+    	PageRequest pageReq = PageRequest.of(0, n, Sort.by("score").descending());
+    	return this.userRepository.findAll(pageReq);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<DeliveryMan> getTop10DeliveryManWithMoreOrders() {
-        return null;
+        PageRequest pageReq = PageRequest.of(0, 10, Sort.by("numberOfSuccessOrders").descending());
+        return this.deliveryManRepository.findAll(pageReq);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Client> getUsersSpentMoreThan(float number) {
-        return null;
+    	return this.clientRepository.findDistinctByOrdersTotalPriceGreaterThanEqual(number);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Order> getAllOrdersFromUser(String username) {
-        return null;
+        Optional<Client> optionalUser = this.clientRepository.findByUsername(username);
+    	try {
+    		Client client = optionalUser.get();
+    		return client.getOrders();
+    	}
+    	catch (NoSuchElementException e) {
+    		return null;
+    	}
     }
 
     @Override
     @Transactional(readOnly = true)
     public Long getNumberOfOrderNoDelivered() {
-        return null;
+        return this.orderRepository.countByDeliveredFalse();
     }
 
     @Override
     @Transactional(readOnly = true)
     public Long getNumberOfOrderDeliveredAndBetweenDates(Date startDate, Date endDate) {
-        return null;
+        return this.orderRepository.countByDeliveredTrueAndDateOfOrderBetween(startDate, endDate);
     }
 
     @Override
     @Transactional(readOnly = true)
     public Optional<Order> getOrderDeliveredMoreExpansiveInDate(Date date) {
-        return Optional.empty();
+        return this.orderRepository.findFirstByDeliveredTrueAndDateOfOrderOrderByTotalPriceDesc(date);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Supplier> getSuppliersWithoutProducts() {
-        return null;
+    	return this.supplierRepository.findAllByProductsEmpty();
     }
 
     @Override

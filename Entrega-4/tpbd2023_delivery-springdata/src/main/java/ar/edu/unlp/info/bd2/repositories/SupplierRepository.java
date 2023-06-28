@@ -13,6 +13,8 @@ import java.util.List;
 public interface SupplierRepository extends CrudRepository<Supplier, Long> {
 
     List<Supplier> findByNameContaining(String name);
+    
+    List<Supplier> findAllByProductsEmpty();
 
     @Query("SELECT s FROM Supplier s JOIN s.products p GROUP BY s.id ORDER BY COUNT(p) DESC")
     Page<Supplier> getSupplierWithMoreProducts(Pageable pageable);
