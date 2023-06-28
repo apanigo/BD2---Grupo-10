@@ -37,6 +37,12 @@ import ar.edu.unlp.info.bd2.repositories.ProductTypeRepository;
 import ar.edu.unlp.info.bd2.repositories.QualificationRepository;
 import ar.edu.unlp.info.bd2.repositories.SupplierRepository;
 import ar.edu.unlp.info.bd2.repositories.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 
 @Service
 public class SpringDataDeliveryServiceImpl implements DeliveryService, DeliveryStatisticsService {
@@ -471,42 +477,58 @@ public class SpringDataDeliveryServiceImpl implements DeliveryService, DeliveryS
     @Override
     @Transactional(readOnly = true)
     public List<Product> getProductsWithPriceDateOlderThan(int days) {
-        return null;
+        Date queryDate = java.sql.Date.valueOf(LocalDate.now().minusDays(days));
+
+        return this.productRepository.findByLastPriceUpdateDateLessThanEqual(queryDate);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Product> getTop5MoreExpansiveProducts() {
-        return null;
+        return this.productRepository.findTop5ByOrderByPriceDesc();
     }
 
     @Override
     @Transactional(readOnly = true)
     public Product getMostDemandedProduct() {
-        return null;
+    	Pageable page = PageRequest.of(0,1);
+    	Page<Product> productPage = this.productRepository.findByMostDemanded(page);
+
+        if (productPage != null && productPage.hasContent()) {
+            return productPage.getContent().get(0);
+        } else {
+            return null;
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Product> getProductsNoAddedToOrders() {
-        return null;
+        return this.productRepository.getProductsNoAddedToOrders();
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<ProductType> getTop3ProductTypesWithLessProducts() {
-        return null;
+        return this.productTypeRepository.getTop3ProductTypesWithLessProducts(PageRequest.of(0, 3));
     }
 
     @Override
     @Transactional(readOnly = true)
     public Supplier getSupplierWithMoreProducts() {
-        return null;
+        Pageable page = PageRequest.of(0,1);
+        Page<Supplier> supplierPage = this.supplierRepository.getSupplierWithMoreProducts(page);
+
+        if (supplierPage != null && supplierPage.hasContent()) {
+            return supplierPage.getContent().get(0);
+        } else {
+            return null;
+        }
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Supplier> getSupplierWith1StarCalifications() {
-        return null;
+        return this.supplierRepository.getSupplierWith1StarCalifications();
     }
 }
