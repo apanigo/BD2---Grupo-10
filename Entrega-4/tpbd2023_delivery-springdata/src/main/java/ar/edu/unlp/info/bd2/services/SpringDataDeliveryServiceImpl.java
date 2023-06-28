@@ -11,6 +11,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -456,30 +457,34 @@ public class SpringDataDeliveryServiceImpl implements DeliveryService, DeliveryS
     @Override
     @Transactional(readOnly = true)
     public Product getMostDemandedProduct() {
-        return this.itemRepository.findMostDemandedProduct().stream().findFirst().orElse(null);
+    	Pageable page = PageRequest.of(0,1);
+    	Page<Product> productPage = this.productRepository.findByMostDemanded(page);
+    	return productPage.getContent().get(0);
     }
 
     @Override
-    @Transactional(readOnly = true) //CONSULTA: me vi obligada a usar query - se podría resolver con un for?
+    @Transactional(readOnly = true)
     public List<Product> getProductsNoAddedToOrders() {
         return this.productRepository.getProductsNoAddedToOrders();
     }
 
     @Override
-    @Transactional(readOnly = true) //CONSULTA: query usado AAAAAAAAAAAAAAAAAA
+    @Transactional(readOnly = true)
     public List<ProductType> getTop3ProductTypesWithLessProducts() {
         return this.productTypeRepository.getTop3ProductTypesWithLessProducts(PageRequest.of(0, 3));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Supplier getSupplierWithMoreProducts() { //CONSULTA: query usado
-        return this.supplierRepository.getSupplierWithMoreProducts().stream().findFirst().orElse(null);
+    public Supplier getSupplierWithMoreProducts() {
+        Pageable page = PageRequest.of(0,1);
+        Page<Supplier> productPage = this.supplierRepository.getSupplierWithMoreProducts(page);
+        return productPage.getContent().get(0);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Supplier> getSupplierWith1StarCalifications() { //CONSULTA: query usado
+    public List<Supplier> getSupplierWith1StarCalifications() {
         return this.supplierRepository.getSupplierWith1StarCalifications();
     }
 }
