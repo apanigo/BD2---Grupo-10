@@ -15,4 +15,6 @@ import java.util.Optional;
 public interface SupplierRepository extends CrudRepository<Supplier, Long> {
 
     List<Supplier> findByNameContaining(String name);
+    
+    List<Supplier> findAllByProductsEmpty();
 }
