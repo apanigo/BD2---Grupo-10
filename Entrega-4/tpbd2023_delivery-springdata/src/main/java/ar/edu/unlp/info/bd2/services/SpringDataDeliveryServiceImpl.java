@@ -23,7 +23,7 @@ import java.util.*;
 public class SpringDataDeliveryServiceImpl implements DeliveryService, DeliveryStatisticsService {
 
     @Autowired
-    private UserRepository userRepository; // CONSULTA: deberían tener final?
+    private UserRepository userRepository;
     @Autowired
     private ClientRepository clientRepository;
     @Autowired
@@ -459,7 +459,12 @@ public class SpringDataDeliveryServiceImpl implements DeliveryService, DeliveryS
     public Product getMostDemandedProduct() {
     	Pageable page = PageRequest.of(0,1);
     	Page<Product> productPage = this.productRepository.findByMostDemanded(page);
-    	return productPage.getContent().get(0);
+
+        if (productPage != null && productPage.hasContent()) {
+            return productPage.getContent().get(0);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -478,8 +483,13 @@ public class SpringDataDeliveryServiceImpl implements DeliveryService, DeliveryS
     @Transactional(readOnly = true)
     public Supplier getSupplierWithMoreProducts() {
         Pageable page = PageRequest.of(0,1);
-        Page<Supplier> productPage = this.supplierRepository.getSupplierWithMoreProducts(page);
-        return productPage.getContent().get(0);
+        Page<Supplier> supplierPage = this.supplierRepository.getSupplierWithMoreProducts(page);
+
+        if (supplierPage != null && supplierPage.hasContent()) {
+            return supplierPage.getContent().get(0);
+        } else {
+            return null;
+        }
     }
 
     @Override
