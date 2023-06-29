@@ -420,15 +420,15 @@ public class SpringDataDeliveryServiceImpl implements DeliveryService, DeliveryS
     @Override
     @Transactional(readOnly = true)
     public List<User> getTopNUserWithMoreScore(int n) {
-    	PageRequest pageReq = PageRequest.of(0, n, Sort.by("score").descending());
-    	return this.userRepository.findAll(pageReq);
+    	PageRequest pageReq = PageRequest.of(0, n); 
+    	return this.userRepository.findByOrderByScoreDesc(pageReq);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<DeliveryMan> getTop10DeliveryManWithMoreOrders() {
-        PageRequest pageReq = PageRequest.of(0, 10, Sort.by("numberOfSuccessOrders").descending());
-        return this.deliveryManRepository.findAll(pageReq);
+        PageRequest pageReq = PageRequest.of(0, 10);
+        return this.deliveryManRepository.findByOrderByNumberOfSuccessOrdersDesc(pageReq);
     }
 
     @Override

@@ -14,5 +14,5 @@ public interface DeliveryManRepository extends CrudRepository<DeliveryMan, Long>
 
     Optional<DeliveryMan> findByFree(boolean free);
     
-    List<DeliveryMan> findAll(Pageable pageable); 
+    List<DeliveryMan> findByOrderByNumberOfSuccessOrdersDesc(Pageable pageable);
 }

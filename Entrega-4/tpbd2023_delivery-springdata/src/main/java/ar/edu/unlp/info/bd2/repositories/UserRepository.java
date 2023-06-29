@@ -13,6 +13,6 @@ import ar.edu.unlp.info.bd2.model.User;
 public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findByEmail(String email);
     
-    List<User> findAll(Pageable pageable); 
+    List<User> findByOrderByScoreDesc(Pageable pageable); 
     
 }
